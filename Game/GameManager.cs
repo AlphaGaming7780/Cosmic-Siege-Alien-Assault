@@ -40,11 +40,12 @@ internal class GameManager
             case GameStatus.MainMenu:
                 GetOrCreateSystem<MainMenuSystem>();
                 DestroySystem<GameSystem>();
-            break;
+                break;
             case GameStatus.Game:
                 GetOrCreateSystem<GameSystem>();
-                DestroySystem<MainMenuSystem>();         
-            break;
+                DestroySystem<MainMenuSystem>();
+                break;
+
         }
         this.gameStatus = gameStatus;
     }

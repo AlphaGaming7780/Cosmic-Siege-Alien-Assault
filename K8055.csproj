@@ -75,6 +75,7 @@
     <Compile Include="Game\UI\GameUI.cs" />
     <Compile Include="Game\UI\MainMenuUI.cs" />
     <Compile Include="Game\UI\PlayerUI.cs" />
+    <Compile Include="Game\UI\PreGameUI.cs" />
     <Compile Include="Game\UI\UIBase.cs" />
     <Compile Include="Game\Utility.cs" />
     <Compile Include="Lib\Mathf.cs" />

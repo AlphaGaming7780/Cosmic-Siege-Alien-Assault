@@ -16,7 +16,7 @@ namespace K8055Velleman.Game.Entities.Enemy
 
         internal override int Damage => 1;
 
-        internal override float Speed => 0.75f;
+        internal override float Speed => 1.5f;
 
         internal override void OnCreate(EntitySystem entitySystem)
         {

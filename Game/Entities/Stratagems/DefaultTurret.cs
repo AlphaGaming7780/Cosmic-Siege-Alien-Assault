@@ -2,7 +2,9 @@
 using K8055Velleman.Game.Entities.Enemy;
 using K8055Velleman.Game.Systems;
 using System;
+using System.Drawing;
 using System.Timers;
+using System.Windows.Forms;
 
 namespace K8055Velleman.Game.Entities.Stratagems
 {
@@ -15,6 +17,8 @@ namespace K8055Velleman.Game.Entities.Stratagems
         internal override int MaxLevel => 8;
 
         internal override int StartShootSpeed => 1000;
+
+        internal override Control Control => new() { BackColor = Color.Orange };
 
         internal override void OnCollide(EntityBase entityBase) {}
 

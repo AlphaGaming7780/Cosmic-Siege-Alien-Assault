@@ -51,7 +51,16 @@ namespace K8055Velleman.Game.Systems
 			return entity;
 		}
 
-		internal bool DestroyEntity(EntityBase entity)
+        internal T CreateEntity<T>(Type type) where T : EntityBase
+        {
+			object o = Activator.CreateInstance(type);
+			if (o is not EntityBase baseEntity || baseEntity is not T entity || entity.GetType() != type) throw new Exception("The input type is not an EntityBase or the type type is different from the input type.");
+			entity.OnCreate(this);
+            entities.Add(entity);
+            return entity;
+        }
+
+        internal bool DestroyEntity(EntityBase entity)
 		{
 			if(!entities.Contains(entity)) return false;
 			entities.Remove(entity);

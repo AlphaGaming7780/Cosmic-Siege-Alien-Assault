@@ -13,11 +13,13 @@ namespace K8055Velleman.Game.Systems
 		private int nbEnemy = 0;
 
 		internal GameUI GameUI { get; private set; }
+		internal PreGameUI PreGameUI { get; private set; }
 		internal override void OnCreate()
 		{
 			base.OnCreate();
-			GameUI = UIManager.GetOrCreateUI<GameUI>();
-			playerSystem = GameManager.GetOrCreateSystem<PlayerSystem>();
+			//GameUI = UIManager.GetOrCreateUI<GameUI>();
+			PreGameUI = UIManager.GetOrCreateUI<PreGameUI>();
+			//playerSystem = GameManager.GetOrCreateSystem<PlayerSystem>();
 			entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
         }
 
@@ -35,11 +37,11 @@ namespace K8055Velleman.Game.Systems
         internal override void OnUpdate()
         {
             base.OnUpdate();
-			if(nbEnemy < 5)
-			{
-                entitySystem.CreateEntity<ClassicEnemyEntity>();
-				nbEnemy++;
-            }
+			//if(nbEnemy < 5)
+			//{
+   //             entitySystem.CreateEntity<ClassicEnemyEntity>();
+			//	nbEnemy++;
+   //         }
         }
     }
 }
