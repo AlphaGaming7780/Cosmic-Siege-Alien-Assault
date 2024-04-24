@@ -16,6 +16,8 @@ internal class PreGameUI : UIBase
 	Control preGameUI;
 	Control stratagemList;
 
+	Dictionary<string, StratagemEntity> stratagemEntities = [];
+
 	internal override void OnCreate()
 	{
 		EntitySystem entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
@@ -27,23 +29,29 @@ internal class PreGameUI : UIBase
 			BackColor = Color.Black,
 		};
 
-		stratagemList = new()
+		stratagemList = new Panel()
 		{
-			Width = 512,
-			Height = 1024,
-			Location = new Point(16,16),
-			BackColor = Color.White,
+			Width = 522,
+			Height = 720,
+			Location = new Point(11,16),
+			//BackColor = Color.White,
+			BorderStyle = BorderStyle.FixedSingle,
+			ForeColor = Color.White,
 		};
+
+		int x = 1, y = 1;
 
 		foreach (Type t in Utility.GetAllSubclassOf(typeof(StratagemEntity)))
 		{
             StratagemEntity stratagemEntity = entitySystem.CreateEntity<StratagemEntity>(t);
 
-
-
-			stratagemList.Controls.Add(stratagemEntity.Control);
+			stratagemEntity.Size = new Size(128, 128);
+			stratagemEntity.Location = new Point( 2 * x + stratagemEntity.Size.Width * (x-1), 2 * y + stratagemEntity.Size.Height * (y - 1));
+			stratagemList.Controls.Add(stratagemEntity.mainPanel);
+			x++;
+			if(x>4) { x = 1; y++; }
         }
-
+			
 		preGameUI.Controls.Add(stratagemList);
 		GameWindow.Controls.Add(preGameUI);
 
@@ -51,11 +59,11 @@ internal class PreGameUI : UIBase
 
 	internal override void OnDestroy()
 	{
-		throw new NotImplementedException();
+		
 	}
 
 	internal override void OnResize()
 	{
-		throw new NotImplementedException();
+		
 	}
 }

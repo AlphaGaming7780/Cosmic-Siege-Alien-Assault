@@ -9,7 +9,6 @@ internal abstract class StratagemEntity : StaticEntity
 	private int shootSpeed = 1;
 	internal int level = 1;
 	internal abstract string IconPath { get; }
-	internal abstract Control Control { get; }
 	internal abstract string Name { get; }
 	internal abstract int MaxLevel { get; }
 	//internal abstract Type Ammo { get; }
@@ -24,6 +23,7 @@ internal abstract class StratagemEntity : StaticEntity
 
 	internal override void OnCreate(EntitySystem entitySystem)
 	{
+		mainPanel.Name = Name;
 		base.OnCreate(entitySystem);
 		timer = new System.Timers.Timer(shootSpeed);
 		timer.Elapsed += (e, h) => { shot = true; };

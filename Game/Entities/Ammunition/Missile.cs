@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace K8055Velleman.Game.Entities.Ammunition
 {
-    internal class DefaultTurretAmmo : AmmunitionEntity
+    internal class Missile : AmmunitionEntity
     {
         internal override int Damage => 5;
 
         internal override float Speed => 2f;
 
-        internal override Size BulletSize => new(25,25);
+        internal override Size BulletSize => new(10,10);
 
-        internal override Color BulletColor => Color.Orange;
+        internal override Color BulletColor => Color.Gray;
 
         internal override bool Guided => false;
     }

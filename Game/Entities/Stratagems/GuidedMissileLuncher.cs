@@ -8,11 +8,11 @@ using System.Windows.Forms;
 
 namespace K8055Velleman.Game.Entities.Stratagems
 {
-    internal class DefaultTurret : StratagemEntity
+    internal class GuidedMissileLuncher : StratagemEntity
     {
         internal override string IconPath => "";
 
-        internal override string Name => "Default Turret";
+        internal override string Name => "Guided Missile Luncher";
 
         internal override int MaxLevel => 8;
 
@@ -24,7 +24,7 @@ namespace K8055Velleman.Game.Entities.Stratagems
         {
             mainPanel = new()
             {
-                BackColor = Color.DarkOrange,
+                BackColor = Color.DarkGray,
             };
             base.OnCreate(entitySystem);
         }
@@ -32,7 +32,7 @@ namespace K8055Velleman.Game.Entities.Stratagems
         internal override void Shot()
         {
             Console.WriteLine("Shot");
-            ShotOnTarget(EntitySystem.CreateEntity<DefaultTurretAmmo>());
+            ShotOnTarget(EntitySystem.CreateEntity<GuidedMissile>());
         }
 
         internal override void OnUpgrade(int newLevel)

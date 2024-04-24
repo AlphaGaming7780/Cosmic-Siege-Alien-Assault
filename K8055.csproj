@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game\Entities\AmmunitionEntity.cs" />
+    <Compile Include="Game\Entities\Ammunition\GuidedMissile.cs" />
+    <Compile Include="Game\Entities\Ammunition\Missile.cs" />
     <Compile Include="Game\Entities\Ammunition\DefaultTurretAmmo.cs" />
     <Compile Include="Game\Entities\EnemyEntity.cs" />
     <Compile Include="Game\Entities\Enemy\ClassicEnemyEntity.cs" />
@@ -60,6 +62,8 @@
     <Compile Include="Game\Entities\PlayerEnity.cs" />
     <Compile Include="Game\Entities\StaticEntity.cs" />
     <Compile Include="Game\Entities\StratagemEntity.cs" />
+    <Compile Include="Game\Entities\Stratagems\GuidedMissileLuncher.cs" />
+    <Compile Include="Game\Entities\Stratagems\MissileLuncher.cs" />
     <Compile Include="Game\Entities\Stratagems\DefaultTurret.cs" />
     <Compile Include="Game\GameManager.cs" />
     <Compile Include="Game\AudioManager.cs" />
