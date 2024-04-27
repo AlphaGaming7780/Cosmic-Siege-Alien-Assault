@@ -13,8 +13,8 @@ namespace K8055Velleman.Game
         //public virtual void OnLoad() { }
         internal virtual void OnCreate() { }
         internal virtual void OnDestroy() { }
-
         internal virtual void OnUpdate() { }
+        internal virtual void OnGameStatusChange(GameStatus status) { }
     }
 
 

@@ -34,8 +34,20 @@ namespace K8055Velleman.Game.Systems
 			UpdateVellmanBoardConnectionStatus();
 		}
 
+        internal override void OnGameStatusChange(GameStatus status)
+        {
+            base.OnGameStatusChange(status);
+			switch (status)
+			{
+				case GameStatus.MainMenu:
+					break;
+				default:
+					GameManager.DestroySystem<MainMenuSystem>();
+					break;
+			}
+        }
 
-		private void UpdateVellmanBoardConnectionStatus()
+        private void UpdateVellmanBoardConnectionStatus()
 		{
 			gameMainMenu.VellmanBoardStatus.BackColor = K8055.IsConnected ? Color.Green : Color.Red;
 			gameMainMenu.VellmanBoardStatusLabel.Text = K8055.IsConnected ? "Connected" : "Disconnected";
@@ -43,7 +55,7 @@ namespace K8055Velleman.Game.Systems
 
 		private void OnButtonPlayClick(object sender, EventArgs e)
 		{
-			GameManager.instance.Load(GameStatus.Game);
+			GameManager.instance.Load(GameStatus.PreGame);
 		}
 		private void OnQuitButtonClick(object sender, EventArgs e)
 		{

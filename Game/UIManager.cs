@@ -15,23 +15,23 @@ internal class UIManager
     internal static GameWindow GameWindow;
     internal static PrivateFontCollection CustomFonts = new();
     private static readonly Dictionary<Type, UIBase> UIs = [];
-    private static Size initialWindowSize;
+    private static Size initialWindowSize = new(1280,720);
     internal static Float2 uiRatio { get { return (Float2)GameWindow.Size / (Float2)initialWindowSize; } }
-    internal Float2 dynamicUIRatio;
-    private Float2 OldWindowSize;
+    //internal Float2 dynamicUIRatio;
+    //private Float2 OldWindowSize;
     public UIManager(GameWindow gameWindow) 
     { 
         instance = this;
         GameWindow = gameWindow;
-        initialWindowSize = GameWindow.Size;
-        OldWindowSize = GameWindow.Size;
+        //initialWindowSize = GameWindow.Size;
+        //OldWindowSize = GameWindow.Size;
         CustomFonts.AddFontFile("Resources\\PixeloidSans.ttf");
     }
 
     internal void OnResize()
     {   
-        dynamicUIRatio = GameWindow.Size/OldWindowSize;
-        OldWindowSize = GameWindow.Size;
+        //dynamicUIRatio = GameWindow.Size/OldWindowSize;
+        //OldWindowSize = GameWindow.Size;
         foreach (UIBase UI in UIs.Values)
         {
             UI.OnResize();

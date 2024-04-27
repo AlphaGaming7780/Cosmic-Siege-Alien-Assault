@@ -1,6 +1,9 @@
 ﻿using K8055Velleman.Game.Entities;
 using K8055Velleman.Game.Entities.Enemy;
 using K8055Velleman.Game.UI;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace K8055Velleman.Game.Systems
 {
@@ -10,16 +13,17 @@ namespace K8055Velleman.Game.Systems
 		//internal PlayerEnity player;
 		PlayerSystem playerSystem;
 
-		private int nbEnemy = 0;
+        List<StratagemEntityBase> selectedStratagemEntities = [];
 
-		internal GameUI GameUI { get; private set; }
-		internal PreGameUI PreGameUI { get; private set; }
+        private int nbEnemy = 0;
+
+		//internal GameUI gameUI { get; private set; } = null;
+		internal PreGameUI preGameUI { get; private set; } = null;
 		internal override void OnCreate()
 		{
 			base.OnCreate();
-			//GameUI = UIManager.GetOrCreateUI<GameUI>();
-			PreGameUI = UIManager.GetOrCreateUI<PreGameUI>();
-			//playerSystem = GameManager.GetOrCreateSystem<PlayerSystem>();
+			//PreGameUI = UIManager.GetOrCreateUI<PreGameUI>();
+			
 			entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
         }
 
@@ -30,8 +34,10 @@ namespace K8055Velleman.Game.Systems
 			playerSystem = null;
             GameManager.DestroySystem<EntitySystem>();
             GameManager.DestroySystem<PlayerSystem>();
-			GameUI = null;
+			//gameUI = null;
+			preGameUI = null;
 			UIManager.DestroyUI<GameUI>();
+			UIManager.DestroyUI<PreGameUI>();
 		}
 
         internal override void OnUpdate()
@@ -43,5 +49,53 @@ namespace K8055Velleman.Game.Systems
 			//	nbEnemy++;
    //         }
         }
+
+        internal override void OnGameStatusChange(GameStatus status)
+        {
+            base.OnGameStatusChange(status);
+			switch (status)
+			{
+				case GameStatus.PreGame:
+                    preGameUI = UIManager.GetOrCreateUI<PreGameUI>();
+                    break;
+				case GameStatus.Game:
+					SetupGame();
+                    break;
+				default:
+					GameManager.DestroySystem<GameSystem>();	
+					break;
+			}
+        }
+
+		private void SetupGame()
+		{
+			InputManager.OnKeyDown += OnKeyDown;
+			selectedStratagemEntities = preGameUI.selectedStratagemEntities;
+			entitySystem.GameUI = UIManager.GetOrCreateUI<GameUI>();
+            playerSystem = GameManager.GetOrCreateSystem<PlayerSystem>();
+            preGameUI = null;
+			UIManager.DestroyUI<PreGameUI>();
+        }
+
+        private void OnKeyDown(Keys key)
+        {
+            switch (key)
+			{
+				case Keys.Escape:
+                    if(GameWindow.Clock.Enabled) PauseGame();
+					else UnPauseGame();
+					break;
+			}
+        }
+
+        internal void PauseGame()
+		{
+			GameWindow.Clock.Enabled = false;
+        }
+		internal void UnPauseGame()
+		{
+            GameWindow.Clock.Enabled = true;
+        }
+
     }
 }

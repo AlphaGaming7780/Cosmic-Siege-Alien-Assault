@@ -42,9 +42,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.ControlBox = false;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1280, 720);
             this.Name = "GameWindow";
@@ -61,7 +63,8 @@
         }
 
         #endregion
-        private System.Windows.Forms.Timer Clock;
+
+        internal System.Windows.Forms.Timer Clock;
     }
 }
 

@@ -31,10 +31,10 @@ namespace K8055Velleman.Game.UI
 				AutoSize = true,
 			};
 
-			foreach (FontFamily fontFamily in FontFamily.Families)
-			{
-				Console.WriteLine(fontFamily.Name);
-			}
+			//foreach (FontFamily fontFamily in FontFamily.Families)
+			//{
+			//	Console.WriteLine(fontFamily.Name);
+			//}
 
 			gameUI.GamePanel.Controls.Add(PlayerLife);
 		}

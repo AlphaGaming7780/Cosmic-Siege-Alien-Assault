@@ -35,11 +35,11 @@ namespace K8055Velleman.Game.UI
 			GameName = new()
 			{
 				Name = "MainMenuGameName",
-				Text = GameWindow.Text,
+				Text = "Cosmic Siege: Alien Assault",
 				Width = (int)(500 * UIRatio.x),
 				Height = (int)(100 * UIRatio.y),
 				TextAlign = ContentAlignment.MiddleCenter,
-				Font = new(FontFamily.GenericSerif, 25f, FontStyle.Bold),
+				Font = new(FontFamily.GenericSerif, 45f, FontStyle.Bold),
                 ForeColor = Color.WhiteSmoke,
 				BorderStyle = BorderStyle.FixedSingle,
 			};
@@ -138,11 +138,11 @@ namespace K8055Velleman.Game.UI
 			QuitButton.Height = (int)(50 * UIRatio.y);
 			QuitButton.Width = (int)(200 * UIRatio.x);
 			QuitButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - QuitButton.Width / 2, (int)(475 * UIRatio.y));
-            GameName.Height = (int)(100 * UIRatio.y);
-            GameName.Width = (int)(500 * UIRatio.x);
+			GameName.Height = (int)(100 * UIRatio.y);
+			GameName.Width = (int)(500 * UIRatio.x);
 			GameName.Font = new(GameName.Font.FontFamily, 20 * UIRatio.moyenne, FontStyle.Bold);
-            GameName.Location = new(mainMenu.Width / 2 - GameName.Width / 2, (int)(100 * UIRatio.y));
-        }
+			GameName.Location = new(mainMenu.Width / 2 - GameName.Width / 2, (int)(100 * UIRatio.y));
+		}
 
 		private void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
 		{

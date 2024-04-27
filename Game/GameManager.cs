@@ -10,11 +10,12 @@ namespace K8055Velleman.Game;
 
 public enum GameStatus
 {
+    unknown,
     MainMenu,
+    PreGame,
     Game,
     Paused,
     settings,
-    unknown = 0,
 }
 
 internal class GameManager
@@ -35,19 +36,21 @@ internal class GameManager
 
     internal void Load(GameStatus gameStatus) 
     {
-        switch(gameStatus)
+        this.gameStatus = gameStatus;
+        switch (gameStatus)
         {
             case GameStatus.MainMenu:
                 GetOrCreateSystem<MainMenuSystem>();
-                DestroySystem<GameSystem>();
                 break;
-            case GameStatus.Game:
+            case GameStatus.PreGame:
                 GetOrCreateSystem<GameSystem>();
-                DestroySystem<MainMenuSystem>();
                 break;
 
         }
-        this.gameStatus = gameStatus;
+        foreach (SystemBase system in new List<SystemBase>(Systems.Values))
+        {
+            system.OnGameStatusChange(gameStatus);
+        }
     }
 
     internal void Update()

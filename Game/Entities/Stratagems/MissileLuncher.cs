@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace K8055Velleman.Game.Entities.Stratagems
 {
-	internal class MissileLuncher : StratagemEntity
+	internal class MissileLuncher : TurretStratagemBase
 	{
 		internal override string IconPath => "";
 
@@ -16,9 +16,11 @@ namespace K8055Velleman.Game.Entities.Stratagems
 
 		internal override int MaxLevel => 8;
 
-		internal override int StartShootSpeed => 1000;
+		internal override int StartActionSpeed => 1000;
 
-		internal override void OnCollide(EntityBase entityBase) {}
+        internal override Type Ammo => typeof(Missile);
+
+        internal override void OnCollide(EntityBase entityBase) {}
 
 		internal override void OnCreate(EntitySystem entitySystem)
 		{
@@ -29,16 +31,10 @@ namespace K8055Velleman.Game.Entities.Stratagems
 			base.OnCreate(entitySystem);
 		}
 
-		internal override void Shot()
-		{
-			Console.WriteLine("Shot");
-			ShotOnTarget(EntitySystem.CreateEntity<Missile>());
-		}
-
 		internal override void OnUpgrade(int newLevel)
 		{
 			level = newLevel;
-			ShootSpeed = StartShootSpeed - (level - 1) / (MaxLevel - 1) * 500;
+			ActionSpeed = StartActionSpeed - (level - 1) / (MaxLevel - 1) * 500;
 		}
 	}
 }

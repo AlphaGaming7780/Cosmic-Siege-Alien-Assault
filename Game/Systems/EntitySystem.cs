@@ -12,14 +12,12 @@ namespace K8055Velleman.Game.Systems
 	internal class EntitySystem : SystemBase
 	{
 		private readonly List<EntityBase> entities = [];
-		internal GameUI GameUI { get; private set; }
+		internal GameUI GameUI { get; set; } = null;
 
 		internal override void OnCreate()
 		{
 			base.OnCreate();
-			GameUI = GameManager.GetOrCreateSystem<GameSystem>().GameUI;
 			GameWindow.Resize += OnResize;
-
 		}
 
 		internal override void OnDestroy()
