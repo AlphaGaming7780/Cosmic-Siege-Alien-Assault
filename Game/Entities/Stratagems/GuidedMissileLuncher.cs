@@ -20,16 +20,14 @@ namespace K8055Velleman.Game.Entities.Stratagems
 
         internal override Type Ammo => typeof(GuidedMissile);
 
+        internal override Color Color => Color.DarkGray;
+
         internal override void OnCollide(EntityBase entityBase) {}
 
-        internal override void OnCreate(EntitySystem entitySystem)
-        {
-            mainPanel = new()
-            {
-                BackColor = Color.DarkGray,
-            };
-            base.OnCreate(entitySystem);
-        }
+        //internal override void OnCreate(EntitySystem entitySystem)
+        //{
+        //    base.OnCreate(entitySystem);
+        //}
 
         internal override void OnUpgrade(int newLevel)
         {

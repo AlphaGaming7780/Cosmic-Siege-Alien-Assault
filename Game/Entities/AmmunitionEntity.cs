@@ -19,7 +19,6 @@ namespace K8055Velleman.Game.Entities
 		internal override void OnCreate(EntitySystem entitySystem)
 		{
             //enabled = false;
-            base.OnCreate(entitySystem);
 			playerSystem = GameManager.GetOrCreateSystem<PlayerSystem>();
 			mainPanel = new()
 			{
@@ -28,7 +27,8 @@ namespace K8055Velleman.Game.Entities
 				BackColor = BulletColor,
 			};
 			CenterLocation = playerSystem.player.CenterLocation;
-			GameUI.GamePanel.Controls.Add(mainPanel);
+            base.OnCreate(entitySystem);
+            GameUI.GamePanel.Controls.Add(mainPanel);
 		}
 
         internal override void OnUpdate()

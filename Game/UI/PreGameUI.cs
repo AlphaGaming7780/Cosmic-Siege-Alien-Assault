@@ -1,5 +1,6 @@
 ﻿using K8055Velleman.Game.Entities;
 using K8055Velleman.Game.Systems;
+using K8055Velleman.Lib.ClassExtension;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,8 +17,8 @@ internal class PreGameUI : UIBase
 
 	Control preGameUI;
 	Control stratagemList;
-	Button backButton;
-	Button startGameButton;
+	BButton backButton;
+	BButton startGameButton;
 	Panel selectedStratPanel;
 
 	Dictionary<string, StratagemEntityBase> stratagemEntities = [];
@@ -145,11 +146,6 @@ internal class PreGameUI : UIBase
 		control.Enabled = false;
 		currentStratagemIndex++;
 		SelectSlot();
-		foreach (StratagemEntityBase stratagemEntity in selectedStratagemEntities)
-		{
-			Console.WriteLine(stratagemEntity?.Name);
-		}
-		Console.WriteLine();
 	}
 
 	private void SelectSlot()

@@ -42,20 +42,20 @@ namespace K8055Velleman.Game.Entities
 
 			if (taregtCenterLocation.x > CenterLocation.x)
 			{
-				move.x = (int)Math.Round(Speed * multX) >= vector2.x ? vector2.x : (int)Math.Round(Speed * multX * Math.Sign(vector2.x)); // * UIManager.uiRatio.x
+				move.x = (Speed * multX) >= vector2.x ? vector2.x : Speed * multX * Math.Sign(vector2.x); // * UIManager.uiRatio.x
             }
             else
 			{
-				move.x = (int)Math.Round(Speed * multX) <= vector2.x ? vector2.x : (int)Math.Round(Speed * multX * Math.Sign(vector2.x)); // * UIManager.uiRatio.x
+				move.x = (Speed * multX) <= vector2.x ? vector2.x : Speed * multX * Math.Sign(vector2.x); // * UIManager.uiRatio.x
             }
 			if (taregtCenterLocation.y > CenterLocation.y)
 			{
 
-				move.y = (int)Math.Round(Speed * multY) >= vector2.y ? vector2.y : (int)Math.Round(Speed * multY * Math.Sign(vector2.y)); // * UIManager.uiRatio.y
+				move.y = (Speed * multY) >= vector2.y ? vector2.y : Speed * multY * Math.Sign(vector2.y); // * UIManager.uiRatio.y
             }
 			else
 			{
-				move.y = (int)Math.Round(Speed * multY) <= vector2.y ? vector2.y : (int)Math.Round(Speed * multY * Math.Sign(vector2.y)); // * UIManager.uiRatio.y
+				move.y = (Speed * multY) <= vector2.y ? vector2.y : Speed * multY * Math.Sign(vector2.y); // * UIManager.uiRatio.y
             }
 
 			CenterLocation += move;

@@ -1,7 +1,5 @@
 ﻿using K8055Velleman.Game.Systems;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Drawing;
 
 namespace K8055Velleman.Game.Entities;
 
@@ -10,23 +8,28 @@ internal abstract class StratagemEntityBase : StaticEntity
 	private int actionSpeed = 1;
 	internal int level = 1;
 	internal abstract string IconPath { get; }
-	internal abstract string Name { get; }
+    internal abstract Color Color { get; }
+    internal abstract string Name { get; }
 	internal abstract int MaxLevel { get; }
 	internal abstract int StartActionSpeed { get; }
-
 	internal virtual int ActionSpeed { get { return actionSpeed; } set { actionSpeed = value; timer.Interval = value; } }
 
 	private System.Timers.Timer timer;
-    private bool action = false;
+	private bool action = false;
 
-    internal override void OnCreate(EntitySystem entitySystem)
+	internal override void OnCreate(EntitySystem entitySystem)
 	{
-		mainPanel.Name = Name;
+		mainPanel = new()
+		{
+			Name = Name,
+			BackColor = Color,
+        };
 		base.OnCreate(entitySystem);
 		timer = new System.Timers.Timer(actionSpeed);
 		timer.Elapsed += (e, h) => { action = true; };
 		timer.AutoReset = true;
 		ActionSpeed = StartActionSpeed;
+		DisableStratagem();
 	}
 
 	internal override void OnUpdate()
@@ -34,7 +37,7 @@ internal abstract class StratagemEntityBase : StaticEntity
 		if(action)
 		{
 			action = false;
-            Action();
+			Action();
 		}
 	}
 

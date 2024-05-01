@@ -1,13 +1,5 @@
-﻿using K8055Velleman.Game.Interface;
-using K8055Velleman.Game.Systems;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Animation;
+﻿using K8055Velleman.Game.Systems;
+using System.Threading;
 
 namespace K8055Velleman.Game.Entities
 {
@@ -17,15 +9,20 @@ namespace K8055Velleman.Game.Entities
         private PlayerSystem playerSystem;
 
         internal int Health { get; set; }
-
         abstract internal int StartHealth { get; }
         abstract internal int Damage { get; }
+        abstract internal int Cost { get; }
+
+        internal bool targeted = false;
 
         internal override void OnCreate(EntitySystem entitySystem)
         {
             base.OnCreate(entitySystem);
             Health = StartHealth;
+        }
 
+        internal void Spawn()
+        {
             CenterLocation = GetSpawnLocation();
             playerSystem = GameManager.GetSystem<PlayerSystem>();
             taregtCenterLocation = playerSystem != null ? playerSystem.player.CenterLocation : new();

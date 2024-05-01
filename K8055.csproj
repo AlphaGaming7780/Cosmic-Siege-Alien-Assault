@@ -69,6 +69,9 @@
     <Compile Include="Game\GameManager.cs" />
     <Compile Include="Game\AudioManager.cs" />
     <Compile Include="Game\Interface\LivingEntity.cs" />
+    <Compile Include="Game\SaveManager.cs" />
+    <Compile Include="Game\Saves\PlayerData.cs" />
+    <Compile Include="Game\Saves\StratagemData.cs" />
     <Compile Include="Game\Systems\EntitySystem.cs" />
     <Compile Include="Game\Systems\GameSystem.cs" />
     <Compile Include="Game\InputManager.cs" />
@@ -82,6 +85,9 @@
     <Compile Include="Game\UI\PreGameUI.cs" />
     <Compile Include="Game\UI\UIBase.cs" />
     <Compile Include="Game\Utility.cs" />
+    <Compile Include="Lib\ClassExtension\ButtonExtension.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Lib\Mathf.cs" />
     <Compile Include="Lib\SizeExtention.cs" />
     <Compile Include="Lib\Vector2 Unity.cs" />
@@ -142,6 +148,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json">
+      <Version>8.0.3</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -12,7 +12,7 @@ namespace K8055Velleman.Game.Entities.Ammunition
     {
         internal override int Damage => 5;
 
-        internal override float Speed => 2f;
+        internal override float Speed => 4f;
 
         internal override Size BulletSize => new(10,10);
 

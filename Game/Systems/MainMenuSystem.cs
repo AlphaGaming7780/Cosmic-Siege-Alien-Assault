@@ -19,6 +19,7 @@ namespace K8055Velleman.Game.Systems
             gameMainMenu = UIManager.GetOrCreateUI<MainMenuUI>();
             gameMainMenu.PlayButton.Click += OnButtonPlayClick;
             gameMainMenu.QuitButton.Click += OnQuitButtonClick;
+			if (SaveManager.CurrentPlayerData == null) gameMainMenu.ShowPlayerSelector();
         }
 
         internal override void OnDestroy()

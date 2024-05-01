@@ -21,8 +21,6 @@ namespace K8055Velleman.Game.Systems
             base.OnCreate();
             entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
             player = entitySystem.CreateEntity<PlayerEnity>();
-            defaultTurret = entitySystem.CreateEntity<DefaultTurret>();
-            defaultTurret.EnableStratagem();
             playerUI = UIManager.GetOrCreateUI<PlayerUI>();
             playerUI.PlayerLife.Text = $"❤️ : {player.Health}";
         }

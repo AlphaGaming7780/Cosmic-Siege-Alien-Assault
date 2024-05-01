@@ -11,6 +11,7 @@ namespace K8055Velleman
 		public GameWindow()
 		{
 			InitializeComponent();
+			SaveManager.LoadData();
 			//this.ShowInTaskbar = false;
 			//this.ControlBox = false;
 			this.Text = null;

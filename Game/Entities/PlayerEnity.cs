@@ -19,14 +19,13 @@ namespace K8055Velleman.Game.Entities
         internal override void OnCreate(EntitySystem entitySystem)
 		{
             Health = StartHealth;
-
-			base.OnCreate(entitySystem);
 			mainPanel = new() //Panel
             {
 				Size = new(50, 50),
 				BackColor = Color.Green,
 
 			};
+            base.OnCreate(entitySystem);
             CenterLocation = new(GameUI.GamePanel.Width / 2, GameUI.GamePanel.Height / 2);
 
             GameUI.GamePanel.Controls.Add(mainPanel);

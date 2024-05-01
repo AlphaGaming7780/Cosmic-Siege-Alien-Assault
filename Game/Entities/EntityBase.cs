@@ -8,7 +8,8 @@ namespace K8055Velleman.Game.Entities
 {
     internal abstract class EntityBase
     {
-        internal Vector2 Location { get => mainPanel.Location; set => mainPanel.Location = value; }
+        private Vector2 location;
+        internal Vector2 Location { get => location; set { mainPanel.Location = value; location = value; } }
         internal Vector2 CenterLocation { get => Location + Size.Divide(2); set => Location = value - Size.Divide(2); }
         internal Size Size { get => mainPanel.Size; set => mainPanel.Size = value; }
 
@@ -22,6 +23,7 @@ namespace K8055Velleman.Game.Entities
         internal virtual void OnCreate(EntitySystem entitySystem)
         {
             this.EntitySystem = entitySystem;
+            location = mainPanel.Location;
         }
         internal virtual void OnDestroy()
         {

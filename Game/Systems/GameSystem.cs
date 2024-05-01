@@ -3,6 +3,7 @@ using K8055Velleman.Game.Entities.Enemy;
 using K8055Velleman.Game.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace K8055Velleman.Game.Systems
@@ -10,15 +11,14 @@ namespace K8055Velleman.Game.Systems
 	internal class GameSystem : SystemBase
 	{
 		EntitySystem entitySystem;
-		//internal PlayerEnity player;
 		PlayerSystem playerSystem;
-
         List<StratagemEntityBase> selectedStratagemEntities = [];
 
-        private int nbEnemy = 0;
+		int waveMoneyBank = 0, waveNum = 0;
+        //readonly List<EnemyEntity> enemyToGenerate = [];
 
-		//internal GameUI gameUI { get; private set; } = null;
-		internal PreGameUI preGameUI { get; private set; } = null;
+        //internal GameUI gameUI { get; private set; } = null;
+        internal PreGameUI preGameUI { get; private set; } = null;
 		internal override void OnCreate()
 		{
 			base.OnCreate();
@@ -43,12 +43,36 @@ namespace K8055Velleman.Game.Systems
         internal override void OnUpdate()
         {
             base.OnUpdate();
-			//if(nbEnemy < 5)
-			//{
-   //             entitySystem.CreateEntity<ClassicEnemyEntity>();
-			//	nbEnemy++;
-   //         }
-        }
+			if(GameManager.instance.gameStatus == GameStatus.Game)
+			{
+                if (entitySystem.GetEntitiesByType<EnemyEntity>().Count <= 0)
+                {
+                    GenerateWave();
+					waveNum++;
+                }
+
+            }
+		}
+
+		private void GenerateWave()
+		{
+			//enemyToGenerate.Clear();
+			List<Type> types = Utility.GetAllSubclassOf(typeof(EnemyEntity)).ToList();
+			int currentMoneyWave = waveMoneyBank += 2;
+			while(currentMoneyWave > 0) 
+			{
+				EnemyEntity enemyEntity = entitySystem.CreateEntity<EnemyEntity>(types[GameManager.Random.Next(0, types.Count)]);
+				if(currentMoneyWave - enemyEntity.Cost >= 0)
+				{
+					//enemyToGenerate.Add(enemyEntity);
+					enemyEntity.Spawn();
+					currentMoneyWave -= enemyEntity.Cost;
+				}else
+				{
+					entitySystem.DestroyEntity(enemyEntity);
+				}
+			}
+		}
 
         internal override void OnGameStatusChange(GameStatus status)
         {
@@ -72,9 +96,14 @@ namespace K8055Velleman.Game.Systems
 			InputManager.OnKeyDown += OnKeyDown;
 			selectedStratagemEntities = preGameUI.selectedStratagemEntities;
 			entitySystem.GameUI = UIManager.GetOrCreateUI<GameUI>();
+			entitySystem.GameUI.UpdateStratagemList(selectedStratagemEntities);
             playerSystem = GameManager.GetOrCreateSystem<PlayerSystem>();
             preGameUI = null;
 			UIManager.DestroyUI<PreGameUI>();
+			foreach (StratagemEntityBase entity in selectedStratagemEntities)
+			{
+				entity?.EnableStratagem();
+			}
         }
 
         private void OnKeyDown(Keys key)

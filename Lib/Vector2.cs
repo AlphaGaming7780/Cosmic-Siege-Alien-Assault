@@ -18,7 +18,7 @@ namespace K8055Velleman
         public static Vector2 up = new(0, -1);
         public static Vector2 zero = new(0, 0);
 
-        public int x = 0, y = 0;
+        public float x = 0, y = 0;
 
         public readonly float magnitude => (float)Math.Sqrt(x * x + y * y);
         public readonly float sqrMagnitude => x * x + y * y;
@@ -42,8 +42,8 @@ namespace K8055Velleman
 
         public Vector2(float x, float y)
         {
-            this.x = (int)Math.Round(x);
-            this.y = (int)Math.Round(y);
+            this.x = x;
+            this.y = y;
         }
 
         public Vector2(Vector2 vector2)
@@ -132,7 +132,7 @@ namespace K8055Velleman
 
         public override readonly string ToString()
         {
-            return $"{x}, {y}"; // UnityString.Format("({0:F1}, {1:F1})", x, y);
+            return $"{x}, {y}";
         }
 
         public override int GetHashCode()
@@ -232,12 +232,12 @@ namespace K8055Velleman
 
         public static implicit operator Point(Vector2 vector2)
         {
-            return new(vector2.x, vector2.y);
+            return new((int)Math.Round(vector2.x), (int)Math.Round(vector2.y));
         }
 
         public static implicit operator Size(Vector2 vector2)
         {
-            return new(vector2.x, vector2.y);
+            return new((int)Math.Round(vector2.x), (int)Math.Round(vector2.y));
         }
 
     }
