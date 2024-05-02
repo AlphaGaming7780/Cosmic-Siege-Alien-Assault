@@ -42,10 +42,10 @@ namespace K8055Velleman.Game.UI
 			GamePanel.Dispose();
 		}
 
-		internal override void OnResize()
-		{
-			GamePanel.Size = GameWindow.Size;
-		}
+		//internal override void OnResize()
+		//{
+		//	GamePanel.Size = GameWindow.Size;
+		//}
 
 		internal void UpdateStratagemList(List<StratagemEntityBase> stratagemEntityBases)
 		{

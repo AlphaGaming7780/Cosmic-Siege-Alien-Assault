@@ -14,7 +14,8 @@ namespace K8055Velleman.Game.UI
 		internal Panel mainMenu;
 		internal Panel VellmanBoardStatus;
 		internal Label VellmanBoardStatusLabel;
-		internal Label GameName;
+        internal Label GameName;
+        internal Label PlayerName;
 		internal BButton PlayButton;
 		internal BButton SettingsButton;
 		internal BButton QuitButton;
@@ -51,6 +52,15 @@ namespace K8055Velleman.Game.UI
 				BorderStyle = BorderStyle.FixedSingle,
 			};
 			GameName.Location = new(mainMenu.Width/2 - GameName.Width/2, (int)(100 * UIRatio.y));
+
+			PlayerName = new()
+			{
+				Text = SaveManager.CurrentPlayerData?.Name,
+				Location = new Point(25,25),
+				AutoSize = true,
+                Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
+				ForeColor= Color.WhiteSmoke,
+            };
 
 			VellmanBoardStatus = new()
 			{
@@ -113,7 +123,8 @@ namespace K8055Velleman.Game.UI
 			VellmanBoardStatus.Controls.Add(VellmanBoardStatusLabel);
 			mainMenu.Controls.Add(VellmanBoardStatus);
 			mainMenu.Controls.Add(GameName);
-			mainMenu.Controls.Add(PlayButton);
+            mainMenu.Controls.Add(PlayerName);
+            mainMenu.Controls.Add(PlayButton);
 			mainMenu.Controls.Add(SettingsButton);
 			mainMenu.Controls.Add(QuitButton);
 			GameWindow.Controls.Add(mainMenu);
@@ -130,25 +141,25 @@ namespace K8055Velleman.Game.UI
 			mainMenu.Dispose();
 		}
 
-		internal override void OnResize()
-		{
-			mainMenu.Width = GameWindow.Width;
-			mainMenu.Height = GameWindow.Height;
-			VellmanBoardStatus.Location = new(mainMenu.Right - 10 - VellmanBoardStatus.Width - RightOffeset, mainMenu.Location.Y + 10);
-			PlayButton.Height = (int)(50 * UIRatio.y);
-			PlayButton.Width = (int)(200 * UIRatio.x);
-			PlayButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - PlayButton.Width / 2, (int)(275 * UIRatio.y));
-			SettingsButton.Height = (int)(50 * UIRatio.y);
-			SettingsButton.Width = (int)(200 * UIRatio.x);
-			SettingsButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - SettingsButton.Width / 2, (int)(375 * UIRatio.y));
-			QuitButton.Height = (int)(50 * UIRatio.y);
-			QuitButton.Width = (int)(200 * UIRatio.x);
-			QuitButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - QuitButton.Width / 2, (int)(475 * UIRatio.y));
-			GameName.Height = (int)(100 * UIRatio.y);
-			GameName.Width = (int)(500 * UIRatio.x);
-			GameName.Font = new(GameName.Font.FontFamily, 20 * UIRatio.moyenne, FontStyle.Bold);
-			GameName.Location = new(mainMenu.Width / 2 - GameName.Width / 2, (int)(100 * UIRatio.y));
-		}
+		//internal override void OnResize()
+		//{
+		//	mainMenu.Width = GameWindow.Width;
+		//	mainMenu.Height = GameWindow.Height;
+		//	VellmanBoardStatus.Location = new(mainMenu.Right - 10 - VellmanBoardStatus.Width - RightOffeset, mainMenu.Location.Y + 10);
+		//	PlayButton.Height = (int)(50 * UIRatio.y);
+		//	PlayButton.Width = (int)(200 * UIRatio.x);
+		//	PlayButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - PlayButton.Width / 2, (int)(275 * UIRatio.y));
+		//	SettingsButton.Height = (int)(50 * UIRatio.y);
+		//	SettingsButton.Width = (int)(200 * UIRatio.x);
+		//	SettingsButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - SettingsButton.Width / 2, (int)(375 * UIRatio.y));
+		//	QuitButton.Height = (int)(50 * UIRatio.y);
+		//	QuitButton.Width = (int)(200 * UIRatio.x);
+		//	QuitButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - QuitButton.Width / 2, (int)(475 * UIRatio.y));
+		//	GameName.Height = (int)(100 * UIRatio.y);
+		//	GameName.Width = (int)(500 * UIRatio.x);
+		//	GameName.Font = new(GameName.Font.FontFamily, 20 * UIRatio.moyenne, FontStyle.Bold);
+		//	GameName.Location = new(mainMenu.Width / 2 - GameName.Width / 2, (int)(100 * UIRatio.y));
+		//}
 
 		private void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
 		{
@@ -215,7 +226,7 @@ namespace K8055Velleman.Game.UI
 				Visible = selectedPlayer != null,
 				Enabled = selectedPlayer != null
 			};
-			SelectePlayer.Click += (s, e) => { SaveManager.CurrentPlayerData = selectedPlayer; mainMenu.Visible = true; mainMenu.Enabled = true; PlayerSelector.Dispose(); };
+			SelectePlayer.Click += (s, e) => { SaveManager.CurrentPlayerData = selectedPlayer; PlayerName.Text = selectedPlayer.Name; mainMenu.Visible = true; mainMenu.Enabled = true; PlayerSelector.Dispose(); };
 
 			Panel PlayerSelectorScroll = new()
 			{
@@ -249,7 +260,7 @@ namespace K8055Velleman.Game.UI
 						oldSelected.MouseEnter += OnMouseEnter;
 						oldSelected.MouseLeave += OnMouseLeave;
 						oldSelected.BackColor = Color.Transparent;
-						AddEventToPlayerChild(c);
+						AddEventToPlayerChild(oldSelected);
 					}
 					oldSelected = c;
 					onMouseClickColorChange(c);
@@ -263,15 +274,28 @@ namespace K8055Velleman.Game.UI
 				Label name = new()
 				{
 					Width = 400,
-					Height = 75,
+					Height = 100,
 					Text = playerData.Name,
+					TextAlign = ContentAlignment.MiddleLeft,
 					Font = new Font(UIManager.CustomFonts.Families[0], 30f, FontStyle.Bold),
 					ForeColor = Color.White,
 				};
 
-				Player.Controls.Add(name);
+				Label Score = new()
+				{
+					Width = 300,
+					Height = 100,
+					Text = $"{playerData.HigestScore} 🌟",
+					TextAlign = ContentAlignment.MiddleRight,
+					Font = new Font(UIManager.CustomFonts.Families[0], 30f, FontStyle.Bold),
+					ForeColor = Color.White,
+					Location = new Point(400, 0),
+                };
 
-				foreach(Control child in Player.Controls)
+				Player.Controls.Add(name);
+				Player.Controls.Add(Score);
+
+                foreach (Control child in Player.Controls)
 				{
 					child.MouseEnter += OnMouseEnter;
 					child.MouseLeave += OnMouseLeave;
@@ -283,7 +307,7 @@ namespace K8055Velleman.Game.UI
 							oldSelected.MouseEnter += OnMouseEnter;
 							oldSelected.MouseLeave += OnMouseLeave;
 							oldSelected.BackColor = Color.Transparent;
-							AddEventToPlayerChild(c.Parent);
+							AddEventToPlayerChild(oldSelected);
 						}
 						oldSelected = c.Parent;
 						onMouseClickColorChange(c.Parent);

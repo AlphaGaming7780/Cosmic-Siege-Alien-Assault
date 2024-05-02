@@ -7,7 +7,10 @@ internal abstract class StratagemEntityBase : StaticEntity
 {
 	private int actionSpeed = 1;
 	internal int level = 1;
-	internal abstract string IconPath { get; }
+	internal abstract int UiID { get; }
+	internal abstract bool Unlockable { get; }
+	internal abstract int UnkockPrice { get; }
+    internal abstract string IconPath { get; }
     internal abstract Color Color { get; }
     internal abstract string Name { get; }
 	internal abstract int MaxLevel { get; }

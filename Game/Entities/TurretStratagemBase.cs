@@ -50,6 +50,7 @@ internal abstract class TurretStratagemBase : StratagemEntityBase
 		GetTarget();
 		if (target == null) return;
 		AmmunitionEntity ammunitionEntity = EntitySystem.CreateEntity<AmmunitionEntity>(Ammo);
+		ammunitionEntity.Create();
 		ammunitionEntity.target = target;
 		ammunitionEntity.taregtCenterLocation = target.CenterLocation;
 		targetLife -= ammunitionEntity.Damage;

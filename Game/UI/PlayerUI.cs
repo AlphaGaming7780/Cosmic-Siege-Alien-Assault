@@ -44,10 +44,5 @@ namespace K8055Velleman.Game.UI
 			gameUI.GamePanel.Controls.Remove(PlayerLife);
 			PlayerLife.Dispose();
 		}
-
-		internal override void OnResize()
-		{
-			
-		}
 	}
 }

@@ -46,9 +46,9 @@ namespace K8055Velleman
 			gameManager.Load(GameStatus.MainMenu);
         }
 
-        private void OnResize(object sender, EventArgs e)
-        {
-			uiManager?.OnResize();
-        }
+   //     private void OnResize(object sender, EventArgs e)
+   //     {
+			//uiManager?.OnResize();
+   //     }
     }
 }

@@ -22,6 +22,12 @@ namespace K8055Velleman.Game.Entities.Stratagems
 
         internal override Color Color => Color.Orange;
 
+        internal override int UiID => 0;
+
+        internal override bool Unlockable => false;
+
+        internal override int UnkockPrice => 0;
+
         internal override void OnCollide(EntityBase entityBase) {}
 
         //internal override void OnCreate(EntitySystem entitySystem)

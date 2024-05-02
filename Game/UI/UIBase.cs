@@ -15,6 +15,6 @@ namespace K8055Velleman.Game.UI
 
         internal abstract void OnCreate();
         internal abstract void OnDestroy();
-        internal abstract void OnResize();
+        //internal abstract void OnResize();
     }
 }

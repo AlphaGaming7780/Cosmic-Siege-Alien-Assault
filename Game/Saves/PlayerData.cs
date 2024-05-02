@@ -10,6 +10,7 @@ namespace K8055Velleman.Game.Saves
     {
         public string Name { get; set; } = "NO NAMES";
         public int HigestScore { get; set; } = 0;
+        public int Money { get; set; } = 0;
         public Dictionary<string, StratagemData> StratagemsData { get; set; } = [];
     }
 }

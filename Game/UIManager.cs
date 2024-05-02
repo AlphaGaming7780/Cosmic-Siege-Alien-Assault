@@ -28,15 +28,15 @@ internal class UIManager
         CustomFonts.AddFontFile("Resources\\PixeloidSans.ttf");
     }
 
-    internal void OnResize()
-    {   
-        //dynamicUIRatio = GameWindow.Size/OldWindowSize;
-        //OldWindowSize = GameWindow.Size;
-        foreach (UIBase UI in UIs.Values)
-        {
-            UI.OnResize();
-        }
-    }
+    //internal void OnResize()
+    //{   
+    //    //dynamicUIRatio = GameWindow.Size/OldWindowSize;
+    //    //OldWindowSize = GameWindow.Size;
+    //    foreach (UIBase UI in UIs.Values)
+    //    {
+    //        UI.OnResize();
+    //    }
+    //}
 
     internal static T GetOrCreateUI<T>() where T : UIBase, new()
     {
