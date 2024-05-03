@@ -14,8 +14,8 @@ public enum GameStatus
     MainMenu,
     PreGame,
     Game,
-    Paused,
-    settings,
+    EndGame,
+    Settings,
 }
 
 internal class GameManager
@@ -58,7 +58,7 @@ internal class GameManager
         List<SystemBase> temp = new(Systems.Values);
         foreach (SystemBase system in temp)
         {
-            if(system.enabled) system.OnUpdate();
+            if(Systems.Values.Contains(system) && system.enabled) system.OnUpdate();
         }
     }
 
@@ -66,6 +66,11 @@ internal class GameManager
     {
         if (Systems.ContainsKey(typeof(T))) return (T)Systems[typeof(T)];
         return null;
+    }
+
+    internal static bool SystemExist<T>() where T : SystemBase
+    {
+        return Systems.ContainsKey(typeof(T));
     }
 
     internal static T GetOrCreateSystem<T>() where T: SystemBase, new()

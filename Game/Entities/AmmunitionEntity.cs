@@ -1,4 +1,5 @@
 ﻿using K8055Velleman.Game.Systems;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace K8055Velleman.Game.Entities
@@ -39,16 +40,37 @@ namespace K8055Velleman.Game.Entities
         internal override void OnUpdate()
         {
             base.OnUpdate();
-			if(Guided) {
-				if (EntitySystem.EntityExist(target)) taregtCenterLocation = target.CenterLocation;
-				//else EntitySystem.DestroyEntity(this);
+            if (!EntitySystem.EntityExist(this)) return;
+            if (Guided) {
+                if(target == null ) EntitySystem.DestroyEntity(this);
+                else if (EntitySystem.EntityExist(target)) taregtCenterLocation = target.CenterLocation;
+				else GetNewTarget();
 			}
-			if(taregtCenterLocation == CenterLocation) EntitySystem.DestroyEntity(this);
+			else if(taregtCenterLocation == CenterLocation) EntitySystem.DestroyEntity(this);
         }
 
 		internal override void OnCollide(EntityBase entityBase)
 		{
 			if(entityBase is EnemyEntity) EntitySystem.DestroyEntity(this);
 		}
+
+		private void GetNewTarget()
+		{
+            List<EnemyEntity> enemyEntities = EntitySystem.GetEntitiesByType<EnemyEntity>();
+
+            enemyEntities.Sort(delegate (EnemyEntity x, EnemyEntity y)
+            {
+                return (x.CenterLocation - this.CenterLocation).sqrMagnitude.CompareTo((y.CenterLocation - this.CenterLocation).sqrMagnitude);
+            });
+            if (enemyEntities.Count <= 0) { return; } //target = null;
+
+            foreach (EnemyEntity enemy in enemyEntities)
+            {
+                if (enemy.targeted) continue;
+                target = enemy;
+                break;
+            }
+        }
+
 	}
 }

@@ -90,6 +90,9 @@
     </Compile>
     <Compile Include="Lib\DictionnaryExtension.cs" />
     <Compile Include="Lib\Mathf.cs" />
+    <Compile Include="Lib\PausableTimer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Lib\SizeExtention.cs" />
     <Compile Include="Lib\Vector2 Unity.cs" />
     <Compile Include="Lib\Vector2.cs" />

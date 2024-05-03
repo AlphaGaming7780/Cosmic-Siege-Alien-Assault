@@ -14,7 +14,7 @@ namespace K8055Velleman.Game.Systems
 		PlayerSystem playerSystem;
         List<StratagemEntityBase> selectedStratagemEntities = [];
 
-		int waveMoneyBank = 0, waveNum = 0;
+		int waveMoneyBank = 0, waveNum = 0, waveMoneyPay = 2;
         //readonly List<EnemyEntity> enemyToGenerate = [];
 
         //internal GameUI gameUI { get; private set; } = null;
@@ -22,9 +22,9 @@ namespace K8055Velleman.Game.Systems
 		internal override void OnCreate()
 		{
 			base.OnCreate();
-			//PreGameUI = UIManager.GetOrCreateUI<PreGameUI>();
-			
-			entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
+            //PreGameUI = UIManager.GetOrCreateUI<PreGameUI>();
+            InputManager.OnKeyDown += OnKeyDown;
+            entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
         }
 
 		internal override void OnDestroy()
@@ -38,6 +38,7 @@ namespace K8055Velleman.Game.Systems
 			preGameUI = null;
 			UIManager.DestroyUI<GameUI>();
 			UIManager.DestroyUI<PreGameUI>();
+			InputManager.OnKeyDown -= OnKeyDown;
 		}
 
         internal override void OnUpdate()
@@ -56,20 +57,22 @@ namespace K8055Velleman.Game.Systems
 
 		private void GenerateWave()
 		{
-			//enemyToGenerate.Clear();
 			List<Type> types = Utility.GetAllSubclassOf(typeof(EnemyEntity)).ToList();
-			int currentMoneyWave = waveMoneyBank += 2;
+			List<EnemyEntity> enemyEntities = [];
+			foreach (Type type in types)
+			{
+				enemyEntities.Add(entitySystem.CreateEntity<EnemyEntity>(type));
+			}
+			int currentMoneyWave = waveMoneyBank += waveMoneyPay;
 			while(currentMoneyWave > 0) 
 			{
-				EnemyEntity enemyEntity = entitySystem.CreateEntity<EnemyEntity>(types[GameManager.Random.Next(0, types.Count)]);
-				if(currentMoneyWave - enemyEntity.Cost >= 0)
+				EnemyEntity enemyType = enemyEntities[GameManager.Random.Next(0, enemyEntities.Count)];
+
+                if (currentMoneyWave - enemyType.Cost >= 0)
 				{
-					//enemyToGenerate.Add(enemyEntity);
-					enemyEntity.Spawn();
+                    EnemyEntity enemyEntity = entitySystem.CreateEntity<EnemyEntity>(enemyType.GetType());
+                    enemyEntity.Spawn();
 					currentMoneyWave -= enemyEntity.Cost;
-				}else
-				{
-					entitySystem.DestroyEntity(enemyEntity);
 				}
 			}
 		}
@@ -85,6 +88,9 @@ namespace K8055Velleman.Game.Systems
 				case GameStatus.Game:
 					SetupGame();
                     break;
+				case GameStatus.EndGame:
+					SetupEndGame();
+					break;
 				default:
 					GameManager.DestroySystem<GameSystem>();	
 					break;
@@ -93,7 +99,6 @@ namespace K8055Velleman.Game.Systems
 
 		private void SetupGame()
 		{
-			InputManager.OnKeyDown += OnKeyDown;
 			selectedStratagemEntities = preGameUI.selectedStratagemEntities;
 			entitySystem.GameUI = UIManager.GetOrCreateUI<GameUI>();
 			entitySystem.GameUI.UpdateStratagemList(selectedStratagemEntities);
@@ -111,6 +116,8 @@ namespace K8055Velleman.Game.Systems
             switch (key)
 			{
 				case Keys.Escape:
+					if (GameManager.instance.gameStatus == GameStatus.PreGame) { GameManager.instance.Load(GameStatus.MainMenu); break; }
+					else if (GameManager.instance.gameStatus != GameStatus.Game) break;
                     if(GameWindow.Clock.Enabled) PauseGame();
 					else UnPauseGame();
 					break;
@@ -120,11 +127,29 @@ namespace K8055Velleman.Game.Systems
         internal void PauseGame()
 		{
 			GameWindow.Clock.Enabled = false;
+            entitySystem.GameUI.ShowPauseMenu();
+			foreach (StratagemEntityBase stratagemEntityBase in selectedStratagemEntities)
+			{
+				stratagemEntityBase?.PauseStratagem();
+			}
         }
 		internal void UnPauseGame()
 		{
             GameWindow.Clock.Enabled = true;
+            entitySystem.GameUI.HidePauseMenu();
+            foreach (StratagemEntityBase stratagemEntityBase in selectedStratagemEntities)
+            {
+                stratagemEntityBase?.ResumeStratagem();
+            }
         }
+
+		private void SetupEndGame()
+		{
+			PauseGame();
+			SaveManager.CurrentPlayerData.Money += playerSystem.player.TotalMoney;
+			if(SaveManager.CurrentPlayerData.HigestScore < waveNum) SaveManager.CurrentPlayerData.HigestScore = waveNum;
+			SaveManager.SaveCurrentPlayerData();
+		}
 
     }
 }

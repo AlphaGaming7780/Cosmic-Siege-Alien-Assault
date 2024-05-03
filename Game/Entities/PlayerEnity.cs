@@ -13,6 +13,8 @@ namespace K8055Velleman.Game.Entities
 	internal class PlayerEnity : StaticEntity
 	{
         internal int Health { get; set; }
+        internal int Money { get; set; }
+        internal int TotalMoney { get; set; }
 
         internal const int StartHealth = 8;
 

@@ -48,7 +48,7 @@ internal abstract class TurretStratagemBase : StratagemEntityBase
 	internal void Shot()
 	{
 		GetTarget();
-		if (target == null) return;
+		if (target == null || !EntitySystem.EntityExist(target)) return;
 		AmmunitionEntity ammunitionEntity = EntitySystem.CreateEntity<AmmunitionEntity>(Ammo);
 		ammunitionEntity.Create();
 		ammunitionEntity.target = target;

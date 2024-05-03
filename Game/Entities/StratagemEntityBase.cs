@@ -1,5 +1,7 @@
 ﻿using K8055Velleman.Game.Systems;
+using K8055Velleman.Lib;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace K8055Velleman.Game.Entities;
 
@@ -17,7 +19,9 @@ internal abstract class StratagemEntityBase : StaticEntity
 	internal abstract int StartActionSpeed { get; }
 	internal virtual int ActionSpeed { get { return actionSpeed; } set { actionSpeed = value; timer.Interval = value; } }
 
-	private System.Timers.Timer timer;
+	//private System.Timers.Timer timer;
+	//private Timer timer;
+	private PausableTimer timer;
 	private bool action = false;
 
 	internal override void OnCreate(EntitySystem entitySystem)
@@ -28,10 +32,12 @@ internal abstract class StratagemEntityBase : StaticEntity
 			BackColor = Color,
         };
 		base.OnCreate(entitySystem);
-		timer = new System.Timers.Timer(actionSpeed);
-		timer.Elapsed += (e, h) => { action = true; };
-		timer.AutoReset = true;
-		ActionSpeed = StartActionSpeed;
+        actionSpeed = StartActionSpeed;
+		//timer = new System.Timers.Timer(actionSpeed);
+		//timer.Elapsed += (e, h) => { action = true; };
+		//timer.AutoReset = true;
+		timer = new(actionSpeed);
+		timer.Elapsed += (s, e) => { action = true; };
 		DisableStratagem();
 	}
 
@@ -58,5 +64,17 @@ internal abstract class StratagemEntityBase : StaticEntity
 	{
 		enabled = false;
 		timer.Enabled = false;
+	}
+
+	internal void PauseStratagem()
+	{
+		enabled = false;
+		timer.Pause();
+	}
+
+	internal void ResumeStratagem()
+	{
+		enabled = true;
+		timer.Resume();
 	}
 }

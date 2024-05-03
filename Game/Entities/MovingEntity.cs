@@ -10,7 +10,7 @@ namespace K8055Velleman.Game.Entities
 {
 	internal abstract class MovingEntity : EntityBase
 	{
-		internal Vector2 taregtCenterLocation;
+        internal Vector2 taregtCenterLocation;
 		//internal int speed = 1;
 		internal abstract float Speed { get; }
 
@@ -24,12 +24,12 @@ namespace K8055Velleman.Game.Entities
 			if (taregtCenterLocation != CenterLocation)
 			{
 				Move();
-				foreach(EntityBase entity in EntitySystem.GetEntities())
+				foreach (EntityBase entity in EntitySystem.GetEntities())
 				{
-					CheckColision(entity);
+					if(EntitySystem.EntityExist(entity)) CheckColision(entity);
 				}
 			}
-		}
+        }
 
 		private void Move()
 		{
@@ -64,7 +64,7 @@ namespace K8055Velleman.Game.Entities
         internal virtual void CheckColision(EntityBase entityBase)
         {
 
-            if (entityBase is null || !EntitySystem.EntityExist(entityBase) || entityBase.mainPanel is null) return;
+            if (entityBase is null || !EntitySystem.EntityExist(entityBase) || entityBase.mainPanel is null || mainPanel is null) return;
             if (
                 (
                     (mainPanel.Left >= entityBase.mainPanel.Left && mainPanel.Left <= entityBase.mainPanel.Right) ||

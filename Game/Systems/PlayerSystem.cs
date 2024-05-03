@@ -14,7 +14,6 @@ namespace K8055Velleman.Game.Systems
         EntitySystem entitySystem;
         internal PlayerUI playerUI;
         internal PlayerEnity player;
-        private DefaultTurret defaultTurret;
 
         internal override void OnCreate()
         {
@@ -25,11 +24,18 @@ namespace K8055Velleman.Game.Systems
             playerUI.PlayerLife.Text = $"❤️ : {player.Health}";
         }
 
-        internal void PlayerHit(EnemyEntity enemyEntity)
+        internal void DamagePlayer(int value)
         {
-            player.Health -= enemyEntity.Damage;
+            player.Health -= value;
             playerUI.PlayerLife.Text = $"❤️ : {player.Health}";
             if (player.Health <= 0) GameManager.instance.Load(GameStatus.MainMenu);
+        }
+
+        internal void PayPlayer(int value)
+        {
+            player.Money += value;
+            player.TotalMoney += value;
+            playerUI.PlayerMoney.Text = $"💲 : {player.Money}";
         }
 
         internal override void OnDestroy()
@@ -38,8 +44,6 @@ namespace K8055Velleman.Game.Systems
             GameManager.DestroySystem<EntitySystem>();
             entitySystem.DestroyEntity(player);
             player = null;
-            entitySystem.DestroyEntity(defaultTurret);
-            defaultTurret = null;
             UIManager.DestroyUI<PlayerUI>();
         }
 

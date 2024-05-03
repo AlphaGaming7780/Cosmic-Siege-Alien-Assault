@@ -12,6 +12,7 @@ namespace K8055Velleman.Game.Systems
 	internal class EntitySystem : SystemBase
 	{
 		private readonly List<EntityBase> entities = [];
+		private readonly List<EntityBase> entitiesToDelete = [];
 		internal GameUI GameUI { get; set; } = null;
 
 		internal override void OnCreate()
@@ -24,12 +25,8 @@ namespace K8055Velleman.Game.Systems
 		{
 			base.OnDestroy();
 			GameWindow.Resize -= OnResize;
-			List<EntityBase> temp = new(entities);
-            entities.Clear();
-            foreach (var entity in temp)
-			{
-				DestroyEntity(entity);
-			}
+			entitiesToDelete.AddRange(entities);
+			entities.Clear();
 		}
 
 		internal override void OnUpdate() 
@@ -39,7 +36,9 @@ namespace K8055Velleman.Game.Systems
 			{
 				if ( entities.Contains(entity) && entity.enabled ) entity.OnUpdate();
 			}
-		}
+			DestroyEntities();
+
+        }
 
 		internal T CreateEntity<T>() where T : EntityBase, new()
 		{
@@ -58,15 +57,32 @@ namespace K8055Velleman.Game.Systems
             return entity;
         }
 
-        internal bool DestroyEntity(EntityBase entity)
+        internal void DestroyEntity(EntityBase entity)
 		{
-			if(!entities.Contains(entity)) return false;
+			if(!entities.Contains(entity) || entitiesToDelete.Contains(entity)) return;
 			entities.Remove(entity);
-			entity.OnDestroy();
-			return true;
+			entitiesToDelete.Add(entity);
+			return;
 		}
 
-		private void OnResize(object sender, EventArgs e)
+		private void DestroyEntities()
+		{
+			foreach (EntityBase entity in entitiesToDelete)
+			{
+				entity.OnDestroy();
+			}
+			entitiesToDelete.Clear();
+        }
+
+        //private bool DestroyEntity(EntityBase entity)
+        //{
+        //    if (!entities.Contains(entity)) return false;
+        //    entities.Remove(entity);
+        //    entity.OnDestroy();
+        //    return true;
+        //}
+
+        private void OnResize(object sender, EventArgs e)
 		{
 			foreach (EntityBase entity in entities)
 			{

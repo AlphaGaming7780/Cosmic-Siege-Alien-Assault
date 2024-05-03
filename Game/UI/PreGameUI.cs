@@ -48,7 +48,7 @@ internal class PreGameUI : UIBase
 
 		playerMoney = new()
 		{
-			Text = $"{SaveManager.CurrentPlayerData?.Money}💲",
+			Text = $"{SaveManager.CurrentPlayerData?.Money} 💎",
 			Top = 25,
             AutoSize = true,
 			TextAlign = ContentAlignment.MiddleRight,
@@ -180,26 +180,51 @@ internal class PreGameUI : UIBase
     private void SelectStratagem(object sender, EventArgs e)
 	{
 		if (sender is not Control control) return;
+
 		if (selectedStratagemEntities[currentStratagemIndex] != null)
 		{
 			StratagemEntityBase stratagemEntityBase = selectedStratagemEntities[currentStratagemIndex];
-			stratagemEntityBase.mainPanel.Enabled = true;
-			stratagemEntityBase.mainPanel.Location = oldPos[currentStratagemIndex];
-			selectedStratPanel.Controls.Remove(stratagemEntityBase.mainPanel);
-			stratagemList.Controls.Add(stratagemEntityBase.mainPanel);
+            //stratagemEntityBase.mainPanel.Enabled = true;
+            stratagemEntityBase.mainPanel.Click -= SelectSlot;
+            stratagemEntityBase.mainPanel.Click += SelectStratagem;
+            stratagemEntityBase.mainPanel.Location = oldPos[currentStratagemIndex];
+            //selectedStratPanel.Controls.Remove(stratagemEntityBase.mainPanel);
+            slotSelectors[currentStratagemIndex].Controls.Remove(stratagemEntityBase.mainPanel);
+            stratagemList.Controls.Add(stratagemEntityBase.mainPanel);
 		}
+
 		selectedStratagemEntities[currentStratagemIndex] = stratagemEntities[control.Name];
 		oldPos[currentStratagemIndex] = control.Location;
 		stratagemList.Controls.Remove(control);
-		control.Location = new Point(2 * (currentStratagemIndex + 1) + 130 * currentStratagemIndex, 1);
-        selectedStratPanel.Controls.Add(control);
-		selectedStratPanel.Controls.SetChildIndex(control, 0);
-		control.Enabled = false;
-		currentStratagemIndex++;
+
+        //control.Location = new Point(2 * (currentStratagemIndex + 1) + 130 * currentStratagemIndex, 1);
+        //      selectedStratPanel.Controls.Add(control);
+        //selectedStratPanel.Controls.SetChildIndex(control, 0);
+        //control.Enabled = true;
+
+        control.Location = new(2, 1);
+        slotSelectors[currentStratagemIndex].Controls.Add(control);
+		slotSelectors[currentStratagemIndex].Controls.SetChildIndex(control, 0);
+
+        control.Click -= SelectStratagem;
+		control.Click += SelectSlot;
+        currentStratagemIndex++;
 		SelectSlot();
 	}
 
-	private void SelectSlot()
+	private void SelectSlot(object sender, EventArgs e)
+    {
+		if (sender is not Control control) return;
+        currentStratagemIndex = 0;
+        foreach (Control slotSelector in slotSelectors)
+        {
+            if (control.Parent == slotSelector) break;
+            currentStratagemIndex++;
+        }
+        SelectSlot();
+    }
+
+    private void SelectSlot()
 	{
 		foreach(Control slotSelector in slotSelectors)
 		{
@@ -261,7 +286,9 @@ internal class PreGameUI : UIBase
 			ammunitionEntity.mainPanel.Location = new(50, 250);
 			AmmoInfo.Controls.Add(ammunitionEntity.mainPanel);
 
-			Label Damage = new()
+			StratagemInfo.Disposed += (s, e) => { entitySystem.DestroyEntity(ammunitionEntity); };
+
+            Label Damage = new()
 			{
 				Text = $"Damage : {ammunitionEntity.Damage}",
                 Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
@@ -312,7 +339,7 @@ internal class PreGameUI : UIBase
 		{
 			Label locked = new()
 			{
-				Text = $"Unlock this stratagem for {stratagemEntityBase.UnkockPrice} $",
+				Text = $"Unlock this stratagem for {stratagemEntityBase.UnkockPrice} 💎",
 				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
 				TextAlign = ContentAlignment.MiddleCenter,
 				ForeColor = Color.White,

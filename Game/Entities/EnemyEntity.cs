@@ -41,10 +41,10 @@ namespace K8055Velleman.Game.Entities
             int spawnArea = GameManager.Random.Next(0, 4);
             return spawnArea switch
             {
-                0 => new(GameManager.Random.Next(0, GameUI.GamePanel.Width + mainPanel.Width), GameManager.Random.Next(- mainPanel.Height, 0)),
+                0 => new(GameManager.Random.Next(0, GameUI.GamePanel.Width + mainPanel.Width), GameManager.Random.Next(- 2 * mainPanel.Height, mainPanel.Height)),
                 1 => new(GameManager.Random.Next(GameUI.GamePanel.Width, GameUI.GamePanel.Width + mainPanel.Width), GameManager.Random.Next(0, GameUI.GamePanel.Height + mainPanel.Height)),
                 2 => new(GameManager.Random.Next(-mainPanel.Width, GameUI.GamePanel.Width), GameManager.Random.Next(GameUI.GamePanel.Height, GameUI.GamePanel.Height + mainPanel.Height)),
-                3 => new(GameManager.Random.Next(-mainPanel.Width, 0), GameManager.Random.Next(-mainPanel.Height, GameUI.GamePanel.Height)),
+                3 => new(GameManager.Random.Next(- 2 * mainPanel.Width, mainPanel.Width), GameManager.Random.Next(-mainPanel.Height, GameUI.GamePanel.Height)),
                 _ => new(),
             };
         }
@@ -54,11 +54,15 @@ namespace K8055Velleman.Game.Entities
             if(entityBase is AmmunitionEntity ammunitionEntity)
             {
                 Health -= ammunitionEntity.Damage;
-                if (Health <= 0) EntitySystem.DestroyEntity(this);
+                if (Health <= 0)
+                {
+                    playerSystem.PayPlayer(Cost);
+                    EntitySystem.DestroyEntity(this);
+                }
             }
-            if(entityBase is PlayerEnity)
+            else if(entityBase is PlayerEnity)
             {
-                playerSystem.PlayerHit(this);
+                playerSystem.DamagePlayer(Damage);
                 EntitySystem.DestroyEntity(this);
             }
         }

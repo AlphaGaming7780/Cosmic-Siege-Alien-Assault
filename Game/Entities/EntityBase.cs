@@ -27,10 +27,12 @@ namespace K8055Velleman.Game.Entities
         }
         internal virtual void OnDestroy()
         {
-            if(mainPanel != null)
+            enabled = false;
+            if (mainPanel != null)
             {
-                mainPanel.Parent.Controls.Remove(mainPanel);
+                mainPanel.Parent?.Controls.Remove(mainPanel);
                 mainPanel.Dispose();
+                mainPanel = null;
             }
         }
         internal abstract void OnUpdate();
