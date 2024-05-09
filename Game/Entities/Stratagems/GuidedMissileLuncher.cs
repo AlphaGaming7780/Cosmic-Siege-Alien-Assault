@@ -1,5 +1,4 @@
-﻿using K8055Velleman.Game.Entities.Ammunition;
-using K8055Velleman.Game.Entities.Enemy;
+﻿using K8055Velleman.Game.Entities.Enemy;
 using K8055Velleman.Game.Systems;
 using System;
 using System.Drawing;
@@ -18,7 +17,7 @@ namespace K8055Velleman.Game.Entities.Stratagems
 
         internal override int StartActionSpeed => 1000;
 
-        internal override Type Ammo => typeof(GuidedMissile);
+        //internal override Type Ammo => typeof(GuidedMissile);
 
         internal override Color Color => Color.DarkGray;
 
@@ -26,7 +25,9 @@ namespace K8055Velleman.Game.Entities.Stratagems
 
         internal override bool Unlockable => true;
 
-        internal override int UnkockPrice => 0;
+        internal override int UnkockPrice => 200;
+
+        internal override BulletInfo BulletInfo => new() { Damage = 5, Speed = 4f, Size = new(10, 10), Color = Color.DarkGray, Guided = true };
 
         internal override void OnCollide(EntityBase entityBase) {}
 
@@ -34,11 +35,5 @@ namespace K8055Velleman.Game.Entities.Stratagems
         //{
         //    base.OnCreate(entitySystem);
         //}
-
-        internal override void OnUpgrade(int newLevel)
-        {
-            level = newLevel;
-            ActionSpeed = StartActionSpeed - (level - 1) / (MaxLevel - 1) * 500;
-        }
     }
 }

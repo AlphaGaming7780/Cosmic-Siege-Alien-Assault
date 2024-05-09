@@ -11,10 +11,11 @@ namespace K8055Velleman.Game.Systems
 	internal class GameSystem : SystemBase
 	{
 		EntitySystem entitySystem;
-		PlayerSystem playerSystem;
+		internal PlayerSystem playerSystem;
         List<StratagemEntityBase> selectedStratagemEntities = [];
 
-		int waveMoneyBank = 0, waveNum = 0, waveMoneyPay = 2;
+		int waveMoneyBank = 0, waveMoneyPay = 2;
+		internal int waveNum = 0;
         //readonly List<EnemyEntity> enemyToGenerate = [];
 
         //internal GameUI gameUI { get; private set; } = null;
@@ -98,8 +99,13 @@ namespace K8055Velleman.Game.Systems
         }
 
 		private void SetupGame()
-		{
-			selectedStratagemEntities = preGameUI.selectedStratagemEntities;
+		{	
+			foreach (StratagemEntityBase stratagemEntityBase in preGameUI.selectedStratagemEntities)
+			{
+				if(stratagemEntityBase is null) continue;
+				selectedStratagemEntities.Add(entitySystem.CreateEntity<StratagemEntityBase>(stratagemEntityBase.GetType()));
+				entitySystem.DestroyEntity(stratagemEntityBase);
+			}
 			entitySystem.GameUI = UIManager.GetOrCreateUI<GameUI>();
 			entitySystem.GameUI.UpdateStratagemList(selectedStratagemEntities);
             playerSystem = GameManager.GetOrCreateSystem<PlayerSystem>();
@@ -107,7 +113,7 @@ namespace K8055Velleman.Game.Systems
 			UIManager.DestroyUI<PreGameUI>();
 			foreach (StratagemEntityBase entity in selectedStratagemEntities)
 			{
-				entity?.EnableStratagem();
+                entity.EnableStratagem();
 			}
         }
 
@@ -145,10 +151,13 @@ namespace K8055Velleman.Game.Systems
 
 		private void SetupEndGame()
 		{
-			PauseGame();
-			SaveManager.CurrentPlayerData.Money += playerSystem.player.TotalMoney;
+            GameWindow.Clock.Enabled = false;
+			entitySystem.GameUI.GamePanel.Enabled = false;
+            SaveManager.CurrentPlayerData.Money += playerSystem.player.TotalMoney;
 			if(SaveManager.CurrentPlayerData.HigestScore < waveNum) SaveManager.CurrentPlayerData.HigestScore = waveNum;
 			SaveManager.SaveCurrentPlayerData();
+			entitySystem.GameUI.ShowEndGameMenu();
+			//GameManager.instance.Load(GameStatus.MainMenu);
 		}
 
     }

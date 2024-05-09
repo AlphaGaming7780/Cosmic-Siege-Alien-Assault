@@ -1,70 +1,79 @@
 ﻿using K8055Velleman.Game.Systems;
+using System.Drawing;
 using System.Threading;
 
 namespace K8055Velleman.Game.Entities
 {
-    internal abstract class EnemyEntity : MovingEntity
-    {
+	internal abstract class EnemyEntity : MovingEntity
+	{
 
-        private PlayerSystem playerSystem;
+		private PlayerSystem playerSystem;
 
-        internal int Health { get; set; }
-        abstract internal int StartHealth { get; }
-        abstract internal int Damage { get; }
-        abstract internal int Cost { get; }
+		internal float Health { get; set; }
+		abstract internal int StartHealth { get; }
+		abstract internal int Damage { get; }
+		abstract internal int Cost { get; }
+		abstract internal Size StartSize { get; }
+		abstract internal Color StartColor { get; }
 
-        internal bool targeted = false;
+		internal bool targeted = false;
 
-        internal override void OnCreate(EntitySystem entitySystem)
-        {
-            base.OnCreate(entitySystem);
-            Health = StartHealth;
-        }
-
-        internal void Spawn()
-        {
-            CenterLocation = GetSpawnLocation();
-            playerSystem = GameManager.GetSystem<PlayerSystem>();
-            taregtCenterLocation = playerSystem != null ? playerSystem.player.CenterLocation : new();
-
-            GameUI.GamePanel.Controls.Add(mainPanel);
-        }
-
-        internal override void OnUpdate()
-        {
-            base.OnUpdate();
-            if (taregtCenterLocation == CenterLocation) EntitySystem.DestroyEntity(this);
-        }
-
-        private Vector2 GetSpawnLocation()
-        {
-            int spawnArea = GameManager.Random.Next(0, 4);
-            return spawnArea switch
+		internal override void OnCreate(EntitySystem entitySystem)
+		{
+            mainPanel = new()
             {
-                0 => new(GameManager.Random.Next(0, GameUI.GamePanel.Width + mainPanel.Width), GameManager.Random.Next(- 2 * mainPanel.Height, mainPanel.Height)),
-                1 => new(GameManager.Random.Next(GameUI.GamePanel.Width, GameUI.GamePanel.Width + mainPanel.Width), GameManager.Random.Next(0, GameUI.GamePanel.Height + mainPanel.Height)),
-                2 => new(GameManager.Random.Next(-mainPanel.Width, GameUI.GamePanel.Width), GameManager.Random.Next(GameUI.GamePanel.Height, GameUI.GamePanel.Height + mainPanel.Height)),
-                3 => new(GameManager.Random.Next(- 2 * mainPanel.Width, mainPanel.Width), GameManager.Random.Next(-mainPanel.Height, GameUI.GamePanel.Height)),
-                _ => new(),
+                Size = StartSize,
+                BackColor = StartColor,
+
             };
-        }
+            base.OnCreate(entitySystem);
+			Health = StartHealth;
+		}
 
-        internal override void OnCollide(EntityBase entityBase)
-        {
-            if(entityBase is AmmunitionEntity ammunitionEntity)
-            {
-                Health -= ammunitionEntity.Damage;
-                if (Health <= 0)
-                {
-                    playerSystem.PayPlayer(Cost);
-                    EntitySystem.DestroyEntity(this);
-                }
-            }
-            else if(entityBase is PlayerEnity)
-            {
-                playerSystem.DamagePlayer(Damage);
-                EntitySystem.DestroyEntity(this);
-            }
-        }
-    }
+		internal void Spawn()
+		{
+			CenterLocation = GetSpawnLocation();
+			playerSystem = GameManager.GetSystem<PlayerSystem>();
+			taregtCenterLocation = playerSystem != null ? playerSystem.player.CenterLocation : new();
+
+			GameUI.GamePanel.Controls.Add(mainPanel);
+		}
+
+		internal override void OnUpdate()
+		{
+			base.OnUpdate();
+			if (taregtCenterLocation == CenterLocation) EntitySystem.DestroyEntity(this);
+		}
+
+		private Vector2 GetSpawnLocation()
+		{
+			int spawnArea = GameManager.Random.Next(0, 4);
+			return spawnArea switch
+			{
+				0 => new(GameManager.Random.Next(0, GameUI.GamePanel.Width + mainPanel.Width), GameManager.Random.Next(- 2 * mainPanel.Height, mainPanel.Height)),
+				1 => new(GameManager.Random.Next(GameUI.GamePanel.Width, GameUI.GamePanel.Width + mainPanel.Width), GameManager.Random.Next(0, GameUI.GamePanel.Height + mainPanel.Height)),
+				2 => new(GameManager.Random.Next(-mainPanel.Width, GameUI.GamePanel.Width), GameManager.Random.Next(GameUI.GamePanel.Height, GameUI.GamePanel.Height + mainPanel.Height)),
+				3 => new(GameManager.Random.Next(- 2 * mainPanel.Width, mainPanel.Width), GameManager.Random.Next(-mainPanel.Height, GameUI.GamePanel.Height)),
+				_ => new(),
+			};
+		}
+
+		internal override void OnCollide(EntityBase entityBase)
+		{
+			if(entityBase is AmmunitionEntity ammunitionEntity)
+			{
+				Health -= ammunitionEntity.Damage;
+				if (Health <= 0)
+				{
+					playerSystem.PayPlayer(Cost);
+					EntitySystem.DestroyEntity(this);
+				}
+			}
+			else if(entityBase is PlayerEnity)
+			{
+				playerSystem.DamagePlayer(Damage);
+				EntitySystem.DestroyEntity(this);
+			}
+		}
+	}
 }

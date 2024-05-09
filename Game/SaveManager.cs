@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace K8055Velleman.Game;
 
@@ -26,9 +27,18 @@ internal static class SaveManager
         {
             foreach (FileInfo playerSave in new DirectoryInfo(PlayersPath).GetFiles())
             {
-                PlayerData playerData = JsonSerializer.Deserialize<PlayerData>(File.ReadAllText(playerSave.FullName));
-                _ = playerData ?? new PlayerData();
-                PlayersData.Add(playerData);
+                try
+                {
+                    PlayerData playerData = JsonSerializer.Deserialize<PlayerData>(File.ReadAllText(playerSave.FullName));
+                    _ = playerData ?? new PlayerData();
+                    PlayersData.Add(playerData);
+                } catch { 
+                    DialogResult dialogResult = MessageBox.Show($"Failed to load the save of the {playerSave.Name} player.\n\nDo you want to delete this save ?", "Error when loading the saves.", MessageBoxButtons.YesNo, MessageBoxIcon.Error); 
+                    if(dialogResult == DialogResult.OK)
+                    {
+                        File.Delete(playerSave.FullName);
+                    }
+                }
             }
         }
 	}

@@ -1,6 +1,8 @@
-﻿using K8055Velleman.Game.Saves;
+﻿using K8055Velleman.Game.Entities;
+using K8055Velleman.Game.Saves;
 using K8055Velleman.Lib.ClassExtension;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
 using System.Windows.Forms;
@@ -19,6 +21,7 @@ namespace K8055Velleman.Game.UI
 		internal BButton PlayButton;
 		internal BButton SettingsButton;
 		internal BButton QuitButton;
+		private Panel scoreboard;
 		private Panel PlayerSelector;
 
 		private PlayerData selectedPlayer;
@@ -120,6 +123,8 @@ namespace K8055Velleman.Game.UI
 			//QuitButton.GotFocus += (object sender, EventArgs e) => AudioManager.PlaySound(AudioFile.MouseOver);
 			//QuitButton.MouseEnter += (object sender, EventArgs e) => AudioManager.PlaySound(AudioFile.MouseOver);
 
+			UpdateScoreboard();
+
 			VellmanBoardStatus.Controls.Add(VellmanBoardStatusLabel);
 			mainMenu.Controls.Add(VellmanBoardStatus);
 			mainMenu.Controls.Add(GameName);
@@ -182,6 +187,8 @@ namespace K8055Velleman.Game.UI
 			mainMenu.Visible = false;
 			mainMenu.Enabled = false;
 
+			selectedPlayer = SaveManager.CurrentPlayerData;
+
 			Control oldSelected = null;
 
 			PlayerSelector = new()
@@ -226,7 +233,7 @@ namespace K8055Velleman.Game.UI
 				Visible = selectedPlayer != null,
 				Enabled = selectedPlayer != null
 			};
-			SelectePlayer.Click += (s, e) => { SaveManager.CurrentPlayerData = selectedPlayer; PlayerName.Text = selectedPlayer.Name; mainMenu.Visible = true; mainMenu.Enabled = true; PlayerSelector.Dispose(); };
+			SelectePlayer.Click += (s, e) => { SaveManager.CurrentPlayerData = selectedPlayer; PlayerName.Text = selectedPlayer.Name; UpdateScoreboard(); mainMenu.Visible = true; mainMenu.Enabled = true; PlayerSelector.Dispose(); };
 
 			Panel PlayerSelectorScroll = new()
 			{
@@ -422,10 +429,13 @@ namespace K8055Velleman.Game.UI
 					SaveManager.PlayersData.Add(selectedPlayer);
 					SaveManager.CurrentPlayerData = selectedPlayer;
 					SaveManager.SaveCurrentPlayerData();
+					UpdateScoreboard();
 					mainMenu.Visible = true;
 					mainMenu.Enabled = true;
 					PlayerSelector.Dispose();
 					panel.Dispose();
+					PlayerSelector = null;
+					panel = null;
 				}
 			};
 
@@ -476,5 +486,106 @@ namespace K8055Velleman.Game.UI
 			PlayerSelector.Dispose();
 			PlayerSelector = null;
 		}
+
+		private void UpdateScoreboard()
+		{
+			if(scoreboard != null)
+			{
+				mainMenu.Controls.Remove(scoreboard);
+				scoreboard.Dispose();
+				scoreboard = null;
+			}
+			scoreboard = new()
+            {
+                Width = 300,
+                Height = 500,
+                BorderStyle = BorderStyle.FixedSingle,
+                ForeColor = Color.White,
+            };
+            scoreboard.Location = new(mainMenu.Width / 10 * 9 - scoreboard.Width / 2, mainMenu.Height / 2 - scoreboard.Height / 2);
+
+			Label label = new()
+			{
+				Width = scoreboard.Width,
+				Height = 50,
+				Text = "Scoreboard",
+				Location = new(0,0),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
+                ForeColor = Color.White,
+            };
+
+            Panel PlayerListScroll = new()
+            {
+                Width = scoreboard.Width - 50,
+                Height = scoreboard.Height - 100 - label.Height,
+                BorderStyle = BorderStyle.FixedSingle,
+                ForeColor = Color.White,
+                AutoScroll = true,
+                Location = new(25, label.Height),
+            };
+
+			BButton changePlayer = new()
+			{
+				Width = scoreboard.Width - 50,
+                Height = 50,
+                Location = new(300, 675),
+                Text = "Change Player",
+                Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular),
+            };
+			changePlayer.Location = new(25, scoreboard.Height - changePlayer.Height - 25);
+            changePlayer.Click += (s, e) => { SaveManager.CurrentPlayerData = null; ShowPlayerSelector(); };
+
+            int x = 0;
+			int offsetSpace = 20;
+			List<PlayerData> playerDatas = new(SaveManager.PlayersData);
+			playerDatas.Sort(delegate (PlayerData x, PlayerData y)
+            {
+                return y.HigestScore.CompareTo(x.HigestScore);
+            });
+            foreach (PlayerData playerData in playerDatas)
+            {
+                Panel Player = new()
+                {
+                    Width = PlayerListScroll.Width - offsetSpace * 2,
+                    Height = 50,
+                    BorderStyle = BorderStyle.FixedSingle,
+                    ForeColor = Color.White,
+					BackColor = (playerData == SaveManager.CurrentPlayerData) ? Color.LightBlue : Color.Transparent,
+                };
+				Player.Location = new(offsetSpace, Player.Height * x + offsetSpace * (x + 1));
+
+                Label name = new()
+                {
+                    Width = Player.Width / 3 * 2,
+                    Height = Player.Height,
+                    Text = playerData.Name,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Regular),
+                    ForeColor = Color.White,
+                };
+
+                Label Score = new()
+                {
+                    Width = Player.Width / 3,
+                    Height = Player.Height,
+                    Text = $"{playerData.HigestScore} 🌟",
+                    TextAlign = ContentAlignment.MiddleRight,
+                    Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Regular),
+                    ForeColor = Color.White,
+                    Location = new Point(name.Width, 0),
+                };
+
+                Player.Controls.Add(name);
+                Player.Controls.Add(Score);
+                PlayerListScroll.Controls.Add(Player);	
+                x++;
+            }
+			scoreboard.Controls.Add(label);
+			scoreboard.Controls.Add(PlayerListScroll);
+			scoreboard.Controls.Add(changePlayer);
+
+            mainMenu.Controls.Add(scoreboard);
+        }
 	}
 }

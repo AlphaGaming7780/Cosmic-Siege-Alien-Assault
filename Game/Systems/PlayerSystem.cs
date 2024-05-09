@@ -28,7 +28,7 @@ namespace K8055Velleman.Game.Systems
         {
             player.Health -= value;
             playerUI.PlayerLife.Text = $"❤️ : {player.Health}";
-            if (player.Health <= 0) GameManager.instance.Load(GameStatus.MainMenu);
+            if (player.Health <= 0) GameManager.instance.Load(GameStatus.EndGame);
         }
 
         internal void PayPlayer(int value)

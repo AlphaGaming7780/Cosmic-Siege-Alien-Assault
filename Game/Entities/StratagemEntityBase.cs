@@ -5,9 +5,22 @@ using System.Windows.Forms;
 
 namespace K8055Velleman.Game.Entities;
 
+internal enum Upgrades
+{
+    ActionSpeed,
+    BulletDamage,
+}
+
+internal struct UpgradesValue()
+{
+
+    internal const int ActionSpeed = 100;
+    internal const float BulletDamage = 2.5f;
+}
+
 internal abstract class StratagemEntityBase : StaticEntity
 {
-	private int actionSpeed = 1;
+	private int actionSpeed = 1000;
 	internal int level = 1;
 	internal abstract int UiID { get; }
 	internal abstract bool Unlockable { get; }
@@ -17,7 +30,7 @@ internal abstract class StratagemEntityBase : StaticEntity
     internal abstract string Name { get; }
 	internal abstract int MaxLevel { get; }
 	internal abstract int StartActionSpeed { get; }
-	internal virtual int ActionSpeed { get { return actionSpeed; } set { actionSpeed = value; timer.Interval = value; } }
+	internal int ActionSpeed { get { return actionSpeed; } set { actionSpeed = value; timer.Interval = value; } }
 
 	//private System.Timers.Timer timer;
 	//private Timer timer;
@@ -52,7 +65,10 @@ internal abstract class StratagemEntityBase : StaticEntity
 
 	internal abstract void Action();
 
-	internal abstract void OnUpgrade(int newLevel);
+	internal virtual void Upgrade(Upgrades upgrade) 
+	{
+		if(upgrade == Upgrades.ActionSpeed) ActionSpeed -= UpgradesValue.ActionSpeed;
+    }
 
 	internal void EnableStratagem()
 	{

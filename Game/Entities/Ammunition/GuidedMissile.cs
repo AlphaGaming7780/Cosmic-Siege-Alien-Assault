@@ -6,18 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace K8055Velleman.Game.Entities.Ammunition
-{
-    internal class GuidedMissile : AmmunitionEntity
-    {
-        internal override int Damage => 5;
+//namespace K8055Velleman.Game.Entities.Ammunition
+//{
+//    internal class GuidedMissile : AmmunitionEntity
+//    {
+//        internal override int Damage => 5;
 
-        internal override float Speed => 4f;
+//        internal override float Speed => 4f;
 
-        internal override Size BulletSize => new(10,10);
+//        internal override Size BulletSize => new(10,10);
 
-        internal override Color BulletColor => Color.DarkGray;
+//        internal override Color BulletColor => Color.DarkGray;
 
-        internal override bool Guided => true;
-    }
-}
+//        internal override bool Guided => true;
+//    }
+//}

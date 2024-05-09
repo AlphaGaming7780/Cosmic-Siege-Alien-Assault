@@ -259,14 +259,24 @@ internal class PreGameUI : UIBase
 
 		if(stratagemEntityBase is TurretStratagemBase turretStratagem)
 		{
-			Label ShotSpeed = new()
+            Label DPS = new()
+            {
+                Text = $"DPS : { turretStratagem.BulletInfo.Damage / (turretStratagem.StartActionSpeed / 1000d)}D/s",
+                Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleLeft,
+                ForeColor = Color.White,
+                AutoSize = true,
+                Location = new(50, 175),
+            };
+            StratagemInfo.Controls.Add(DPS);
+            Label ShotSpeed = new()
 			{
-				Text = $"Start shoot speed : {turretStratagem.StartActionSpeed}s",
+				Text = $"Start shoot speed : {turretStratagem.StartActionSpeed/1000d}s",
                 Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleLeft,
                 ForeColor = Color.White,
 				AutoSize = true,
-				Location = new(50,175),
+				Location = new(50, DPS.Top + 50),
             };
             StratagemInfo.Controls.Add(ShotSpeed);
 
@@ -275,22 +285,22 @@ internal class PreGameUI : UIBase
 				Text = "Ammunition Information",
 				Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
 				ForeColor = Color.White,
-				Location = new(50, 225),
+				Location = new(50, ShotSpeed.Top + 50),
 				Width = 500,
 				MaximumSize = new(500, 600),
 				AutoSize = true,
             };
 			StratagemInfo.Controls.Add(AmmoInfo);
 
-			AmmunitionEntity ammunitionEntity = entitySystem.CreateEntity<AmmunitionEntity>(turretStratagem.Ammo);
-			ammunitionEntity.mainPanel.Location = new(50, 250);
-			AmmoInfo.Controls.Add(ammunitionEntity.mainPanel);
+			//AmmunitionEntity ammunitionEntity = entitySystem.CreateEntity<AmmunitionEntity>(turretStratagem.Ammo);
+			//ammunitionEntity.mainPanel.Location = new(50, 250);
+			//AmmoInfo.Controls.Add(ammunitionEntity.mainPanel);
 
-			StratagemInfo.Disposed += (s, e) => { entitySystem.DestroyEntity(ammunitionEntity); };
+			//StratagemInfo.Disposed += (s, e) => { entitySystem.DestroyEntity(ammunitionEntity); };
 
             Label Damage = new()
 			{
-				Text = $"Damage : {ammunitionEntity.Damage}",
+				Text = $"Damage : {turretStratagem.BulletInfo.Damage}",
                 Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
                 ForeColor = Color.White,
                 Location = new(50, 50),
@@ -301,7 +311,7 @@ internal class PreGameUI : UIBase
 
             Label Speed = new()
             {
-                Text = $"Speed : {ammunitionEntity.Speed}",
+                Text = $"Speed : {turretStratagem.BulletInfo.Speed}",
                 Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
                 ForeColor = Color.White,
                 Location = new(50, 100),
@@ -312,7 +322,7 @@ internal class PreGameUI : UIBase
 
             Label Size = new()
             {
-                Text = $"Bullet Size : {ammunitionEntity.BulletSize.Width}",
+                Text = $"Bullet Size : {turretStratagem.BulletInfo.Size.Width}",
                 Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
                 ForeColor = Color.White,
                 Location = new(50, 150),
@@ -323,7 +333,7 @@ internal class PreGameUI : UIBase
 
             Label guided = new()
             {
-                Text = $"Guided : {ammunitionEntity.Guided}",
+                Text = $"Guided : {turretStratagem.BulletInfo.Guided}",
                 Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
                 ForeColor = Color.White,
                 Location = new(50, 200),
@@ -331,6 +341,14 @@ internal class PreGameUI : UIBase
                 AutoSize = true,
             };
             AmmoInfo.Controls.Add(guided);
+
+			Control bulletPreview = new()
+			{
+				Size = turretStratagem.BulletInfo.Size,
+				BackColor = turretStratagem.BulletInfo.Color,
+				Location = new(50, 250),
+			};
+            AmmoInfo.Controls.Add(bulletPreview);
 
         }
 

@@ -20,22 +20,8 @@ namespace K8055Velleman.Game.Entities.Enemy
 
         internal override int Cost => 1;
 
-        internal override void OnCreate(EntitySystem entitySystem)
-        {
-            
-            mainPanel = new()
-            {
-                Size = new(25, 25),
-                BackColor = Color.Red,
+        internal override Size StartSize => new(25,25);
 
-            };
-            base.OnCreate(entitySystem); 
-        }
-
-        internal override void OnCollide(EntityBase entityBase)
-        {
-            base.OnCollide(entityBase);
-        }
-
+        internal override Color StartColor => Color.Red;
     }
 }
