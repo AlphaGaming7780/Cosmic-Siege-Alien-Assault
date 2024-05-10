@@ -65,9 +65,15 @@ internal abstract class StratagemEntityBase : StaticEntity
 
 	internal abstract void Action();
 
-	internal virtual void Upgrade(Upgrades upgrade) 
+	internal virtual bool Upgrade(Upgrades upgrade) 
 	{
-		if(upgrade == Upgrades.ActionSpeed) ActionSpeed -= UpgradesValue.ActionSpeed;
+		if (upgrade == Upgrades.ActionSpeed)
+		{
+			if (ActionSpeed <= 1000) return false;
+			ActionSpeed -= UpgradesValue.ActionSpeed;
+		}
+		level++;
+		return true;
     }
 
 	internal void EnableStratagem()

@@ -15,9 +15,7 @@ namespace K8055Velleman.Game.Entities.Stratagems
 
         internal override int MaxLevel => 8;
 
-        internal override int StartActionSpeed => 1000;
-
-        //internal override Type Ammo => typeof(DefaultTurretAmmo);
+        internal override int StartActionSpeed => 1500;
 
         internal override Color Color => Color.Orange;
 

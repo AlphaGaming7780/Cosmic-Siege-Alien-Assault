@@ -108,14 +108,31 @@ namespace K8055Velleman.Game.UI
 			{
 				upgradeGroupBox = new()
 				{
-					Text = "Upgrade",
+					Text = $"Upgrade for {gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.level)}$",
 					Width = StratInfoPanel.Width - 20,
 					Height = StratInfoPanel.Height / 2 - 10,
 					Location = new(10, StratInfoPanel.Height / 2 ),
 					ForeColor = Color.White,
-                    Font = new Font(UIManager.CustomFonts.Families[0], 10f, FontStyle.Bold),
+                    Font = new Font(UIManager.CustomFonts.Families[0], 12f, FontStyle.Bold),
                 };
 				StratInfoPanel.Controls.Add(upgradeGroupBox);
+
+
+				if (gameSystem.playerSystem.player.Money < gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.level))
+				{
+					Label label = new()
+					{
+						Text = "Not Enough Money",
+						ForeColor = Color.White,
+						Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
+						Location = new(25, 25),
+						Width = upgradeGroupBox.Width - 50,
+						Height = upgradeGroupBox.Height - 50,
+						TextAlign = ContentAlignment.MiddleCenter,
+                    };
+                    upgradeGroupBox.Controls.Add(label);
+					upgrade = false;
+                }
 			}
 
 			if (stratagemEntityBase is TurretStratagemBase turretStratagem)
@@ -212,7 +229,7 @@ namespace K8055Velleman.Game.UI
 						ShotSpeed.Text = $"Shooting speed : {turretStratagem.ActionSpeed / 1000d}s";
 						DPS.Text = $"DPS : {turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d)} D/s";
 					};
-                    upgradeShootSpeed.Click += (s, e) => { turretStratagem.Upgrade(Upgrades.ActionSpeed); ShowStratInfo(stratagemEntityBase, true); };
+                    upgradeShootSpeed.Click += (s, e) => { gameSystem.UpgradeStratagem(turretStratagem, Upgrades.ActionSpeed); ShowStratInfo(stratagemEntityBase, true); };
                     upgradeGroupBox.Controls.Add(upgradeShootSpeed);
 
                     BButton upgradeDamage = new()
@@ -234,7 +251,7 @@ namespace K8055Velleman.Game.UI
                         Damage.Text = $"Bullet Damage : {turretStratagem.bulletInfo.Damage}";
                         DPS.Text = $"DPS : {Math.Round(turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d),3)} D/s";
                     };
-					upgradeDamage.Click += (s, e) => { turretStratagem.Upgrade(Upgrades.BulletDamage); ShowStratInfo(stratagemEntityBase, true); };
+					upgradeDamage.Click += (s, e) => { gameSystem.UpgradeStratagem(turretStratagem, Upgrades.BulletDamage); ShowStratInfo(stratagemEntityBase, true); };
                     upgradeGroupBox.Controls.Add(upgradeDamage);
                 }
 
@@ -256,7 +273,7 @@ namespace K8055Velleman.Game.UI
 		{
 			GamePanel.Enabled = true;
 			GameWindow.Controls.Remove(PauseMenu);
-			PauseMenu.Dispose();
+			PauseMenu?.Dispose();
 		}
 
 		internal void ShowPauseMenu()

@@ -15,9 +15,7 @@ namespace K8055Velleman.Game.Entities.Stratagems
 
 		internal override int MaxLevel => 8;
 
-		internal override int StartActionSpeed => 1000;
-
-        //internal override Type Ammo => typeof(Missile);
+		internal override int StartActionSpeed => 2000;
 
 		internal override Color Color => Color.Gray;
 
@@ -27,7 +25,7 @@ namespace K8055Velleman.Game.Entities.Stratagems
 
         internal override int UnkockPrice => 100;
 
-        internal override BulletInfo BulletInfo => new() { Damage = 5, Speed = 4f, Size = new(10, 10), Color = Color.DarkGray, Guided = true };
+        internal override BulletInfo BulletInfo => new() { Damage = 10, Speed = 4f, Size = new(10, 10), Color = Color.DarkGray, Guided = false };
 
         internal override void OnCollide(EntityBase entityBase) {}
 

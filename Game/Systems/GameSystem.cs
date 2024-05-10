@@ -160,5 +160,18 @@ namespace K8055Velleman.Game.Systems
 			//GameManager.instance.Load(GameStatus.MainMenu);
 		}
 
+		internal int GetStartagemUpgradeCost(int level)
+		{
+			return (int)(10 * Math.Pow(2, level - 1));
+
+        }
+
+		internal void UpgradeStratagem(StratagemEntityBase stratagemEntityBase, Upgrades upgrades)
+		{
+            if(stratagemEntityBase.Upgrade(upgrades))
+			{
+				playerSystem.PayPlayer(-GetStartagemUpgradeCost(stratagemEntityBase.level - 1));
+			}
+        }
     }
 }

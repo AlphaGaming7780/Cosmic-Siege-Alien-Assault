@@ -26,20 +26,19 @@ internal abstract class TurretStratagemBase : StratagemEntityBase
 		Shot();
 	}
 
-    internal override void Upgrade(Upgrades upgrade)
+    internal override bool Upgrade(Upgrades upgrade)
     {
-        if (level >= MaxLevel) return;
-        level++;
+        if (level >= MaxLevel) return false;
         if (upgrade == Upgrades.BulletDamage)
 		{
 			bulletInfo.Damage += UpgradesValue.BulletDamage;
 		}
-        base.Upgrade(upgrade);
+        return base.Upgrade(upgrade);
     }
 
     private void GetTarget()
 	{
-		if (target == null || !EntitySystem.EntityExist(target))
+        if (target == null || !EntitySystem.EntityExist(target))
 		{
 			List<EnemyEntity> enemyEntities = EntitySystem.GetEntitiesByType<EnemyEntity>();
 
@@ -61,25 +60,26 @@ internal abstract class TurretStratagemBase : StratagemEntityBase
 			target.targeted = true;
 		}
 
-		return;
+        if (targetLife <= 0)
+        {
+            target.targeted = false;
+            oldTarget = target;
+            target = null;
+        }
+
+        return;
 	}
 
 	internal void Shot()
-	{
-		GetTarget();
-		if (target == null || !EntitySystem.EntityExist(target)) return;
+    {
+        GetTarget();
+        if (target == null || !EntitySystem.EntityExist(target)) return;
 		AmmunitionEntity ammunitionEntity = EntitySystem.CreateEntity<AmmunitionEntity>();
 		ammunitionEntity.Create(bulletInfo);
 		ammunitionEntity.target = target;
 		ammunitionEntity.taregtCenterLocation = target.CenterLocation;
 		targetLife -= ammunitionEntity.Damage;
-		if (targetLife <= 0)
-		{
-			target.targeted = false;
-			oldTarget = target;
-			target = null;
-		}
-	}
+    }
 }
 internal struct BulletInfo()
 {
