@@ -474,7 +474,7 @@ namespace K8055Velleman.Game.UI
 		{
 			player.BackColor = Color.LightBlue;
 			player.MouseEnter -= OnMouseEnter;
-			player.MouseLeave -= OnMouseLeave;
+			player.MouseLeave -= OnMouseLeave;	
 			RemoveEventToPlayerChild(player);
 		}
 
