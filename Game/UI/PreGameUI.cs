@@ -261,7 +261,7 @@ internal class PreGameUI : UIBase
 		{
             Label DPS = new()
             {
-                Text = $"DPS : { turretStratagem.BulletInfo.Damage / (turretStratagem.StartActionSpeed / 1000d)}D/s",
+                Text = $"DPS : { Math.Round( turretStratagem.BulletInfo.Damage / (turretStratagem.StartActionSpeed / 1000d), 3)}D/s",
                 Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleLeft,
                 ForeColor = Color.White,
