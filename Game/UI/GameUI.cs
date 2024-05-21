@@ -21,6 +21,7 @@ namespace K8055Velleman.Game.UI
 
 		internal override void OnCreate()
 		{
+			base.OnCreate();
 			gameSystem = GameManager.GetOrCreateSystem<GameSystem>();
 			GamePanel = new()
 			{
@@ -43,6 +44,7 @@ namespace K8055Velleman.Game.UI
 
 		internal override void OnDestroy()
 		{
+			base.OnDestroy();
 			GameWindow.Controls.Remove(GamePanel);
 			GamePanel.Dispose();
 			PauseMenu?.Dispose();
@@ -435,5 +437,15 @@ namespace K8055Velleman.Game.UI
 			GameWindow.Controls.SetChildIndex(EndGameMenu, 0);
 
 		}
-	}
+
+        internal override void OnConnectionChange()
+        {
+            
+        }
+
+        internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
+        {
+            
+        }
+    }
 }

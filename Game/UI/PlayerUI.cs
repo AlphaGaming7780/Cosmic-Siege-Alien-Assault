@@ -67,5 +67,15 @@ namespace K8055Velleman.Game.UI
 			gameUI.GamePanel.Controls.Remove(PlayerLife);
 			PlayerLife.Dispose();
 		}
-	}
+
+        internal override void OnConnectionChange()
+        {
+			
+        }
+
+        internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
+        {
+            
+        }
+    }
 }

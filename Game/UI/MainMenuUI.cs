@@ -21,18 +21,17 @@ namespace K8055Velleman.Game.UI
 		internal BButton PlayButton;
 		internal BButton SettingsButton;
 		internal BButton QuitButton;
-		private Panel scoreboard;
+		private BButton changePlayer;
+        private BButton creditMenuButton;
+        private Panel scoreboard;
 		private Panel PlayerSelector;
 
 		private PlayerData selectedPlayer;
 
 		internal override void OnCreate()
 		{
-			//AudioManager.LoadAudioFile(AudioType.MouseOver);
-			AudioManager.PlaySound(AudioFile.LoadingMusic);
-			K8055.OnDigitalChannelsChange += OnDigitalChannelsChange;
-			K8055.OnConnectionChanged += OnConnectionChange;
-			mainMenu = new()
+			base.OnCreate();
+            mainMenu = new()
 			{
 				Location = new Point(0, 0),
 				Width = GameWindow.Width,
@@ -94,8 +93,7 @@ namespace K8055Velleman.Game.UI
 				Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 			};
 			PlayButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - PlayButton.Width/2, (int)(275 * UIRatio.y));
-			//PlayButton.GotFocus += (object sender, EventArgs e) => AudioManager.PlaySound(AudioFile.MouseOver);
-			//PlayButton.MouseEnter += (object sender, EventArgs e) => AudioManager.PlaySound(AudioFile.MouseOver);
+			PlayButton.Click += (s, e) => { GameManager.instance.Load(GameStatus.PreGame); };
 
 			SettingsButton = new()
 			{
@@ -107,8 +105,6 @@ namespace K8055Velleman.Game.UI
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 			};
 			SettingsButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - SettingsButton.Width / 2, (int)(375 * UIRatio.y));
-			//SettingsButton.GotFocus += (object sender, EventArgs e) => AudioManager.PlaySound(AudioFile.MouseOver);
-			//SettingsButton.MouseEnter += (object sender, EventArgs e) => AudioManager.PlaySound(AudioFile.MouseOver);
 
 			QuitButton = new()
 			{
@@ -120,10 +116,20 @@ namespace K8055Velleman.Game.UI
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 			};
 			QuitButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - QuitButton.Width / 2, (int)(475 * UIRatio.y));
-			//QuitButton.GotFocus += (object sender, EventArgs e) => AudioManager.PlaySound(AudioFile.MouseOver);
-			//QuitButton.MouseEnter += (object sender, EventArgs e) => AudioManager.PlaySound(AudioFile.MouseOver);
+			QuitButton.Click += (s, e) => { GameWindow.Close(); };
 
 			UpdateScoreboard();
+
+			creditMenuButton = new()
+			{
+				Text = K8055.IsConnected ? "Credit (INP4)" : "Credit",
+                Width = 256,
+				Height = 64,
+                ForeColor = Color.White,
+                Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
+            };
+			creditMenuButton.Location = new(mainMenu.Width - creditMenuButton.Width - 50, mainMenu.Height - creditMenuButton.Height - 50 );
+			creditMenuButton.Click += (s, e) => { ShowCreditMenu(); };
 
 			VellmanBoardStatus.Controls.Add(VellmanBoardStatusLabel);
 			mainMenu.Controls.Add(VellmanBoardStatus);
@@ -132,55 +138,45 @@ namespace K8055Velleman.Game.UI
             mainMenu.Controls.Add(PlayButton);
 			mainMenu.Controls.Add(SettingsButton);
 			mainMenu.Controls.Add(QuitButton);
+			mainMenu.Controls.Add(creditMenuButton);
 			GameWindow.Controls.Add(mainMenu);
 		}
 
-		internal override void OnDestroy()
-		{
+        private void ShowCreditMenu()
+        {
+			UIManager.GetOrCreateUI<CreditUI>();
+			UIManager.DestroyUI<MainMenuUI>();
+        }
+
+        internal override void OnDestroy()
+		{	
+			base.OnDestroy();
 			Console.WriteLine("Main menu destroyed");
-			K8055.OnConnectionChanged -= OnConnectionChange;
-			K8055.OnDigitalChannelsChange -= OnDigitalChannelsChange;
 			AudioManager.StopSound(AudioFile.MouseOver);
-			AudioManager.StopSound(AudioFile.LoadingMusic);
 			GameWindow.Controls.Remove(mainMenu);
 			mainMenu.Dispose();
 		}
 
-		//internal override void OnResize()
-		//{
-		//	mainMenu.Width = GameWindow.Width;
-		//	mainMenu.Height = GameWindow.Height;
-		//	VellmanBoardStatus.Location = new(mainMenu.Right - 10 - VellmanBoardStatus.Width - RightOffeset, mainMenu.Location.Y + 10);
-		//	PlayButton.Height = (int)(50 * UIRatio.y);
-		//	PlayButton.Width = (int)(200 * UIRatio.x);
-		//	PlayButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - PlayButton.Width / 2, (int)(275 * UIRatio.y));
-		//	SettingsButton.Height = (int)(50 * UIRatio.y);
-		//	SettingsButton.Width = (int)(200 * UIRatio.x);
-		//	SettingsButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - SettingsButton.Width / 2, (int)(375 * UIRatio.y));
-		//	QuitButton.Height = (int)(50 * UIRatio.y);
-		//	QuitButton.Width = (int)(200 * UIRatio.x);
-		//	QuitButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - QuitButton.Width / 2, (int)(475 * UIRatio.y));
-		//	GameName.Height = (int)(100 * UIRatio.y);
-		//	GameName.Width = (int)(500 * UIRatio.x);
-		//	GameName.Font = new(GameName.Font.FontFamily, 20 * UIRatio.moyenne, FontStyle.Bold);
-		//	GameName.Location = new(mainMenu.Width / 2 - GameName.Width / 2, (int)(100 * UIRatio.y));
-		//}
-
-		private void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
+        internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
 		{
 			if(digitalChannel == K8055.DigitalChannel.B1) PlayButton.PerformClick();
 			else if(digitalChannel == K8055.DigitalChannel.B2) SettingsButton.PerformClick();
+			else if(digitalChannel == K8055.DigitalChannel.B3) changePlayer.PerformClick();
+			else if(digitalChannel == K8055.DigitalChannel.B4) creditMenuButton.PerformClick();
 			else if(digitalChannel == K8055.DigitalChannel.B5) QuitButton.PerformClick();
 		}
 
-		private void OnConnectionChange()
+        internal override void OnConnectionChange()
 		{
+			Console.WriteLine(K8055.IsConnected);
 			VellmanBoardStatus.BackColor = K8055.IsConnected ? Color.Green : Color.Red;
 			VellmanBoardStatusLabel.Text = K8055.IsConnected ? "Connected" : "Disconnected";
 			PlayButton.Text = K8055.IsConnected ? "Play (INP1)" : "Play";
 			SettingsButton.Text = K8055.IsConnected ? "Settings (INP2)" : "Settings";
-			QuitButton.Text = K8055.IsConnected ? "Quit (INP5)" : "Quit";
-		}
+            changePlayer.Text = K8055.IsConnected ? "Change Player (INP3)" : "Change Player";
+            creditMenuButton.Text = K8055.IsConnected ? "Credit (INP4)" : "Credit";
+            QuitButton.Text = K8055.IsConnected ? "Quit (INP5)" : "Quit";
+        }
 
 		internal void ShowPlayerSelector()
 		{
@@ -525,13 +521,13 @@ namespace K8055Velleman.Game.UI
                 Location = new(25, label.Height),
             };
 
-			BButton changePlayer = new()
+			changePlayer = new()
 			{
 				Width = scoreboard.Width - 50,
                 Height = 50,
                 Location = new(300, 675),
-                Text = "Change Player",
-                Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular),
+                Text = K8055.IsConnected ? "Change Player (INP3)" : "Change Player",
+            Font = new Font(FontFamily.GenericSansSerif, 12f, FontStyle.Regular),
             };
 			changePlayer.Location = new(25, scoreboard.Height - changePlayer.Height - 25);
             changePlayer.Click += (s, e) => { SaveManager.CurrentPlayerData = null; ShowPlayerSelector(); };

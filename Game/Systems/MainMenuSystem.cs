@@ -17,22 +17,21 @@ namespace K8055Velleman.Game.Systems
 			base.OnCreate();
 			Console.WriteLine("Main Menu is created");
             gameMainMenu = UIManager.GetOrCreateUI<MainMenuUI>();
-            gameMainMenu.PlayButton.Click += OnButtonPlayClick;
-            gameMainMenu.QuitButton.Click += OnQuitButtonClick;
 			if (SaveManager.CurrentPlayerData == null) gameMainMenu.ShowPlayerSelector();
+            AudioManager.PlaySound(AudioFile.LoadingMusic, true);
         }
 
         internal override void OnDestroy()
         {
             base.OnDestroy();
 			gameMainMenu = null;
-			UIManager.DestroyUI<MainMenuUI>();
+            AudioManager.StopSound(AudioFile.LoadingMusic);
+            UIManager.DestroyUI<MainMenuUI>();
         }
 
         internal override void OnUpdate()
 		{
 			base.OnUpdate();
-			UpdateVellmanBoardConnectionStatus();
 		}
 
         internal override void OnGameStatusChange(GameStatus status)
@@ -48,19 +47,13 @@ namespace K8055Velleman.Game.Systems
 			}
         }
 
-        private void UpdateVellmanBoardConnectionStatus()
-		{
-			gameMainMenu.VellmanBoardStatus.BackColor = K8055.IsConnected ? Color.Green : Color.Red;
-			gameMainMenu.VellmanBoardStatusLabel.Text = K8055.IsConnected ? "Connected" : "Disconnected";
-        }
-
 		private void OnButtonPlayClick(object sender, EventArgs e)
 		{
 			GameManager.instance.Load(GameStatus.PreGame);
 		}
-		private void OnQuitButtonClick(object sender, EventArgs e)
-		{
-			GameWindow.Close();
-		}
+		//private void OnQuitButtonClick(object sender, EventArgs e)
+		//{
+		//	GameWindow.Close();
+		//}
 	}
 }

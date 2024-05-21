@@ -39,15 +39,23 @@ internal static class AudioManager
 
 	static AudioVolume audioVolume = new AudioVolume();
 
-	public static void PlaySound(AudioFile audioFile)
+	public static void PlaySound(AudioFile audioFile, bool loop = false)
 	{
         MediaPlayer media = new();
 		if (mediaPlayers.ContainsKey(audioFile)) mediaPlayers[audioFile].Add(media);
 		else mediaPlayers.Add(audioFile, [media]);
 		media.Open(new("file:///" + new FileInfo(AudioTypeToString(audioFile)).FullName));
-        media.MediaEnded += (sender, eventArgs) => { media.Close(); mediaPlayers[audioFile].Remove(media); };
-        media.Volume = audioVolume.GetVolumeByAudioFile(audioFile);
+        media.MediaEnded += (sender, eventArgs) => { 
+			if (loop) { 
+				media.Position += media.Position.Negate(); 
+			} else { 
+				media.Close(); 
+				mediaPlayers[audioFile].Remove(media); 
+			} 
+		};
+		media.Volume = audioVolume.GetVolumeByAudioFile(audioFile);
         media.Play();
+
     }
 
 	public static void StopSound(AudioFile audioFile)

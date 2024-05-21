@@ -101,14 +101,17 @@ static public class K8055
         UpdateConnectedDevice();
         if (!IsConnected)
 		{
-		SearchAndOpenDevice();
-			if(!IsConnected) return;
+			SearchAndOpenDevice();
+			//if(!IsConnected) return;
 		}
 
 		if (IsConnected != oldIsConnected)
 		{
+			Console.WriteLine(OnConnectionChanged?.GetInvocationList().Length);
 			OnConnectionChanged?.Invoke();
         }
+
+		if(!IsConnected) return;
 
 		UpdateDigitalsChannel();
 
@@ -233,11 +236,11 @@ static public class K8055
 	public static bool ReadDigitalChannel(DigitalChannel channel)
 	{   
 		if(!IsConnected) return false;
-		if(channel < 0)
-		{
+		// if(channel < 0)
+		// {
 			return (bool)(digitalChannels[CurrentDevice]?.Contains(channel));
-		}
-		return Interface.ReadDigitalChannel((int)channel);
+		// }
+		// return Interface.ReadDigitalChannel((int)channel);
 	}
 
 	public static void SetDigitalChannel(DigitalChannel Channel)
@@ -283,33 +286,91 @@ static public class K8055
 	private static void UpdateDigitalsChannel()
 	{
         int digitalChannel = Interface.ReadAllDigital();
-		if (!digitalChannels.ContainsKey(CurrentDevice)) return;
-		digitalChannels[CurrentDevice].RemoveAll(new Predicate<DigitalChannel>((e) => { return e == DigitalChannel.B1 || e == DigitalChannel.B2 || e == DigitalChannel.B3 || e == DigitalChannel.B4 || e == DigitalChannel.B5; } ));
-		if ((digitalChannel & 1) > 0) 
+		if (!digitalChannels.ContainsKey(CurrentDevice)) digitalChannels.Add(CurrentDevice, []);
+		//digitalChannels[CurrentDevice].RemoveAll(new Predicate<DigitalChannel>((e) => { return e == DigitalChannel.B1 || e == DigitalChannel.B2 || e == DigitalChannel.B3 || e == DigitalChannel.B4 || e == DigitalChannel.B5; } ));
+		if ((digitalChannel & 1) > 0)
 		{
-			digitalChannels[CurrentDevice].Add(DigitalChannel.B1);
-			OnDigitalChannelsChange?.Invoke(DigitalChannel.B1);
+			if (!digitalChannels[CurrentDevice].Contains(DigitalChannel.B1))
+			{
+                digitalChannels[CurrentDevice].Add(DigitalChannel.B1);
+                OnDigitalChannelsChange?.Invoke(DigitalChannel.B1);
+            }
 
-        }
-        if ((digitalChannel & 2) > 0)
-        {
-            digitalChannels[CurrentDevice].Add(DigitalChannel.B2);
-            OnDigitalChannelsChange?.Invoke(DigitalChannel.B2);
-        }
-        if ((digitalChannel & 3) > 0)
-        {
-            digitalChannels[CurrentDevice].Add(DigitalChannel.B3);
-            OnDigitalChannelsChange?.Invoke(DigitalChannel.B3);
-        }
+		}
+		else 
+		{
+			if (digitalChannels[CurrentDevice].Contains(DigitalChannel.B1))
+			{
+				digitalChannels[CurrentDevice].Remove(DigitalChannel.B1);
+            }
+		}
+
+		if ((digitalChannel & 2) > 0)
+		{
+			if (!digitalChannels[CurrentDevice].Contains(DigitalChannel.B2))
+			{
+                digitalChannels[CurrentDevice].Add(DigitalChannel.B2);
+                OnDigitalChannelsChange?.Invoke(DigitalChannel.B2);
+            }
+
+		}
+		else 
+		{
+			if (digitalChannels[CurrentDevice].Contains(DigitalChannel.B2))
+			{
+				digitalChannels[CurrentDevice].Remove(DigitalChannel.B2);
+            }
+		}
+
         if ((digitalChannel & 4) > 0)
         {
-            digitalChannels[CurrentDevice].Add(DigitalChannel.B4);
-            OnDigitalChannelsChange?.Invoke(DigitalChannel.B4);
+            if (!digitalChannels[CurrentDevice].Contains(DigitalChannel.B3))
+            {
+                digitalChannels[CurrentDevice].Add(DigitalChannel.B3);
+                OnDigitalChannelsChange?.Invoke(DigitalChannel.B3);
+            }
+
         }
-        if ((digitalChannel & 5) > 0)
+        else
         {
-            digitalChannels[CurrentDevice].Add(DigitalChannel.B5);
-            OnDigitalChannelsChange?.Invoke(DigitalChannel.B5);
+            if (digitalChannels[CurrentDevice].Contains(DigitalChannel.B3))
+            {
+                digitalChannels[CurrentDevice].Remove(DigitalChannel.B3);
+            }
+        }
+
+        if ((digitalChannel & 8) > 0)
+        {
+            if (!digitalChannels[CurrentDevice].Contains(DigitalChannel.B4))
+            {
+                digitalChannels[CurrentDevice].Add(DigitalChannel.B4);
+                OnDigitalChannelsChange?.Invoke(DigitalChannel.B4);
+            }
+
+        }
+        else
+        {
+            if (digitalChannels[CurrentDevice].Contains(DigitalChannel.B4))
+            {
+                digitalChannels[CurrentDevice].Remove(DigitalChannel.B4);
+            }
+        }
+
+        if ((digitalChannel & 16) > 0)
+        {
+            if (!digitalChannels[CurrentDevice].Contains(DigitalChannel.B5))
+            {
+                digitalChannels[CurrentDevice].Add(DigitalChannel.B5);
+                OnDigitalChannelsChange?.Invoke(DigitalChannel.B5);
+            }
+
+        }
+        else
+        {
+            if (digitalChannels[CurrentDevice].Contains(DigitalChannel.B5))
+            {
+                digitalChannels[CurrentDevice].Remove(DigitalChannel.B5);
+            }
         }
     }
 }

@@ -37,6 +37,7 @@ internal class PreGameUI : UIBase
 
 	internal override void OnCreate()
 	{
+		base.OnCreate();
 		entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
 
 		preGameUI = new()
@@ -383,7 +384,18 @@ internal class PreGameUI : UIBase
 
     internal override void OnDestroy()
 	{
+		base.OnDestroy();
 		GameWindow.Controls.Remove(preGameUI);
 		preGameUI.Dispose();
 	}
+
+    internal override void OnConnectionChange()
+    {
+        
+    }
+
+    internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
+    {
+        
+    }
 }

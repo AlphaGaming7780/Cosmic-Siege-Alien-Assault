@@ -96,6 +96,7 @@
     <Compile Include="Game\Systems\SystemBase.cs" />
     <Compile Include="Game\Systems\MainMenuSystem.cs" />
     <Compile Include="Game\UIManager.cs" />
+    <Compile Include="Game\UI\CreditUI.cs" />
     <Compile Include="Game\UI\GameUI.cs" />
     <Compile Include="Game\UI\MainMenuUI.cs" />
     <Compile Include="Game\UI\PlayerUI.cs" />
@@ -145,15 +146,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Lisence.txt" />
     <Content Include="Resources\PixeloidMono.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\PixeloidSans.ttf">
+    <Content Include="Resources\PixeloidSans.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\PixeloidSansBold.ttf">
+    </Content>
+    <Content Include="Resources\PixeloidSansBold.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

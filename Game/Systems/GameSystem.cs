@@ -111,7 +111,8 @@ namespace K8055Velleman.Game.Systems
             playerSystem = GameManager.GetOrCreateSystem<PlayerSystem>();
             preGameUI = null;
 			UIManager.DestroyUI<PreGameUI>();
-			foreach (StratagemEntityBase entity in selectedStratagemEntities)
+			GameWindow.Clock.Enabled = true;
+            foreach (StratagemEntityBase entity in selectedStratagemEntities)
 			{
                 entity.EnableStratagem();
 			}

@@ -4,14 +4,16 @@ using K8055Velleman.Game;
 
 namespace K8055Velleman
 {
-	public partial class GameWindow : Form
+    public partial class GameWindow : Form
 	{
-		private readonly GameManager gameManager;
+
+        private readonly GameManager gameManager;
 		private readonly UIManager uiManager;
 		public GameWindow()
 		{
 			InitializeComponent();
-			SaveManager.LoadData();
+
+            SaveManager.LoadData();
 			//this.ShowInTaskbar = false;
 			//this.ControlBox = false;
 			this.Text = null;
@@ -20,10 +22,10 @@ namespace K8055Velleman
 			Clock.Enabled = true;
         }
 
-		private void OnClosingForm(object sender, FormClosingEventArgs e)
+        private void OnClosingForm(object sender, FormClosingEventArgs e)
 		{
 			K8055.CloseAllDevices();
-		}
+        }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
 		{
