@@ -322,7 +322,7 @@ namespace K8055Velleman.Game.UI
 				ForeColor = Color.White,
 				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
 			};
-			settingsButton.Click += (s, e) => { gameSystem.UnPauseGame(); GameManager.instance.Load(GameStatus.MainMenu); };
+			settingsButton.Click += (s, e) => { GameWindow.Clock.Enabled = true; GameManager.instance.Load(GameStatus.MainMenu); };
 			settingsButton.Location = new(PauseMenu.Width / 2 - settingsButton.Width / 2, 175);
 
 			BButton mainMenuButton = new()
@@ -333,7 +333,7 @@ namespace K8055Velleman.Game.UI
 				ForeColor = Color.White,
 				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
 			};
-			mainMenuButton.Click += (s, e) => { gameSystem.UnPauseGame(); GameManager.instance.Load(GameStatus.MainMenu); };
+			mainMenuButton.Click += (s, e) => { GameWindow.Clock.Enabled = true; GameManager.instance.Load(GameStatus.MainMenu); };
 			mainMenuButton.Location = new(PauseMenu.Width / 2 - mainMenuButton.Width / 2, 250);
 
 			PauseMenu.Controls.Add(gamePausedText);

@@ -15,6 +15,7 @@ public class BButton : Button
         GotFocus += (object sender, EventArgs e) => { Highlight(); AudioManager.PlaySound(AudioFile.MouseOver); };
         LostFocus += (object sender, EventArgs e) => { Lowlight(); };
         MouseEnter += (object sender, EventArgs e) => { Focus(); };
+        Click += (s, e) => { if(!Focused) Focus(); };
         //MouseLeave += (object sender, EventArgs e) => { Lowlight(); };
     }
 

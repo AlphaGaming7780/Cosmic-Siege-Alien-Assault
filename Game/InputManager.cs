@@ -27,7 +27,4 @@ static internal class InputManager
 
     public static bool IsKeyPressed(Keys key) { return pressedKeys.Contains(key); }
 
-
-
-
 }

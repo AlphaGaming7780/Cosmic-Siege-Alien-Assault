@@ -136,4 +136,19 @@
   <data name="PixeloidSans" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PixeloidSans.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Mr_Blackhole___Category" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio\Musics\Mr-Blackhole - Category.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="NOmki___Netrunner" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio\Musics\NOmki - Netrunner.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="NOmki___Time" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio\Musics\NOmki - Time.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="punkerrr___Virtual_Cataclysm" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio\Musics\punkerrr - Virtual Cataclysm.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="RyuuAkito___SquashHead___Damaged_Artificial_Nervous_System" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio\Musics\RyuuAkito &amp; SquashHead - Damaged Artificial Nervous System.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

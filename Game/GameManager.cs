@@ -1,5 +1,6 @@
 ﻿using K8055Velleman.Game.Entities;
 using K8055Velleman.Game.Systems;
+using K8055Velleman.Game.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace K8055Velleman.Game;
 public enum GameStatus
 {
     unknown,
+    PlayerSelector,
     MainMenu,
     PreGame,
     Game,
@@ -39,6 +41,9 @@ internal class GameManager
         this.gameStatus = gameStatus;
         switch (gameStatus)
         {
+            case GameStatus.PlayerSelector:
+                GetOrCreateSystem<PlayerSelectorSystem>();
+                break;
             case GameStatus.MainMenu:
                 GetOrCreateSystem<MainMenuSystem>();
                 break;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media;
 
@@ -7,7 +8,7 @@ namespace K8055Velleman.Game;
 public enum AudioFile
 {
 	MouseOver,
-    LoadingMusic,
+	BackGroundMusic,
 }
 
 public struct AudioVolume
@@ -26,7 +27,7 @@ public struct AudioVolume
         return audioFile switch
         {
             AudioFile.MouseOver => uiVolume * gameVolume,
-            AudioFile.LoadingMusic => musicVolume * gameVolume,
+            AudioFile.BackGroundMusic => musicVolume * gameVolume,
             _ => gameVolume,
         };
     }
@@ -35,6 +36,8 @@ public struct AudioVolume
 
 internal static class AudioManager
 {
+	private static List<string> musicFiles = ["Musics\\Mr-Blackhole - Category.wav", "Musics\\NOmki - Netrunner.wav", "Musics\\NOmki - Time.wav", "Musics\\punkerrr - Virtual Cataclysm.wav", "Musics\\RyuuAkito & SquashHead - Damaged Artificial Nervous System.wav"];
+
 	private static Dictionary<AudioFile, List<MediaPlayer>> mediaPlayers = [];
 
 	static AudioVolume audioVolume = new AudioVolume();
@@ -44,15 +47,17 @@ internal static class AudioManager
         MediaPlayer media = new();
 		if (mediaPlayers.ContainsKey(audioFile)) mediaPlayers[audioFile].Add(media);
 		else mediaPlayers.Add(audioFile, [media]);
-		media.Open(new("file:///" + new FileInfo(AudioTypeToString(audioFile)).FullName));
+		string filePath = new FileInfo("Resources\\Audio\\" + AudioTypeToString(audioFile)).FullName;
+		Console.WriteLine(filePath);
+		media.Open(new("file:///" + filePath));
         media.MediaEnded += (sender, eventArgs) => { 
-			if (loop) { 
-				media.Position += media.Position.Negate(); 
-			} else { 
-				media.Close(); 
-				mediaPlayers[audioFile].Remove(media); 
-			} 
-		};
+			media.Close(); 
+			mediaPlayers[audioFile].Remove(media);
+            if (loop)
+            {
+                PlaySound(audioFile, true);
+            }
+        };
 		media.Volume = audioVolume.GetVolumeByAudioFile(audioFile);
         media.Play();
 
@@ -71,8 +76,8 @@ internal static class AudioManager
 	{
 		return audioType switch
 		{
-            AudioFile.MouseOver => "Resources\\Audio\\MouseOver.wav",
-            AudioFile.LoadingMusic => "Resources\\Audio\\LoadingMusic.wav",
+            AudioFile.MouseOver => "MouseOver.wav",
+            AudioFile.BackGroundMusic => musicFiles[GameManager.Random.Next(0, musicFiles.Count)],
             _ => null,
 		};
 	}

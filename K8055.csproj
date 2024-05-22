@@ -92,6 +92,7 @@
     <Compile Include="Game\Systems\EntitySystem.cs" />
     <Compile Include="Game\Systems\GameSystem.cs" />
     <Compile Include="Game\InputManager.cs" />
+    <Compile Include="Game\Systems\PlayerSelectorSystem.cs" />
     <Compile Include="Game\Systems\PlayerSystem.cs" />
     <Compile Include="Game\Systems\SystemBase.cs" />
     <Compile Include="Game\Systems\MainMenuSystem.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Game\UI\CreditUI.cs" />
     <Compile Include="Game\UI\GameUI.cs" />
     <Compile Include="Game\UI\MainMenuUI.cs" />
+    <Compile Include="Game\UI\PlayerSelectorUI.cs" />
     <Compile Include="Game\UI\PlayerUI.cs" />
     <Compile Include="Game\UI\PreGameUI.cs" />
     <Compile Include="Game\UI\UIBase.cs" />
@@ -147,6 +149,21 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Content Include="Lisence.txt" />
+    <None Include="Resources\Audio\Musics\Mr-Blackhole - Category.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Audio\Musics\NOmki - Netrunner.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Audio\Musics\NOmki - Time.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Audio\Musics\punkerrr - Virtual Cataclysm.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Audio\Musics\RyuuAkito &amp; SquashHead - Damaged Artificial Nervous System.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\PixeloidMono.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

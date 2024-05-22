@@ -11,21 +11,9 @@ namespace K8055Velleman.Game.Systems
 {
 	internal class MainMenuSystem : SystemBase
 	{
-		MainMenuUI gameMainMenu;
-        internal override void OnCreate()
-		{
-			base.OnCreate();
-			Console.WriteLine("Main Menu is created");
-            gameMainMenu = UIManager.GetOrCreateUI<MainMenuUI>();
-			if (SaveManager.CurrentPlayerData == null) gameMainMenu.ShowPlayerSelector();
-            AudioManager.PlaySound(AudioFile.LoadingMusic, true);
-        }
-
         internal override void OnDestroy()
         {
             base.OnDestroy();
-			gameMainMenu = null;
-            AudioManager.StopSound(AudioFile.LoadingMusic);
             UIManager.DestroyUI<MainMenuUI>();
         }
 
@@ -40,20 +28,12 @@ namespace K8055Velleman.Game.Systems
 			switch (status)
 			{
 				case GameStatus.MainMenu:
-					break;
+                    UIManager.GetOrCreateUI<MainMenuUI>();
+                    break;
 				default:
 					GameManager.DestroySystem<MainMenuSystem>();
 					break;
 			}
         }
-
-		private void OnButtonPlayClick(object sender, EventArgs e)
-		{
-			GameManager.instance.Load(GameStatus.PreGame);
-		}
-		//private void OnQuitButtonClick(object sender, EventArgs e)
-		//{
-		//	GameWindow.Close();
-		//}
 	}
 }

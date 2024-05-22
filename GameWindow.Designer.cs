@@ -34,7 +34,7 @@
             // 
             // Clock
             // 
-            this.Clock.Interval = 16;
+            this.Clock.Interval = 1;
             this.Clock.Tick += new System.EventHandler(this.OnUpdate);
             // 
             // GameWindow

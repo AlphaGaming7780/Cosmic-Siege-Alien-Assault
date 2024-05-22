@@ -98,8 +98,8 @@ static public class K8055
 	public static void Update()
 	{
 		bool oldIsConnected = IsConnected;
-        UpdateConnectedDevice();
-        if (!IsConnected)
+		UpdateConnectedDevice();
+		if (!IsConnected)
 		{
 			SearchAndOpenDevice();
 			//if(!IsConnected) return;
@@ -107,7 +107,6 @@ static public class K8055
 
 		if (IsConnected != oldIsConnected)
 		{
-			Console.WriteLine(OnConnectionChanged?.GetInvocationList().Length);
 			OnConnectionChanged?.Invoke();
         }
 
@@ -181,48 +180,53 @@ static public class K8055
 		return -1;
 	}
 
-	public static List<int> GetAvailableDevices()
-	{
-		List<int> availableDevices = [];
-		int i = Interface.SearchDevices();
-		if(i - 8 >= 0)
-		{
-			i -= 8;
-			availableDevices.Add(3);
-		}
-		if(i - 4 >= 0)
-		{
-			i -= 4;
-			availableDevices.Add(2);
-		}
-		if(i - 2 >= 0)
-		{
-			i -= 2;
-			availableDevices.Add(1);
-		}
-		if (i - 1 >= 0)
-		{
-			availableDevices.Add(0);
-		}
+	//public static List<int> GetAvailableDevices()
+	//{
+	//	List<int> availableDevices = [];
+		//int i = Interface.SearchDevices();
+		//if((i & 8) > 0)
+		//{
+		//	//i -= 8;
+		//	availableDevices.Add(3);
+		//}
+		//if((i & 4) > 0)
+		//{
+		//	//i -= 4;
+		//	availableDevices.Add(2);
+  //      }
+		//if((i & 2) > 0)
+		//{
+		//	//i -= 2;
+		//	availableDevices.Add(1);
+  //      }
+		//if ((i & 1) > 0)
+		//{
+		//	availableDevices.Add(0);
+  //      }
 
-		return availableDevices;
+		//Interface.CloseDevice();
 
-	}
+
+
+
+	//	return availableDevices;
+
+	//}
 
 	public static int SearchAndOpenDevice()
 	{
-		List<int> availibleDevice = GetAvailableDevices();
-
-		foreach(int device in availibleDevice)
+		int x = -1;
+		for(int i = 0; i < 4; i++)
 		{
-			int i = OpenDevice(device);
-			if(i >= 0)
+			if (Interface.SetCurrentDevice(i) >= 0) continue; 
+			x = OpenDevice(i);
+			if(x >= 0)
 			{
-				return i;
+				return x;
 			}
 		}
 
-		return -1;
+		return x;
 		
 	}
 
@@ -236,11 +240,7 @@ static public class K8055
 	public static bool ReadDigitalChannel(DigitalChannel channel)
 	{   
 		if(!IsConnected) return false;
-		// if(channel < 0)
-		// {
-			return (bool)(digitalChannels[CurrentDevice]?.Contains(channel));
-		// }
-		// return Interface.ReadDigitalChannel((int)channel);
+		return (bool)(digitalChannels[CurrentDevice]?.Contains(channel));
 	}
 
 	public static void SetDigitalChannel(DigitalChannel Channel)
@@ -275,13 +275,14 @@ static public class K8055
 
     private static void UpdateConnectedDevice()
 	{
-		List<int> connectedDevices = new(ConnectedDevices);
+        if (ConnectedDevices.Count <= 0) return;
         ConnectedDevices.Clear();
-        foreach (int i in GetAvailableDevices())
-		{
-			if (connectedDevices.Contains(i)) ConnectedDevices.Add(i);
-		}
-	}
+        for (int i = 0; i < 4; i++)
+        {
+            if (Interface.SetCurrentDevice(i) >= 0) ConnectedDevices.Add(i);
+        }
+        CurrentDevice = Interface.SetCurrentDevice(CurrentDevice);
+    }
 
 	private static void UpdateDigitalsChannel()
 	{

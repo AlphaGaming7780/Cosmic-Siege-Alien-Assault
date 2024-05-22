@@ -89,6 +89,33 @@ namespace K8055Velleman.Properties {
         }
         
         /// <summary>
+        ///   Recherche une ressource localisée de type System.IO.UnmanagedMemoryStream semblable à System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream Mr_Blackhole___Category {
+            get {
+                return ResourceManager.GetStream("Mr_Blackhole___Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.IO.UnmanagedMemoryStream semblable à System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream NOmki___Netrunner {
+            get {
+                return ResourceManager.GetStream("NOmki___Netrunner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.IO.UnmanagedMemoryStream semblable à System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream NOmki___Time {
+            get {
+                return ResourceManager.GetStream("NOmki___Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une ressource localisée de type System.Byte[].
         /// </summary>
         internal static byte[] PixeloidMono {
@@ -115,6 +142,24 @@ namespace K8055Velleman.Properties {
             get {
                 object obj = ResourceManager.GetObject("PixeloidSansBold", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.IO.UnmanagedMemoryStream semblable à System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream punkerrr___Virtual_Cataclysm {
+            get {
+                return ResourceManager.GetStream("punkerrr___Virtual_Cataclysm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.IO.UnmanagedMemoryStream semblable à System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream RyuuAkito___SquashHead___Damaged_Artificial_Nervous_System {
+            get {
+                return ResourceManager.GetStream("RyuuAkito___SquashHead___Damaged_Artificial_Nervous_System", resourceCulture);
             }
         }
     }
