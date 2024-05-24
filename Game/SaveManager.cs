@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -11,21 +10,36 @@ namespace K8055Velleman.Game;
 
 internal static class SaveManager
 {
+    const string kExtension = ".json";
+
+    internal static Settings Settings;
 	internal static PlayerData CurrentPlayerData;
 	internal static List<PlayerData> PlayersData = [];
 
-	private static string SavePath;
-	private static string PlayersPath;
-
-	//private static List<string> OpenedFiles = [];
+	private static string _savePath;
+    private static string _settingsPath;
+	private static string _playersPath;
 
 	internal static void LoadData()
 	{
-		SavePath = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName, "Saves");
-		PlayersPath = Path.Combine(SavePath, "Players");
-		if (Directory.Exists(PlayersPath))
+		_savePath = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName, "Saves");
+        _settingsPath = Path.Combine(_savePath, $"Settings{kExtension}");
+		_playersPath = Path.Combine(_savePath, "Players");
+
+        try
         {
-            foreach (FileInfo playerSave in new DirectoryInfo(PlayersPath).GetFiles())
+            if (File.Exists(_settingsPath)) Settings = JsonSerializer.Deserialize<Settings>(File.ReadAllText(_settingsPath));
+            else Settings = new ();
+        } catch
+        {
+            MessageBox.Show($"Failed to load the settings.\n\nThe Settings have been reseted?", "Error when loading the settings file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            File.Delete(_settingsPath);
+            Settings = new ();
+        }
+
+		if (Directory.Exists(_playersPath))
+        {
+            foreach (FileInfo playerSave in new DirectoryInfo(_playersPath).GetFiles())
             {
                 try
                 {
@@ -43,26 +57,34 @@ internal static class SaveManager
         }
 	}
 
+    internal static void SaveSettings()
+    {
+        Save(_settingsPath, Settings);
+    }
+
 	internal static void SaveCurrentPlayerData()
 	{
-        //if (OpenedFiles.Contains(savePath)) return;
-        Save(PlayersPath, $"{CurrentPlayerData.Name}.json", CurrentPlayerData);
+        Save(_playersPath, $"{CurrentPlayerData.Name}{kExtension}", CurrentPlayerData);
 	}
 
     internal static void DeletePlayerData(PlayerData playerData)
     {
-        string path = Path.Combine(PlayersPath, $"{playerData.Name}.json");
+        string path = Path.Combine(_playersPath, $"{playerData.Name}{kExtension}");
         if (File.Exists(path)) File.Delete(path);
         PlayersData.Remove(playerData);
     }
 
-    private static async Task Save(string path, string fileName, object objectToSave)
-	{
-        //OpenedFiles.Add(path);
-        Directory.CreateDirectory(path);
-        using FileStream fileStream = File.Create(Path.Combine(path, fileName));
+    private static async void Save(string fullPath, object objectToSave)
+    {
+
+        Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+        using FileStream fileStream = File.Create(fullPath);
         await JsonSerializer.SerializeAsync(fileStream, objectToSave, new JsonSerializerOptions { WriteIndented = true });
-        //OpenedFiles.Remove(path);
+    }
+
+    private static void Save(string path, string fileName, object objectToSave)
+	{
+        Save(Path.Combine(path, fileName), objectToSave);
     }
 
 }

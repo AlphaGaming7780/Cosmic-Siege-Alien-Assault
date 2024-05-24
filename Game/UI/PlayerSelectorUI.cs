@@ -12,32 +12,33 @@ namespace K8055Velleman.Game.UI
 {
     internal class PlayerSelectorUI : UIBase
     {
-        Control oldSelected = null;
-        private PlayerData selectedPlayer;
-        private Panel PlayerSelector;
-        private Panel PlayerSelectorScroll;
+        Control _oldSelected = null;
+        PlayerData _selectedPlayer;
 
-        BButton DeletePlayer;
-        BButton SelectePlayer;
-        BButton NewPlayer;
-        BButton CreateNewPlayerButton;
-        BButton CancelNewPalyerButton;
+        Panel _playerSelectorPanel;
+        Panel _playerSelectorScrollPanel;
+
+        BButton _deletePlayerButton;
+        BButton _selectePlayerButton;
+        BButton _newPlayerButton;
+        BButton _createNewPlayerButton;
+        BButton _cancelNewPalyerButton;
 
         internal override void OnCreate()
         {
             base.OnCreate();
-            selectedPlayer = SaveManager.CurrentPlayerData;
+            _selectedPlayer = SaveManager.CurrentPlayerData;
 
-            PlayerSelector = new()
+            _playerSelectorPanel = new()
             {
                 Width = 800,
                 Height = 800,
                 BorderStyle = BorderStyle.FixedSingle,
                 ForeColor = Color.White,
             };
-            PlayerSelector.Location = new(GameWindow.Width / 2 - PlayerSelector.Width / 2, GameWindow.Height / 2 - PlayerSelector.Height / 2);
+            _playerSelectorPanel.Location = new(GameWindow.Width / 2 - _playerSelectorPanel.Width / 2, GameWindow.Height / 2 - _playerSelectorPanel.Height / 2);
 
-            NewPlayer = new()
+            _newPlayerButton = new()
             {
                 Width = 200,
                 Height = 75,
@@ -45,58 +46,58 @@ namespace K8055Velleman.Game.UI
                 Text = K8055.IsConnected ? "New Player (INP4)" : "New Player",
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
             };
-            NewPlayer.Click += NewPlayer_Click;
+            _newPlayerButton.Click += NewPlayer_Click;
 
 
-            DeletePlayer = new()
+            _deletePlayerButton = new()
             {
                 Width = 200,
                 Height = 75,
                 Location = new(50, 675),
                 Text = K8055.IsConnected ? "Delete Player (INP5)" : "Delete Player",
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular),
-                Visible = selectedPlayer != null,
-                Enabled = selectedPlayer != null
+                Visible = _selectedPlayer != null,
+                Enabled = _selectedPlayer != null
             };
-            DeletePlayer.Click += (s, e) => { SaveManager.DeletePlayerData(selectedPlayer); selectedPlayer = null; UpdatePlayerList(); };
+            _deletePlayerButton.Click += (s, e) => { SaveManager.DeletePlayerData(_selectedPlayer); _selectedPlayer = null; UpdatePlayerList(); };
 
-            SelectePlayer = new()
+            _selectePlayerButton = new()
             {
                 Width = 200,
                 Height = 75,
                 Location = new(300, 675),
                 Text = K8055.IsConnected ? "Select Player (INP3)" : "Select Player",
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular),
-                Visible = selectedPlayer != null,
-                Enabled = selectedPlayer != null
+                Visible = _selectedPlayer != null,
+                Enabled = _selectedPlayer != null
             };
-            SelectePlayer.Click += (s, e) => { SaveManager.CurrentPlayerData = selectedPlayer; GameManager.instance.Load(GameStatus.MainMenu); UIManager.DestroyUI<PlayerSelectorUI>(); };
+            _selectePlayerButton.Click += (s, e) => { SaveManager.CurrentPlayerData = _selectedPlayer; GameManager.instance.Load(GameStatus.MainMenu); UIManager.DestroyUI<PlayerSelectorUI>(); };
 
             UpdatePlayerList();
 
-            PlayerSelector.Controls.Add(NewPlayer);
-            PlayerSelector.Controls.Add(DeletePlayer);
-            PlayerSelector.Controls.Add(SelectePlayer);
-            GameWindow.Controls.Add(PlayerSelector);
-            GameWindow.Controls.SetChildIndex(PlayerSelector, 0);
+            _playerSelectorPanel.Controls.Add(_newPlayerButton);
+            _playerSelectorPanel.Controls.Add(_deletePlayerButton);
+            _playerSelectorPanel.Controls.Add(_selectePlayerButton);
+            GameWindow.Controls.Add(_playerSelectorPanel);
+            GameWindow.Controls.SetChildIndex(_playerSelectorPanel, 0);
         }
 
         private void UpdatePlayerList()
         {
-            if(PlayerSelectorScroll is not null)
+            if(_playerSelectorScrollPanel is not null)
             {
-                PlayerSelector.Controls.Remove(PlayerSelectorScroll);
-                PlayerSelectorScroll.Dispose();
-                PlayerSelectorScroll = null;
+                _playerSelectorPanel.Controls.Remove(_playerSelectorScrollPanel);
+                _playerSelectorScrollPanel.Dispose();
+                _playerSelectorScrollPanel = null;
             }
 
-            DeletePlayer.Visible = selectedPlayer != null;
-            DeletePlayer.Enabled = selectedPlayer != null;
+            _deletePlayerButton.Visible = _selectedPlayer != null;
+            _deletePlayerButton.Enabled = _selectedPlayer != null;
 
-            SelectePlayer.Visible = selectedPlayer != null;
-            SelectePlayer.Enabled = selectedPlayer != null;
+            _selectePlayerButton.Visible = _selectedPlayer != null;
+            _selectePlayerButton.Enabled = _selectedPlayer != null;
 
-            PlayerSelectorScroll = new()
+            _playerSelectorScrollPanel = new()
             {
                 Width = 750,
                 Height = 600,
@@ -105,7 +106,7 @@ namespace K8055Velleman.Game.UI
                 AutoScroll = true,
                 Location = new(25, 25),
             };
-            PlayerSelector.Controls.Add(PlayerSelectorScroll);
+            _playerSelectorPanel.Controls.Add(_playerSelectorScrollPanel);
 
             int x = 0;
             foreach (PlayerData playerData in SaveManager.PlayersData)
@@ -162,29 +163,29 @@ namespace K8055Velleman.Game.UI
                     };
                 }
 
-                if (selectedPlayer == playerData) OnPlayerClick(Player, playerData);
+                if (_selectedPlayer == playerData) OnPlayerClick(Player, playerData);
 
-                PlayerSelectorScroll.Controls.Add(Player);
+                _playerSelectorScrollPanel.Controls.Add(Player);
                 x++;
             }
         }
 
         private void OnPlayerClick(Control player, PlayerData playerData)
         {
-            if (oldSelected != null)
+            if (_oldSelected != null)
             {
-                oldSelected.MouseEnter += OnMouseEnter;
-                oldSelected.MouseLeave += OnMouseLeave;
-                oldSelected.BackColor = Color.Transparent;
-                AddEventToPlayerChild(oldSelected);
+                _oldSelected.MouseEnter += OnMouseEnter;
+                _oldSelected.MouseLeave += OnMouseLeave;
+                _oldSelected.BackColor = Color.Transparent;
+                AddEventToPlayerChild(_oldSelected);
             }
-            oldSelected = player;
+            _oldSelected = player;
             onMouseClickColorChange(player);
-            selectedPlayer = playerData;
-            DeletePlayer.Visible = true;
-            DeletePlayer.Enabled = true;
-            SelectePlayer.Enabled = true;
-            SelectePlayer.Visible = true;
+            _selectedPlayer = playerData;
+            _deletePlayerButton.Visible = true;
+            _deletePlayerButton.Enabled = true;
+            _selectePlayerButton.Enabled = true;
+            _selectePlayerButton.Visible = true;
         }
 
         private void RemoveEventToPlayerChild(Control player)
@@ -221,8 +222,8 @@ namespace K8055Velleman.Game.UI
 
         private void NewPlayer_Click(object sender, EventArgs e)
         {
-            PlayerSelector.Enabled = false;
-            PlayerSelector.Visible = false;
+            _playerSelectorPanel.Enabled = false;
+            _playerSelectorPanel.Visible = false;
 
             Panel panel = new()
             {
@@ -250,7 +251,7 @@ namespace K8055Velleman.Game.UI
                 Font = new Font(UIManager.CustomFonts.Families[0], 30f, FontStyle.Bold),
             };
 
-            CreateNewPlayerButton = new()
+            _createNewPlayerButton = new()
             {
                 Width = 200,
                 Height = 50,
@@ -258,7 +259,7 @@ namespace K8055Velleman.Game.UI
                 Font = new Font(FontFamily.GenericSansSerif, K8055.IsConnected ? 15f : 17f, FontStyle.Regular),
                 Location = new(275, 125),
             };
-            CreateNewPlayerButton.Click += (s, e) =>
+            _createNewPlayerButton.Click += (s, e) =>
             {
                 bool already = false;
                 foreach (PlayerData playerData in SaveManager.PlayersData)
@@ -271,12 +272,12 @@ namespace K8055Velleman.Game.UI
                 }
                 if (!already)
                 {
-                    selectedPlayer = new()
+                    _selectedPlayer = new()
                     {
                         Name = textBox.Text,
                     };
-                    SaveManager.PlayersData.Add(selectedPlayer);
-                    SaveManager.CurrentPlayerData = selectedPlayer;
+                    SaveManager.PlayersData.Add(_selectedPlayer);
+                    SaveManager.CurrentPlayerData = _selectedPlayer;
                     SaveManager.SaveCurrentPlayerData();
                     panel.Dispose();
                     panel = null;
@@ -285,7 +286,7 @@ namespace K8055Velleman.Game.UI
                 }
             };
 
-            CancelNewPalyerButton = new()
+            _cancelNewPalyerButton = new()
             {
                 Width = 200,
                 Height = 50,
@@ -293,10 +294,10 @@ namespace K8055Velleman.Game.UI
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular),
                 Location = new(25, 125),
             };
-            CancelNewPalyerButton.Click += (s, e) => { panel.Dispose(); PlayerSelector.Visible = true; PlayerSelector.Enabled = true; };
+            _cancelNewPalyerButton.Click += (s, e) => { panel.Dispose(); _playerSelectorPanel.Visible = true; _playerSelectorPanel.Enabled = true; };
 
-            panel.Controls.Add(CreateNewPlayerButton);
-            panel.Controls.Add(CancelNewPalyerButton);
+            panel.Controls.Add(_createNewPlayerButton);
+            panel.Controls.Add(_cancelNewPalyerButton);
             panel.Controls.Add(label);
             panel.Controls.Add(textBox);
 
@@ -327,65 +328,66 @@ namespace K8055Velleman.Game.UI
         internal override void OnDestroy()
         {
             base.OnDestroy();
-            GameWindow.Controls.Remove(PlayerSelector);
-            PlayerSelector.Dispose();
-            PlayerSelector = null;
+            GameWindow.Controls.Remove(_playerSelectorPanel);
+            _playerSelectorPanel.Dispose();
+            _playerSelectorPanel = null;
         }
 
 
         internal override void OnConnectionChange()
         {
-            NewPlayer.Text = K8055.IsConnected ? "New Player (INP4)" : "New Player";
-            DeletePlayer.Text = K8055.IsConnected ? "Delete Player (INP5)" : "Delete Player";
-            SelectePlayer.Text = K8055.IsConnected ? "Select Player (INP3)" : "Select Player";
-            if(!PlayerSelector.Visible)
+            _newPlayerButton.Text = K8055.IsConnected ? "New Player (INP4)" : "New Player";
+            _deletePlayerButton.Text = K8055.IsConnected ? "Delete Player (INP5)" : "Delete Player";
+            _selectePlayerButton.Text = K8055.IsConnected ? "Select Player (INP3)" : "Select Player";
+            if(!_playerSelectorPanel.Visible)
             {
-                CancelNewPalyerButton.Text = K8055.IsConnected ? "Cancel (INP5)" : "Cancel";
-                CreateNewPlayerButton.Text = K8055.IsConnected ? "New Player (INP1)" : "New Player";
+                _cancelNewPalyerButton.Text = K8055.IsConnected ? "Cancel (INP5)" : "Cancel";
+                _createNewPlayerButton.Text = K8055.IsConnected ? "New Player (INP1)" : "New Player";
             }
         }
 
         internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
         {
+            if (!_playerSelectorPanel.Enabled) return;
             if (digitalChannel == K8055.DigitalChannel.B1)
             {
-                if (PlayerSelector.Visible)
+                if (_playerSelectorPanel.Visible)
                 {
-                    int x = SaveManager.PlayersData.IndexOf(selectedPlayer);
+                    int x = SaveManager.PlayersData.IndexOf(_selectedPlayer);
                     int i = x <= 0 ? SaveManager.PlayersData.Count - 1 : x - 1;
-                    selectedPlayer = SaveManager.PlayersData[i];
+                    _selectedPlayer = SaveManager.PlayersData[i];
                     UpdatePlayerList();
                 }
                 else 
                 {
-                    CreateNewPlayerButton?.PerformClick();
+                    _createNewPlayerButton?.PerformClick();
                 }
             }
 
             else if (digitalChannel == K8055.DigitalChannel.B2)
             {
-                if (PlayerSelector.Visible)
+                if (_playerSelectorPanel.Visible)
                 {
-                    int x = SaveManager.PlayersData.IndexOf(selectedPlayer);
+                    int x = SaveManager.PlayersData.IndexOf(_selectedPlayer);
                     int i = x >= SaveManager.PlayersData.Count - 1 ? 0 : x + 1;
-                    selectedPlayer = SaveManager.PlayersData[i];
+                    _selectedPlayer = SaveManager.PlayersData[i];
                     UpdatePlayerList();
                 }
             }
             else if (digitalChannel == K8055.DigitalChannel.B3)
             {
-                if(PlayerSelector.Visible && selectedPlayer != null) SelectePlayer.PerformClick();  
+                if(_playerSelectorPanel.Visible && _selectedPlayer != null) _selectePlayerButton.PerformClick();  
             }
             else if (digitalChannel == K8055.DigitalChannel.B4)
             {
-                if(PlayerSelector.Visible) NewPlayer.PerformClick();
+                if(_playerSelectorPanel.Visible) _newPlayerButton.PerformClick();
             }
             else if (digitalChannel == K8055.DigitalChannel.B5)
             {
-                if (PlayerSelector.Visible) { if (selectedPlayer != null) DeletePlayer.PerformClick(); }
+                if (_playerSelectorPanel.Visible) { if (_selectedPlayer != null) _deletePlayerButton.PerformClick(); }
                 else
                 {
-                    CancelNewPalyerButton?.PerformClick();
+                    _cancelNewPalyerButton?.PerformClick();
                 }
             }
         }

@@ -1,45 +1,37 @@
-﻿using K8055Velleman.Game.Entities;
-using K8055Velleman.Game.Saves;
+﻿using K8055Velleman.Game.Saves;
 using K8055Velleman.Lib.ClassExtension;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Numerics;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace K8055Velleman.Game.UI
 {
 	internal class MainMenuUI : UIBase
 	{
 
-		internal Panel mainMenu;
-		internal Panel VellmanBoardStatus;
-		internal Label VellmanBoardStatusLabel;
-        internal Label GameName;
-        internal Label PlayerName;
-		internal BButton PlayButton;
-		internal BButton SettingsButton;
-		internal BButton QuitButton;
-		private BButton changePlayer;
-        private BButton creditMenuButton;
-        private Panel scoreboard;
+        private Control _mainMenu;
+        private Panel _vellmanBoardStatusPanel;
+        private Label _vellmanBoardStatusLabel;
+        private BButton _playButton;
+        private BButton _settingsButton;
+		private BButton _quitButton;
+		private BButton _changePlayer;
+        private BButton _creditMenuButton;
+        private Panel _scoreboard;
 
 		internal override void OnCreate()
 		{
 			base.OnCreate();
-            mainMenu = new()
+            _mainMenu = new()
 			{
 				Location = new Point(0, 0),
 				Width = GameWindow.Width,
 				Height = GameWindow.Height,
 				BackColor = Color.Black,
-				Enabled = true,
-				Visible = true,
-				Name = "MainMenuPanel"
 			};
 
-			GameName = new()
+            Label GameName = new()
 			{
 				Name = "MainMenuGameName",
 				Text = "Cosmic Siege: Alien Assault",
@@ -50,9 +42,9 @@ namespace K8055Velleman.Game.UI
 				ForeColor = Color.WhiteSmoke,
 				BorderStyle = BorderStyle.FixedSingle,
 			};
-			GameName.Location = new(mainMenu.Width/2 - GameName.Width/2, (int)(100 * UIRatio.y));
+			GameName.Location = new(_mainMenu.Width/2 - GameName.Width/2, (int)(100 * UIRatio.y));
 
-			PlayerName = new()
+            Label PlayerName = new()
 			{
 				Text = SaveManager.CurrentPlayerData?.Name,
 				Location = new Point(25,25),
@@ -61,26 +53,26 @@ namespace K8055Velleman.Game.UI
 				ForeColor= Color.WhiteSmoke,
             };
 
-			VellmanBoardStatus = new()
+			_vellmanBoardStatusPanel = new()
 			{
 				Width = 150,//(int)(150 * UIRatio.x),
 				Height = 30,//(int)(30 * UIRatio.y),
 				Name = "MainMenuStatusPanel",
 				BackColor = K8055.IsConnected ? Color.Green : Color.Red
 			};
-			VellmanBoardStatus.Location = new(mainMenu.Right - 10 - VellmanBoardStatus.Width - RightOffeset, mainMenu.Location.Y + 10);
+			_vellmanBoardStatusPanel.Location = new(_mainMenu.Right - 10 - _vellmanBoardStatusPanel.Width - RightOffeset, _mainMenu.Location.Y + 10);
 
-			VellmanBoardStatusLabel = new()
+			_vellmanBoardStatusLabel = new()
 			{
 				Name = "MainMenuStatusPanelLabel",
-				Height = VellmanBoardStatus.Height,
-				Width = VellmanBoardStatus.Width,
+				Height = _vellmanBoardStatusPanel.Height,
+				Width = _vellmanBoardStatusPanel.Width,
 				Text = K8055.IsConnected ? "Connected" : "Disconnected",
 				TextAlign = ContentAlignment.MiddleCenter,
 				Font = new(FontFamily.GenericSerif, 15f, FontStyle.Regular),
 			};
 
-			PlayButton = new()
+			_playButton = new()
 			{
 				Name = "MainMenuButtonPlay",
 				Height = (int)(50 * UIRatio.y),
@@ -89,10 +81,10 @@ namespace K8055Velleman.Game.UI
 				ForeColor = Color.White,
 				Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 			};
-			PlayButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - PlayButton.Width/2, (int)(275 * UIRatio.y));
-			PlayButton.Click += (s, e) => { GameManager.instance.Load(GameStatus.PreGame); };
+			_playButton.Location = new(_mainMenu.Left + _mainMenu.Width / 2 - _playButton.Width/2, (int)(275 * UIRatio.y));
+			_playButton.Click += (s, e) => { GameManager.instance.Load(GameStatus.PreGame); };
 
-			SettingsButton = new()
+			_settingsButton = new()
 			{
 				Name = "MainMenuButtonSettings",
 				Height = (int)(50 * UIRatio.y),
@@ -101,9 +93,10 @@ namespace K8055Velleman.Game.UI
                 ForeColor = Color.White,
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 			};
-			SettingsButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - SettingsButton.Width / 2, (int)(375 * UIRatio.y));
+			_settingsButton.Location = new(_mainMenu.Left + _mainMenu.Width / 2 - _settingsButton.Width / 2, (int)(375 * UIRatio.y));
+			_settingsButton.Click += (s, e) => { UIManager.GetOrCreateUI<SettingsUI>().Show(_mainMenu); };
 
-			QuitButton = new()
+			_quitButton = new()
 			{
 				Name = "MainMenuButtonQuit",
 				Height = (int)(50 * UIRatio.y),
@@ -112,12 +105,12 @@ namespace K8055Velleman.Game.UI
                 ForeColor = Color.White,
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 			};
-			QuitButton.Location = new(mainMenu.Left + mainMenu.Width / 2 - QuitButton.Width / 2, (int)(475 * UIRatio.y));
-			QuitButton.Click += (s, e) => { GameWindow.Close(); };
+			_quitButton.Location = new(_mainMenu.Left + _mainMenu.Width / 2 - _quitButton.Width / 2, (int)(475 * UIRatio.y));
+			_quitButton.Click += (s, e) => { GameWindow.Close(); };
 
 			UpdateScoreboard();
 
-			creditMenuButton = new()
+			_creditMenuButton = new()
 			{
 				Text = K8055.IsConnected ? "Credit (INP4)" : "Credit",
                 Width = 256,
@@ -125,18 +118,20 @@ namespace K8055Velleman.Game.UI
                 ForeColor = Color.White,
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
             };
-			creditMenuButton.Location = new(mainMenu.Width - creditMenuButton.Width - 50, mainMenu.Height - creditMenuButton.Height - 50 );
-			creditMenuButton.Click += (s, e) => { ShowCreditMenu(); };
+			_creditMenuButton.Location = new(_mainMenu.Width - _creditMenuButton.Width - 50, _mainMenu.Height - _creditMenuButton.Height - 50 );
+			_creditMenuButton.Click += (s, e) => { ShowCreditMenu(); };
 
-			VellmanBoardStatus.Controls.Add(VellmanBoardStatusLabel);
-			mainMenu.Controls.Add(VellmanBoardStatus);
-			mainMenu.Controls.Add(GameName);
-            mainMenu.Controls.Add(PlayerName);
-            mainMenu.Controls.Add(PlayButton);
-			mainMenu.Controls.Add(SettingsButton);
-			mainMenu.Controls.Add(QuitButton);
-			mainMenu.Controls.Add(creditMenuButton);
-			GameWindow.Controls.Add(mainMenu);
+			_playButton.Focus();
+
+			_vellmanBoardStatusPanel.Controls.Add(_vellmanBoardStatusLabel);
+			_mainMenu.Controls.Add(_vellmanBoardStatusPanel);
+			_mainMenu.Controls.Add(GameName);
+            _mainMenu.Controls.Add(PlayerName);
+            _mainMenu.Controls.Add(_playButton);
+			_mainMenu.Controls.Add(_settingsButton);
+			_mainMenu.Controls.Add(_quitButton);
+			_mainMenu.Controls.Add(_creditMenuButton);
+			GameWindow.Controls.Add(_mainMenu);
             Console.WriteLine("Main menu destroyed");
         }
 
@@ -151,51 +146,53 @@ namespace K8055Velleman.Game.UI
 			base.OnDestroy();
 			Console.WriteLine("Main menu destroyed");
 			AudioManager.StopSound(AudioFile.MouseOver);
-			GameWindow.Controls.Remove(mainMenu);
-			mainMenu.Dispose();
+			GameWindow.Controls.Remove(_mainMenu);
+			_mainMenu.Dispose();
 		}
 
         internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
 		{
-			if(digitalChannel == K8055.DigitalChannel.B1) PlayButton.PerformClick();
-			else if(digitalChannel == K8055.DigitalChannel.B2) SettingsButton.PerformClick();
-			else if(digitalChannel == K8055.DigitalChannel.B3) changePlayer.PerformClick();
-			else if(digitalChannel == K8055.DigitalChannel.B4) creditMenuButton.PerformClick();
-			else if(digitalChannel == K8055.DigitalChannel.B5) QuitButton.PerformClick();
+			if(!_mainMenu.Enabled) return;
+			if(digitalChannel == K8055.DigitalChannel.B1) _playButton.PerformClick();
+			else if(digitalChannel == K8055.DigitalChannel.B2) _settingsButton.PerformClick();
+			else if(digitalChannel == K8055.DigitalChannel.B3) _changePlayer.PerformClick();
+			else if(digitalChannel == K8055.DigitalChannel.B4) _creditMenuButton.PerformClick();
+			else if(digitalChannel == K8055.DigitalChannel.B5) _quitButton.PerformClick();
 		}
 
         internal override void OnConnectionChange()
 		{
 			Console.WriteLine(K8055.IsConnected);
-			VellmanBoardStatus.BackColor = K8055.IsConnected ? Color.Green : Color.Red;
-			VellmanBoardStatusLabel.Text = K8055.IsConnected ? "Connected" : "Disconnected";
-			PlayButton.Text = K8055.IsConnected ? "Play (INP1)" : "Play";
-			SettingsButton.Text = K8055.IsConnected ? "Settings (INP2)" : "Settings";
-            changePlayer.Text = K8055.IsConnected ? "Change Player (INP3)" : "Change Player";
-            creditMenuButton.Text = K8055.IsConnected ? "Credit (INP4)" : "Credit";
-            QuitButton.Text = K8055.IsConnected ? "Quit (INP5)" : "Quit";
+			_vellmanBoardStatusPanel.BackColor = K8055.IsConnected ? Color.Green : Color.Red;
+			_vellmanBoardStatusLabel.Text = K8055.IsConnected ? "Connected" : "Disconnected";
+			_playButton.Text = K8055.IsConnected ? "Play (INP1)" : "Play";
+			_settingsButton.Text = K8055.IsConnected ? "Settings (INP2)" : "Settings";
+            _changePlayer.Text = K8055.IsConnected ? "Change Player (INP3)" : "Change Player";
+			_changePlayer.Font = new Font(FontFamily.GenericSansSerif, K8055.IsConnected ? 15f : 17f, FontStyle.Regular);
+            _creditMenuButton.Text = K8055.IsConnected ? "Credit (INP4)" : "Credit";
+            _quitButton.Text = K8055.IsConnected ? "Quit (INP5)" : "Quit";
         }
 
 		private void UpdateScoreboard()
 		{
-			if(scoreboard != null)
+			if(_scoreboard != null)
 			{
-				mainMenu.Controls.Remove(scoreboard);
-				scoreboard.Dispose();
-				scoreboard = null;
+				_mainMenu.Controls.Remove(_scoreboard);
+				_scoreboard.Dispose();
+				_scoreboard = null;
 			}
-			scoreboard = new()
+			_scoreboard = new()
             {
                 Width = 300,
                 Height = 500,
                 BorderStyle = BorderStyle.FixedSingle,
                 ForeColor = Color.White,
             };
-            scoreboard.Location = new(mainMenu.Width / 10 * 9 - scoreboard.Width / 2, mainMenu.Height / 2 - scoreboard.Height / 2);
+            _scoreboard.Location = new(_mainMenu.Width / 10 * 9 - _scoreboard.Width / 2, _mainMenu.Height / 2 - _scoreboard.Height / 2);
 
 			Label label = new()
 			{
-				Width = scoreboard.Width,
+				Width = _scoreboard.Width,
 				Height = 50,
 				Text = "Scoreboard",
 				Location = new(0,0),
@@ -206,24 +203,24 @@ namespace K8055Velleman.Game.UI
 
             Panel PlayerListScroll = new()
             {
-                Width = scoreboard.Width - 50,
-                Height = scoreboard.Height - 100 - label.Height,
+                Width = _scoreboard.Width - 50,
+                Height = _scoreboard.Height - 100 - label.Height,
                 BorderStyle = BorderStyle.FixedSingle,
                 ForeColor = Color.White,
                 AutoScroll = true,
                 Location = new(25, label.Height),
             };
 
-			changePlayer = new()
+			_changePlayer = new()
 			{
-				Width = scoreboard.Width - 50,
+				Width = _scoreboard.Width - 50,
                 Height = 50,
                 Location = new(300, 675),
                 Text = K8055.IsConnected ? "Change Player (INP3)" : "Change Player",
 				Font = new Font(FontFamily.GenericSansSerif, K8055.IsConnected ? 15f : 17f, FontStyle.Regular),
             };
-			changePlayer.Location = new(25, scoreboard.Height - changePlayer.Height - 25);
-            changePlayer.Click += (s, e) => { GameManager.instance.Load(GameStatus.PlayerSelector); };
+			_changePlayer.Location = new(25, _scoreboard.Height - _changePlayer.Height - 25);
+            _changePlayer.Click += (s, e) => { GameManager.instance.Load(GameStatus.PlayerSelector); };
 
             int x = 0;
 			int offsetSpace = 20;
@@ -270,11 +267,11 @@ namespace K8055Velleman.Game.UI
                 PlayerListScroll.Controls.Add(Player);	
                 x++;
             }
-			scoreboard.Controls.Add(label);
-			scoreboard.Controls.Add(PlayerListScroll);
-			scoreboard.Controls.Add(changePlayer);
+			_scoreboard.Controls.Add(label);
+			_scoreboard.Controls.Add(PlayerListScroll);
+			_scoreboard.Controls.Add(_changePlayer);
 
-            mainMenu.Controls.Add(scoreboard);
+            _mainMenu.Controls.Add(_scoreboard);
         }
 	}
 }

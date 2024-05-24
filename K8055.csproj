@@ -85,9 +85,9 @@
     <Compile Include="Game\Entities\TurretStratagemBase.cs" />
     <Compile Include="Game\GameManager.cs" />
     <Compile Include="Game\AudioManager.cs" />
-    <Compile Include="Game\Interface\LivingEntity.cs" />
     <Compile Include="Game\SaveManager.cs" />
     <Compile Include="Game\Saves\PlayerData.cs" />
+    <Compile Include="Game\Saves\Settings.cs" />
     <Compile Include="Game\Saves\StratagemData.cs" />
     <Compile Include="Game\Systems\EntitySystem.cs" />
     <Compile Include="Game\Systems\GameSystem.cs" />
@@ -98,11 +98,14 @@
     <Compile Include="Game\Systems\MainMenuSystem.cs" />
     <Compile Include="Game\UIManager.cs" />
     <Compile Include="Game\UI\CreditUI.cs" />
+    <Compile Include="Game\UI\EndGameUI.cs" />
     <Compile Include="Game\UI\GameUI.cs" />
     <Compile Include="Game\UI\MainMenuUI.cs" />
+    <Compile Include="Game\UI\PauseUI.cs" />
     <Compile Include="Game\UI\PlayerSelectorUI.cs" />
     <Compile Include="Game\UI\PlayerUI.cs" />
     <Compile Include="Game\UI\PreGameUI.cs" />
+    <Compile Include="Game\UI\SettingsUI.cs" />
     <Compile Include="Game\UI\UIBase.cs" />
     <Compile Include="Game\Utility.cs" />
     <Compile Include="Lib\ClassExtension\ButtonExtension.cs">

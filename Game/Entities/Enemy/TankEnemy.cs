@@ -13,7 +13,7 @@ namespace K8055Velleman.Game.Entities.Enemy
 
         internal override int Damage => 4;
 
-        internal override int Cost => 2;
+        internal override int Cost => 4;
 
         internal override float Speed => 0.75f;
 

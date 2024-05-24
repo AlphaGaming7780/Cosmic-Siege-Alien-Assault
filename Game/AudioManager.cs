@@ -11,24 +11,20 @@ public enum AudioFile
 	BackGroundMusic,
 }
 
-public struct AudioVolume
+public struct AudioVolume()
 {
-	float gameVolume = 1f;
-	float uiVolume = 1f;
-	float musicVolume = 0.05f;
-	float effectVolume = 1f;
-	public AudioVolume()
-	{
-
-	}
+    readonly float GameVolume { get { return SaveManager.Settings.GameVolume; } set { SaveManager.Settings.GameVolume = value; } }
+	readonly float UiVolume { get { return SaveManager.Settings.UiVolume; } set { SaveManager.Settings.UiVolume = value; } }
+	readonly float MusicVolume { get { return SaveManager.Settings.MusicVolume; } set { SaveManager.Settings.MusicVolume = value; } }
+    readonly float EffectVolume { get { return SaveManager.Settings.EffectVolume; } set { SaveManager.Settings.EffectVolume = value; } }
 
 	public readonly float GetVolumeByAudioFile(AudioFile audioFile)
 	{
         return audioFile switch
         {
-            AudioFile.MouseOver => uiVolume * gameVolume,
-            AudioFile.BackGroundMusic => musicVolume * gameVolume,
-            _ => gameVolume,
+            AudioFile.MouseOver => UiVolume * GameVolume,
+            AudioFile.BackGroundMusic => MusicVolume * GameVolume,
+            _ => GameVolume,
         };
     }
 

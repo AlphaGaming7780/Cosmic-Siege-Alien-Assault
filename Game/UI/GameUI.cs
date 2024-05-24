@@ -10,12 +10,17 @@ namespace K8055Velleman.Game.UI
 {
 	internal class GameUI : UIBase
 	{
-		internal Panel GamePanel { get; private set; }
+		List<StratagemEntityBase> _StratagemEntityBases;
+		StratagemEntityBase _StratagemEntity;
+
+        internal Panel GamePanel { get; private set; }
 		Panel selectedStratPanel;
 		Panel StratInfoPanel;
-		Panel PauseMenu;
 		Panel EndGameMenu;
 		GameSystem gameSystem;
+
+		BButton _FirstUpgrade;
+		BButton _SecondeUpgrade;
 
 		private bool upgrading = false;
 
@@ -47,10 +52,8 @@ namespace K8055Velleman.Game.UI
 			base.OnDestroy();
 			GameWindow.Controls.Remove(GamePanel);
 			GamePanel.Dispose();
-			PauseMenu?.Dispose();
 			EndGameMenu?.Dispose();
 			GamePanel = null;
-			PauseMenu = null;
 			EndGameMenu = null;
 		}
 
@@ -61,6 +64,7 @@ namespace K8055Velleman.Game.UI
 
 		internal void UpdateStratagemList(List<StratagemEntityBase> stratagemEntityBases)
 		{
+			_StratagemEntityBases = stratagemEntityBases;
 			int i = 0;
 			foreach(StratagemEntityBase stratagemEntityBase in stratagemEntityBases) 
 			{
@@ -81,6 +85,9 @@ namespace K8055Velleman.Game.UI
 			if (StratInfoPanel is not null) HideStratInfo();
 			if(stratagemEntityBase.level >= stratagemEntityBase.MaxLevel) upgrade = false;
 			upgrading = upgrade;
+
+			_StratagemEntity = stratagemEntityBase;
+
 			StratInfoPanel = new()
 			{
 				Width = 622,
@@ -212,7 +219,7 @@ namespace K8055Velleman.Game.UI
 
 				if(upgrade)
 				{
-					BButton upgradeShootSpeed = new()
+                    _FirstUpgrade = new()
 					{
                         Text = "Shoot Speed",
 						Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
@@ -221,20 +228,20 @@ namespace K8055Velleman.Game.UI
                         Height = upgradeGroupBox.Height - 50,
 						Location = new(25,25),
                     };
-					upgradeShootSpeed.GotFocus += (s, e) => { 
+                    _FirstUpgrade.GotFocus += (s, e) => { 
 						ShotSpeed.Text = $"Shooting speed : {turretStratagem.ActionSpeed / 1000d}s - {UpgradesValue.ActionSpeed/1000d}s"; 
-						double dPS = turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d); 
-						double newDPS = Math.Round((turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d - 0.1d)) - dPS, 2); 
+						double dPS = Math.Round(turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d), 3); 
+						double newDPS = Math.Round((turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d - 0.1d)) - dPS, 3); 
 						DPS.Text = $"DPS : {dPS} D/s + {newDPS} D/s"; 
 					};
-                    upgradeShootSpeed.LostFocus += (s, e) => { 
+                    _FirstUpgrade.LostFocus += (s, e) => { 
 						ShotSpeed.Text = $"Shooting speed : {turretStratagem.ActionSpeed / 1000d}s";
 						DPS.Text = $"DPS : {turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d)} D/s";
 					};
-                    upgradeShootSpeed.Click += (s, e) => { gameSystem.UpgradeStratagem(turretStratagem, Upgrades.ActionSpeed); ShowStratInfo(stratagemEntityBase, true); };
-                    upgradeGroupBox.Controls.Add(upgradeShootSpeed);
+                    _FirstUpgrade.Click += (s, e) => { gameSystem.UpgradeStratagem(turretStratagem, Upgrades.ActionSpeed); ShowStratInfo(stratagemEntityBase, true); };
+                    upgradeGroupBox.Controls.Add(_FirstUpgrade);
 
-                    BButton upgradeDamage = new()
+                    _SecondeUpgrade = new()
                     {
                         Text = "Damage",
                         Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
@@ -243,21 +250,27 @@ namespace K8055Velleman.Game.UI
                         Height = upgradeGroupBox.Height - 50,
                         Location = new(upgradeGroupBox.Width / 2 + 25, 25),
                     };
-                    upgradeDamage.GotFocus += (s, e) => {
+                    _SecondeUpgrade.GotFocus += (s, e) => {
 						Damage.Text = $"Bullet Damage : {turretStratagem.bulletInfo.Damage} + {UpgradesValue.BulletDamage}";
                         double dPS = turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d);
                         double newDPS = ((turretStratagem.bulletInfo.Damage + UpgradesValue.BulletDamage) / (turretStratagem.ActionSpeed / 1000d)) - dPS;
                         DPS.Text = $"DPS : {Math.Round(dPS, 3)} D/s + {Math.Round(newDPS, 3)} D/s";
                     };
-                    upgradeDamage.LostFocus += (s, e) => {
+                    _SecondeUpgrade.LostFocus += (s, e) => {
                         Damage.Text = $"Bullet Damage : {turretStratagem.bulletInfo.Damage}";
                         DPS.Text = $"DPS : {Math.Round(turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d),3)} D/s";
                     };
-					upgradeDamage.Click += (s, e) => { gameSystem.UpgradeStratagem(turretStratagem, Upgrades.BulletDamage); ShowStratInfo(stratagemEntityBase, true); };
-                    upgradeGroupBox.Controls.Add(upgradeDamage);
+                    _SecondeUpgrade.Click += (s, e) => { gameSystem.UpgradeStratagem(turretStratagem, Upgrades.BulletDamage); ShowStratInfo(stratagemEntityBase, true); };
+                    upgradeGroupBox.Controls.Add(_SecondeUpgrade);
                 }
 
 			}
+
+			if(upgrade && K8055.IsConnected)
+			{
+				_FirstUpgrade.Text = $"{_FirstUpgrade.Text} (INP1)";
+				_SecondeUpgrade.Text = $"{_SecondeUpgrade.Text} (INP3)";
+            }
 
 			GamePanel.Controls.Add(StratInfoPanel);
 			GamePanel.Controls.SetChildIndex(StratInfoPanel, 0);
@@ -266,82 +279,13 @@ namespace K8055Velleman.Game.UI
 
 		internal void HideStratInfo()
 		{
+			_FirstUpgrade = null;
+			_SecondeUpgrade = null;
+			upgrading = false;
+			_StratagemEntity = null;
 			GamePanel.Controls.Remove(StratInfoPanel);
 			StratInfoPanel.Dispose();
 			StratInfoPanel = null;
-		}
-
-		internal void HidePauseMenu()
-		{
-			GamePanel.Enabled = true;
-			GameWindow.Controls.Remove(PauseMenu);
-			PauseMenu?.Dispose();
-		}
-
-		internal void ShowPauseMenu()
-		{
-			GamePanel.Enabled = false;
-			PauseMenu = new()
-			{
-				Width = 720,
-				Height = 325,
-				ForeColor = Color.White,
-				BorderStyle = BorderStyle.FixedSingle,
-			};
-			PauseMenu.Location = new(GameWindow.Width / 2 - PauseMenu.Width / 2, GameWindow.Height / 2 - PauseMenu.Height / 2);
-
-			Label gamePausedText = new()
-			{
-				Text = "Game Paused",
-				Font = new Font(UIManager.CustomFonts.Families[0], 30f, FontStyle.Bold),
-				ForeColor = Color.White,
-				//AutoSize = true,
-				Width = 500,
-				Height = 50,
-				TextAlign = ContentAlignment.MiddleCenter,
-				BorderStyle = BorderStyle.FixedSingle,
-			};
-			gamePausedText.Location = new(PauseMenu.Width / 2 - gamePausedText.Width / 2, 25);
-
-			BButton resumeButton = new()
-			{
-				Text = "Resume",
-				Width = 300,
-				Height = 50,
-				ForeColor = Color.White,
-				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
-			};
-			resumeButton.Click += (s, e) => { gameSystem.UnPauseGame(); };
-			resumeButton.Location = new(PauseMenu.Width / 2 - resumeButton.Width / 2, 100);
-
-			BButton settingsButton = new()
-			{
-				Text = "Settings",
-				Width = 300,
-				Height = 50,
-				ForeColor = Color.White,
-				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
-			};
-			settingsButton.Click += (s, e) => { GameWindow.Clock.Enabled = true; GameManager.instance.Load(GameStatus.MainMenu); };
-			settingsButton.Location = new(PauseMenu.Width / 2 - settingsButton.Width / 2, 175);
-
-			BButton mainMenuButton = new()
-			{
-				Text = "Main Menu",
-				Width = 300,
-				Height = 50,
-				ForeColor = Color.White,
-				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
-			};
-			mainMenuButton.Click += (s, e) => { GameWindow.Clock.Enabled = true; GameManager.instance.Load(GameStatus.MainMenu); };
-			mainMenuButton.Location = new(PauseMenu.Width / 2 - mainMenuButton.Width / 2, 250);
-
-			PauseMenu.Controls.Add(gamePausedText);
-			PauseMenu.Controls.Add(resumeButton);
-			PauseMenu.Controls.Add(settingsButton);
-			PauseMenu.Controls.Add(mainMenuButton);
-			GameWindow.Controls.Add(PauseMenu);
-			GameWindow.Controls.SetChildIndex(PauseMenu, 0);
 		}
 
 		internal void ShowEndGameMenu()
@@ -440,12 +384,51 @@ namespace K8055Velleman.Game.UI
 
         internal override void OnConnectionChange()
         {
-            
+			if (_FirstUpgrade != null) _FirstUpgrade.Text = K8055.IsConnected ? $"{_FirstUpgrade.Text} (INP1)" : _FirstUpgrade.Text.Replace(" (INP1)", "");
+			if (_SecondeUpgrade != null) _SecondeUpgrade.Text = K8055.IsConnected ? $"{_SecondeUpgrade.Text} (INP3)" : _SecondeUpgrade.Text.Replace(" (INP3)", "");
         }
 
         internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
         {
-            
+			if(!GamePanel.Enabled) return;
+			if (digitalChannel == K8055.DigitalChannel.B1)
+			{
+                if (!upgrading) ShowStratInfo(0);
+				else if(_FirstUpgrade != null)
+				{
+					if(!_FirstUpgrade.Focused) _FirstUpgrade.Focus();
+					else _FirstUpgrade.PerformClick();
+				}
+            }
+			else if (digitalChannel == K8055.DigitalChannel.B2)
+			{
+                if (!upgrading) ShowStratInfo(1);
+            }
+			else if (digitalChannel == K8055.DigitalChannel.B3)
+			{
+                if (!upgrading) ShowStratInfo(2);
+                else if (_SecondeUpgrade != null)
+                {
+                    if (!_SecondeUpgrade.Focused) _SecondeUpgrade.Focus();
+                    else _SecondeUpgrade.PerformClick();
+                }
+            }
+			else if (digitalChannel == K8055.DigitalChannel.B4)
+			{
+                if (!upgrading) ShowStratInfo(3);
+            }
+			else if (digitalChannel == K8055.DigitalChannel.B5)
+			{
+				if(StratInfoPanel != null) HideStratInfo();
+				else gameSystem.PauseLogique();
+			}
         }
+
+		private void ShowStratInfo(int index)
+		{
+			if (_StratagemEntityBases.Count <= index) return;
+
+			ShowStratInfo(_StratagemEntityBases[index], _StratagemEntity == _StratagemEntityBases[index]);
+		}
     }
 }

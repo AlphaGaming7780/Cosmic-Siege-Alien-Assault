@@ -17,16 +17,16 @@ namespace K8055Velleman.Game.UI;
 internal class PreGameUI : UIBase
 {
 
-	Control preGameUI;
-	Label playerMoney;
-	Control stratagemList;
-	BButton backButton;
-	BButton startGameButton;
-	Panel selectedStratPanel;
+	Control _preGameUI;
+	Label _playerMoney;
+	Control _stratagemList;
+	BButton _backButton;
+	BButton _startGameButton;
+	Panel _selectedStratPanel;
 
-	Panel StratagemInfo;
+	Panel _stratagemInfo;
 
-	EntitySystem entitySystem;
+	EntitySystem _entitySystem;
 
 
     Dictionary<string, StratagemEntityBase> stratagemEntities = [];
@@ -38,16 +38,16 @@ internal class PreGameUI : UIBase
 	internal override void OnCreate()
 	{
 		base.OnCreate();
-		entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
+		_entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
 
-		preGameUI = new()
+		_preGameUI = new()
 		{
 			Width = GameWindow.Width,
 			Height = GameWindow.Height,
 			BackColor = Color.Black,
 		};
 
-		playerMoney = new()
+		_playerMoney = new()
 		{
 			Text = $"{SaveManager.CurrentPlayerData?.Money} 💎",
 			Top = 25,
@@ -57,9 +57,9 @@ internal class PreGameUI : UIBase
 			BorderStyle = BorderStyle.FixedSingle,
             ForeColor = Color.WhiteSmoke,
         };
-		playerMoney.Left = preGameUI.Width - playerMoney.Width;
+		_playerMoney.Left = _preGameUI.Width - _playerMoney.Width;
 
-        backButton = new()
+        _backButton = new()
 		{
 			Width = 300,
 			Height = 100,
@@ -68,9 +68,9 @@ internal class PreGameUI : UIBase
 			ForeColor = Color.White,
 			Font = new(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
 		};
-		backButton.Click += (sender, e) => { GameManager.instance.Load(GameStatus.MainMenu); };
+		_backButton.Click += (sender, e) => { GameManager.instance.Load(GameStatus.MainMenu); };
 
-		startGameButton = new()
+		_startGameButton = new()
 		{
 			Width = 300,
 			Height = 100,
@@ -79,9 +79,9 @@ internal class PreGameUI : UIBase
 			ForeColor = Color.White,
 			Font = new(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
 		};
-		startGameButton.Click += (sender, e) => { GameManager.instance.Load(GameStatus.Game); };
+		_startGameButton.Click += (sender, e) => { GameManager.instance.Load(GameStatus.Game); };
 
-		stratagemList = new Panel()
+		_stratagemList = new Panel()
 		{
 			Width = 522,
 			Height = 768,
@@ -94,7 +94,7 @@ internal class PreGameUI : UIBase
 		foreach (Type t in Utility.GetAllSubclassOf(typeof(StratagemEntityBase)))
 		{
 			if (t.IsAbstract) continue;
-			StratagemEntityBase stratagemEntity = entitySystem.CreateEntity<StratagemEntityBase>(t);
+			StratagemEntityBase stratagemEntity = _entitySystem.CreateEntity<StratagemEntityBase>(t);
 			stratagemEntities.Add(stratagemEntity.Name, stratagemEntity);
 			int y = (int)Math.Floor(stratagemEntity.UiID / 4f);
 			int x = stratagemEntity.UiID - y * 4;
@@ -106,10 +106,10 @@ internal class PreGameUI : UIBase
 			} else stratagemEntity.mainPanel.Click += SelectStratagem;
 			stratagemEntity.mainPanel.MouseEnter += (sender, e) => { ShowStratagemInfo(stratagemEntity); };
 			stratagemEntity.mainPanel.MouseLeave += (sender, e) => { HideStratagemInfo(); };
-            stratagemList.Controls.Add(stratagemEntity.mainPanel);
+            _stratagemList.Controls.Add(stratagemEntity.mainPanel);
 		}
 
-		selectedStratPanel = new()
+		_selectedStratPanel = new()
 		{
 			Width = 522,
 			Height = 132,
@@ -138,16 +138,16 @@ internal class PreGameUI : UIBase
 				SelectSlot();
 			};
 			slotSelectors.Add(slotSelector);
-			selectedStratPanel.Controls.Add(slotSelector);
+			_selectedStratPanel.Controls.Add(slotSelector);
 		}
 		SelectSlot();
 
-		preGameUI.Controls.Add(backButton);
-		preGameUI.Controls.Add(startGameButton);
-		preGameUI.Controls.Add(selectedStratPanel);
-		preGameUI.Controls.Add(stratagemList);
-		preGameUI.Controls.Add(playerMoney);
-		GameWindow.Controls.Add(preGameUI);
+		_preGameUI.Controls.Add(_backButton);
+		_preGameUI.Controls.Add(_startGameButton);
+		_preGameUI.Controls.Add(_selectedStratPanel);
+		_preGameUI.Controls.Add(_stratagemList);
+		_preGameUI.Controls.Add(_playerMoney);
+		GameWindow.Controls.Add(_preGameUI);
 
 	}
 
@@ -191,12 +191,12 @@ internal class PreGameUI : UIBase
             stratagemEntityBase.mainPanel.Location = oldPos[currentStratagemIndex];
             //selectedStratPanel.Controls.Remove(stratagemEntityBase.mainPanel);
             slotSelectors[currentStratagemIndex].Controls.Remove(stratagemEntityBase.mainPanel);
-            stratagemList.Controls.Add(stratagemEntityBase.mainPanel);
+            _stratagemList.Controls.Add(stratagemEntityBase.mainPanel);
 		}
 
 		selectedStratagemEntities[currentStratagemIndex] = stratagemEntities[control.Name];
 		oldPos[currentStratagemIndex] = control.Location;
-		stratagemList.Controls.Remove(control);
+		_stratagemList.Controls.Remove(control);
 
         //control.Location = new Point(2 * (currentStratagemIndex + 1) + 130 * currentStratagemIndex, 1);
         //      selectedStratPanel.Controls.Add(control);
@@ -236,7 +236,7 @@ internal class PreGameUI : UIBase
 
 	private void ShowStratagemInfo(StratagemEntityBase stratagemEntityBase)
 	{
-		StratagemInfo = new()
+		_stratagemInfo = new()
 		{
 			Width = 600,
 			Height = 768,
@@ -269,7 +269,7 @@ internal class PreGameUI : UIBase
                 AutoSize = true,
                 Location = new(50, 175),
             };
-            StratagemInfo.Controls.Add(DPS);
+            _stratagemInfo.Controls.Add(DPS);
             Label ShotSpeed = new()
 			{
 				Text = $"Start shoot speed : {turretStratagem.StartActionSpeed/1000d}s",
@@ -279,7 +279,7 @@ internal class PreGameUI : UIBase
 				AutoSize = true,
 				Location = new(50, DPS.Top + 50),
             };
-            StratagemInfo.Controls.Add(ShotSpeed);
+            _stratagemInfo.Controls.Add(ShotSpeed);
 
 			GroupBox AmmoInfo = new()
 			{
@@ -291,13 +291,7 @@ internal class PreGameUI : UIBase
 				MaximumSize = new(500, 600),
 				AutoSize = true,
             };
-			StratagemInfo.Controls.Add(AmmoInfo);
-
-			//AmmunitionEntity ammunitionEntity = entitySystem.CreateEntity<AmmunitionEntity>(turretStratagem.Ammo);
-			//ammunitionEntity.mainPanel.Location = new(50, 250);
-			//AmmoInfo.Controls.Add(ammunitionEntity.mainPanel);
-
-			//StratagemInfo.Disposed += (s, e) => { entitySystem.DestroyEntity(ammunitionEntity); };
+			_stratagemInfo.Controls.Add(AmmoInfo);
 
             Label Damage = new()
 			{
@@ -365,28 +359,28 @@ internal class PreGameUI : UIBase
 				BorderStyle = BorderStyle.FixedSingle,
 				Size = new Size(500, 50),
 			};
-			locked.Location = new Point(StratagemInfo.Width / 2 - locked.Width / 2, 650);
-			StratagemInfo.Controls.Add(locked);
+			locked.Location = new Point(_stratagemInfo.Width / 2 - locked.Width / 2, 650);
+			_stratagemInfo.Controls.Add(locked);
 		}
 
-        StratagemInfo.Controls.Add(stratName);
+        _stratagemInfo.Controls.Add(stratName);
 
-        preGameUI.Controls.Add(StratagemInfo);
+        _preGameUI.Controls.Add(_stratagemInfo);
 
     }
 
 	private void HideStratagemInfo()
 	{
-		preGameUI.Controls.Remove(StratagemInfo);
-        StratagemInfo.Dispose();
+		_preGameUI.Controls.Remove(_stratagemInfo);
+        _stratagemInfo.Dispose();
     }
 
 
     internal override void OnDestroy()
 	{
 		base.OnDestroy();
-		GameWindow.Controls.Remove(preGameUI);
-		preGameUI.Dispose();
+		GameWindow.Controls.Remove(_preGameUI);
+		_preGameUI.Dispose();
 	}
 
     internal override void OnConnectionChange()
@@ -396,6 +390,6 @@ internal class PreGameUI : UIBase
 
     internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
     {
-        
+        if(!_preGameUI.Enabled) return;
     }
 }
