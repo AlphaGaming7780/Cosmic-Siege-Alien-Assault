@@ -20,6 +20,9 @@ internal static class SaveManager
     private static string _settingsPath;
 	private static string _playersPath;
 
+    private static readonly List<string> s_openedFiles = [];
+    private static readonly Dictionary<string, object> s_objectsToSave = [];
+
 	internal static void LoadData()
 	{
 		_savePath = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName, "Saves");
@@ -76,10 +79,23 @@ internal static class SaveManager
 
     private static async void Save(string fullPath, object objectToSave)
     {
-
+        if (s_openedFiles.Contains(fullPath))
+        {
+            if (s_objectsToSave.ContainsKey(fullPath)) s_objectsToSave[fullPath] = objectToSave;
+            else s_objectsToSave.Add(fullPath, objectToSave);
+            return;
+        }
+        s_openedFiles.Add(fullPath);
         Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
         using FileStream fileStream = File.Create(fullPath);
         await JsonSerializer.SerializeAsync(fileStream, objectToSave, new JsonSerializerOptions { WriteIndented = true });
+        fileStream.Close();
+        s_openedFiles.Remove(fullPath);
+        if(s_objectsToSave.ContainsKey(fullPath))
+        {
+            Save(fullPath, s_objectsToSave[fullPath]);
+            s_objectsToSave.Remove(fullPath);
+        }
     }
 
     private static void Save(string path, string fileName, object objectToSave)

@@ -13,10 +13,10 @@ public enum AudioFile
 
 public struct AudioVolume()
 {
-    readonly float GameVolume { get { return SaveManager.Settings.GameVolume; } set { SaveManager.Settings.GameVolume = value; } }
-	readonly float UiVolume { get { return SaveManager.Settings.UiVolume; } set { SaveManager.Settings.UiVolume = value; } }
-	readonly float MusicVolume { get { return SaveManager.Settings.MusicVolume; } set { SaveManager.Settings.MusicVolume = value; } }
-    readonly float EffectVolume { get { return SaveManager.Settings.EffectVolume; } set { SaveManager.Settings.EffectVolume = value; } }
+    public readonly float GameVolume { get { return SaveManager.Settings.GameVolume; } set { SaveManager.Settings.GameVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
+	public readonly float UiVolume { get { return SaveManager.Settings.UiVolume; } set { SaveManager.Settings.UiVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
+	public readonly float MusicVolume { get { return SaveManager.Settings.MusicVolume; } set { SaveManager.Settings.MusicVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
+    public readonly float EffectVolume { get { return SaveManager.Settings.EffectVolume; } set { SaveManager.Settings.EffectVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
 
 	public readonly float GetVolumeByAudioFile(AudioFile audioFile)
 	{
@@ -34,37 +34,47 @@ internal static class AudioManager
 {
 	private static List<string> musicFiles = ["Musics\\Mr-Blackhole - Category.wav", "Musics\\NOmki - Netrunner.wav", "Musics\\NOmki - Time.wav", "Musics\\punkerrr - Virtual Cataclysm.wav", "Musics\\RyuuAkito & SquashHead - Damaged Artificial Nervous System.wav"];
 
-	private static Dictionary<AudioFile, List<MediaPlayer>> mediaPlayers = [];
+	private static readonly Dictionary<AudioFile, List<MediaPlayer>> s_mediaPlayers = [];
 
-	static AudioVolume audioVolume = new AudioVolume();
+	public static readonly AudioVolume AudioVolume = new();
 
 	public static void PlaySound(AudioFile audioFile, bool loop = false)
 	{
         MediaPlayer media = new();
-		if (mediaPlayers.ContainsKey(audioFile)) mediaPlayers[audioFile].Add(media);
-		else mediaPlayers.Add(audioFile, [media]);
+		if (s_mediaPlayers.ContainsKey(audioFile)) s_mediaPlayers[audioFile].Add(media);
+		else s_mediaPlayers.Add(audioFile, [media]);
 		string filePath = new FileInfo("Resources\\Audio\\" + AudioTypeToString(audioFile)).FullName;
-		Console.WriteLine(filePath);
 		media.Open(new("file:///" + filePath));
         media.MediaEnded += (sender, eventArgs) => { 
 			media.Close(); 
-			mediaPlayers[audioFile].Remove(media);
+			s_mediaPlayers[audioFile].Remove(media);
             if (loop)
             {
                 PlaySound(audioFile, true);
             }
         };
-		media.Volume = audioVolume.GetVolumeByAudioFile(audioFile);
+		media.Volume = AudioVolume.GetVolumeByAudioFile(audioFile);
         media.Play();
 
     }
 
 	public static void StopSound(AudioFile audioFile)
 	{
-		foreach(MediaPlayer mediaPlayer in mediaPlayers[audioFile])
+		foreach(MediaPlayer mediaPlayer in s_mediaPlayers[audioFile])
 		{
 			mediaPlayer.Stop();
 			mediaPlayer.Close();
+		}
+	}
+
+	public static void UpdateAudioVolume()
+	{
+		foreach(AudioFile audioFile in s_mediaPlayers.Keys)
+		{
+			foreach(MediaPlayer mediaPlayer in s_mediaPlayers[audioFile]) 
+			{
+				mediaPlayer.Volume = AudioVolume.GetVolumeByAudioFile(audioFile);
+            }
 		}
 	}
 

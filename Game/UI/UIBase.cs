@@ -27,7 +27,14 @@ namespace K8055Velleman.Game.UI
         {
             K8055.OnConnectionChanged -= OnConnectionChange;
             K8055.OnDigitalChannelsChange -= OnDigitalChannelsChange;
+            K8055.OnAnalogChannelsChange -= OnAnalogChannelsChange;
         }
-        //internal abstract void OnResize();
+        
+        internal void SetupAnalogChannelEvent()
+        {
+            K8055.OnAnalogChannelsChange += OnAnalogChannelsChange;
+        }
+
+        internal virtual void OnAnalogChannelsChange(K8055.AnalogChannel analogChannel, int value) { }
     }
 }

@@ -132,8 +132,8 @@ internal class EndGameUI : UIBase
     internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
     {
         if (!_endGameMenu.Enabled) return;
-        if(digitalChannel == K8055.DigitalChannel.B1) _tryAgainButton.PerformClick();
-        if(digitalChannel == K8055.DigitalChannel.B3) _settingsButton.PerformClick();
-        if(digitalChannel == K8055.DigitalChannel.B5) _mainMenuButton.PerformClick();
+        if(digitalChannel == K8055.DigitalChannel.I1) _tryAgainButton.PerformClick();
+        if(digitalChannel == K8055.DigitalChannel.I3) _settingsButton.PerformClick();
+        if(digitalChannel == K8055.DigitalChannel.I5) _mainMenuButton.PerformClick();
     }
 }

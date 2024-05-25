@@ -391,7 +391,7 @@ namespace K8055Velleman.Game.UI
         internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
         {
 			if(!GamePanel.Enabled) return;
-			if (digitalChannel == K8055.DigitalChannel.B1)
+			if (digitalChannel == K8055.DigitalChannel.I1)
 			{
                 if (!upgrading) ShowStratInfo(0);
 				else if(_FirstUpgrade != null)
@@ -400,11 +400,11 @@ namespace K8055Velleman.Game.UI
 					else _FirstUpgrade.PerformClick();
 				}
             }
-			else if (digitalChannel == K8055.DigitalChannel.B2)
+			else if (digitalChannel == K8055.DigitalChannel.I2)
 			{
                 if (!upgrading) ShowStratInfo(1);
             }
-			else if (digitalChannel == K8055.DigitalChannel.B3)
+			else if (digitalChannel == K8055.DigitalChannel.I3)
 			{
                 if (!upgrading) ShowStratInfo(2);
                 else if (_SecondeUpgrade != null)
@@ -413,11 +413,11 @@ namespace K8055Velleman.Game.UI
                     else _SecondeUpgrade.PerformClick();
                 }
             }
-			else if (digitalChannel == K8055.DigitalChannel.B4)
+			else if (digitalChannel == K8055.DigitalChannel.I4)
 			{
                 if (!upgrading) ShowStratInfo(3);
             }
-			else if (digitalChannel == K8055.DigitalChannel.B5)
+			else if (digitalChannel == K8055.DigitalChannel.I5)
 			{
 				if(StratInfoPanel != null) HideStratInfo();
 				else gameSystem.PauseLogique();

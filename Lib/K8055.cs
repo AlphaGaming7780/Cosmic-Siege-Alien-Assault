@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Channels;
 using System.Security.Policy;
 using System.Windows.Forms;
 using System.Windows.Media.Animation;
@@ -66,26 +67,37 @@ static public class K8055
 
 	public enum DigitalChannel : int
 	{
-		L1 = -1,
-		L2 = -2,
-		L3 = -3,
-		L4 = -4,
-		L5 = -5,
-		L6 = -6,
-		L7 = -7,
-		L8 = -8,
-		B1 = 1,
-		B2 = 2,
-		B3 = 3,
-		B4 = 4,
-		B5 = 5, 
+		O1 = -1,
+		O2 = -2,
+		O3 = -3,
+		O4 = -4,
+		O5 = -5,
+		O6 = -6,
+		O7 = -7,
+		O8 = -8,
+		I1 = 1,
+		I2 = 2,
+		I3 = 3,
+		I4 = 4,
+		I5 = 5,
 	}
 
-    public delegate void onConnectionChanged();
-    public static event onConnectionChanged OnConnectionChanged;
+	public enum AnalogChannel : int
+	{
+		O2 = -2,
+		O1 = -1,
+		I1 = 1,
+		I2 = 2,
+	}
 
-    public delegate void onDigitalChannelsChange(DigitalChannel digitalChannel);
-    public static event onDigitalChannelsChange OnDigitalChannelsChange;
+	public delegate void onConnectionChanged();
+	public static event onConnectionChanged OnConnectionChanged;
+
+	public delegate void onDigitalChannelsChange(DigitalChannel digitalChannel);
+	public static event onDigitalChannelsChange OnDigitalChannelsChange;
+
+    public delegate void onAnalogChannelsChange(AnalogChannel analogChannel, int value);
+    public static event onAnalogChannelsChange OnAnalogChannelsChange;
 
     public static readonly List<int> ConnectedDevices = [];
 
@@ -93,7 +105,8 @@ static public class K8055
 	
 	public static int CurrentDevice { get; private set; } = -1;//IsConnected ? CurrentDevice : -1;
 
-	private static readonly Dictionary<int, List<DigitalChannel>> digitalChannels = [];
+	private static readonly List<DigitalChannel> s_digitalChannels = [];
+	private static readonly Dictionary<AnalogChannel, int> s_analogChannels = [];
 
 	public static void Update()
 	{
@@ -108,14 +121,15 @@ static public class K8055
 		if (IsConnected != oldIsConnected)
 		{
 			OnConnectionChanged?.Invoke();
-        }
+		}
 
 		if(!IsConnected) return;
 
 		UpdateDigitalsChannel();
+		UpdateAnalogChannel();
 
-        //if((digitalChannel & 1) > 0)
-    }
+		//if((digitalChannel & 1) > 0)
+	}
 
 	public static int OpenDevice(int CardAddress)
 	{
@@ -128,20 +142,21 @@ static public class K8055
 			Reset();
 		}
 		return CurrentDevice;
-        }
+	}
 
 	public static bool CloseDevice(int CardAddress) 
 	{
 		int tempCurrentDevice = CurrentDevice;
 		if (CardAddress >= 0 && ConnectedDevices.Contains(CardAddress))
 		{
-			if(SetCurrentDevice(CardAddress) >= 0)
+			if(Interface.SetCurrentDevice(CardAddress) >= 0)
 			{
 				Reset();
 				CloseDevice();
-				SetCurrentDevice(tempCurrentDevice);
+				Interface.SetCurrentDevice(tempCurrentDevice);
 				return true;
 			}
+			Interface.SetCurrentDevice(tempCurrentDevice);
 		}
 		return false;
 	}
@@ -162,7 +177,7 @@ static public class K8055
 		List<int> temp = new(ConnectedDevices);
 		foreach(int CardAddress in temp)
 		{
-			if(SetCurrentDevice(CardAddress) >= 0)
+			if(Interface.SetCurrentDevice(CardAddress) >= 0)
 			{
 				Reset();
 				CloseDevice();
@@ -175,43 +190,12 @@ static public class K8055
 		if(Interface.SetCurrentDevice(CardAddress) >= 0)
 		{
 			CurrentDevice = CardAddress;
+			UpdateAnalogChannel();
+			UpdateDigitalsChannel();
 			return CurrentDevice;
 		}
 		return -1;
 	}
-
-	//public static List<int> GetAvailableDevices()
-	//{
-	//	List<int> availableDevices = [];
-		//int i = Interface.SearchDevices();
-		//if((i & 8) > 0)
-		//{
-		//	//i -= 8;
-		//	availableDevices.Add(3);
-		//}
-		//if((i & 4) > 0)
-		//{
-		//	//i -= 4;
-		//	availableDevices.Add(2);
-  //      }
-		//if((i & 2) > 0)
-		//{
-		//	//i -= 2;
-		//	availableDevices.Add(1);
-  //      }
-		//if ((i & 1) > 0)
-		//{
-		//	availableDevices.Add(0);
-  //      }
-
-		//Interface.CloseDevice();
-
-
-
-
-	//	return availableDevices;
-
-	//}
 
 	public static int SearchAndOpenDevice()
 	{
@@ -232,7 +216,8 @@ static public class K8055
 
 	public static void Reset()
 	{
-		if(digitalChannels.Keys.Contains(CurrentDevice)) digitalChannels[CurrentDevice].Clear();
+		s_digitalChannels.Clear();
+		s_analogChannels.Clear();
 		Interface.ClearAllDigital();
 		Interface.ClearAllAnalog();
 	}
@@ -240,139 +225,182 @@ static public class K8055
 	public static bool ReadDigitalChannel(DigitalChannel channel)
 	{   
 		if(!IsConnected) return false;
-		return (bool)(digitalChannels[CurrentDevice]?.Contains(channel));
+		return s_digitalChannels.Contains(channel);
 	}
 
-	public static void SetDigitalChannel(DigitalChannel Channel)
+	public static void SetDigitalChannel(DigitalChannel channel)
 	{
-		if(!IsConnected || Channel > 0) return;
-		if (digitalChannels.ContainsKey(CurrentDevice))
+		if(!IsConnected || channel >= 0) return;
+		if(!s_digitalChannels.Contains(channel)) s_digitalChannels.Add(channel);
+
+		Interface.SetDigitalChannel(-(int)channel);
+	}
+
+	public static void ClearDigitalChannel(DigitalChannel channel)
+	{
+		if (!IsConnected || channel >= 0) return;
+		s_digitalChannels.Remove(channel);
+		Interface.ClearDigitalChannel(-(int)channel);
+	}
+
+	public static void SetAnalogChannel(AnalogChannel channel)
+	{
+		if (!IsConnected || channel >= 0) return;
+		if (s_analogChannels.ContainsKey(channel)) s_analogChannels[channel] = 255;
+		else s_analogChannels.Add(channel, 255);
+
+		Interface.SetAnalogChannel(-(int)channel);
+	}
+
+	public static void ClearAnalogChannel(AnalogChannel channel)
+	{
+		if (!IsConnected || channel >= 0) return;
+		s_analogChannels.Remove(channel);
+		Interface.ClearAnalogChannel(-(int)channel);
+	}
+
+	public static int ReadAnalogChannel(AnalogChannel channel)
+	{
+		if (!IsConnected) return -1;
+		//if (!s_analogChannels.ContainsKey(channel)) return -1;
+		return s_analogChannels[channel];
+	}
+
+	public static void OutputAnalogChannel(AnalogChannel channel, int data)
+	{
+		if (!IsConnected || channel >= 0) return;
+		if (s_analogChannels.ContainsKey(channel)) s_analogChannels[channel] = data;
+		else s_analogChannels.Add(channel, data);
+		Interface.OutputAnalogChannel(-(int)channel, data);
+	}
+
+	private static void UpdateConnectedDevice()
+	{
+		if (ConnectedDevices.Count <= 0) return;
+		ConnectedDevices.Clear();
+		for (int i = 0; i < 4; i++)
 		{
-			if(!digitalChannels[CurrentDevice].Contains(Channel)) digitalChannels[CurrentDevice].Add(Channel);
-		} else
-		{
-            digitalChannels.Add(CurrentDevice, [Channel]);
+			if (Interface.SetCurrentDevice(i) >= 0) ConnectedDevices.Add(i);
 		}
-		Interface.SetDigitalChannel(-(int)Channel);
+		CurrentDevice = Interface.SetCurrentDevice(CurrentDevice);
 	}
-
-	public static void ClearDigitalChannel(DigitalChannel Channel)
-	{
-		if (!IsConnected || Channel > 0) return;
-		if (digitalChannels.ContainsKey(CurrentDevice) && digitalChannels[CurrentDevice].Contains(Channel)) digitalChannels[CurrentDevice].Remove(Channel);
-		Interface.ClearDigitalChannel(-(int)Channel);
-	}
-
-	public static void SetAnalogChannel(int Channel)
-	{
-		Interface.SetAnalogChannel(Channel);
-	}
-
-	public static int ReadAnalogChannel(int Channel)
-	{
-		return Interface.ReadAnalogChannel(Channel);
-	}
-
-    private static void UpdateConnectedDevice()
-	{
-        if (ConnectedDevices.Count <= 0) return;
-        ConnectedDevices.Clear();
-        for (int i = 0; i < 4; i++)
-        {
-            if (Interface.SetCurrentDevice(i) >= 0) ConnectedDevices.Add(i);
-        }
-        CurrentDevice = Interface.SetCurrentDevice(CurrentDevice);
-    }
 
 	private static void UpdateDigitalsChannel()
 	{
-        int digitalChannel = Interface.ReadAllDigital();
-		if (!digitalChannels.ContainsKey(CurrentDevice)) digitalChannels.Add(CurrentDevice, []);
+		int digitalChannel = Interface.ReadAllDigital();
 		//digitalChannels[CurrentDevice].RemoveAll(new Predicate<DigitalChannel>((e) => { return e == DigitalChannel.B1 || e == DigitalChannel.B2 || e == DigitalChannel.B3 || e == DigitalChannel.B4 || e == DigitalChannel.B5; } ));
 		if ((digitalChannel & 1) > 0)
 		{
-			if (!digitalChannels[CurrentDevice].Contains(DigitalChannel.B1))
+			if (!s_digitalChannels.Contains(DigitalChannel.I1))
 			{
-                digitalChannels[CurrentDevice].Add(DigitalChannel.B1);
-                OnDigitalChannelsChange?.Invoke(DigitalChannel.B1);
-            }
+				s_digitalChannels.Add(DigitalChannel.I1);
+				OnDigitalChannelsChange?.Invoke(DigitalChannel.I1);
+			}
 
 		}
 		else 
 		{
-			if (digitalChannels[CurrentDevice].Contains(DigitalChannel.B1))
+			if (s_digitalChannels.Contains(DigitalChannel.I1))
 			{
-				digitalChannels[CurrentDevice].Remove(DigitalChannel.B1);
-            }
+				s_digitalChannels.Remove(DigitalChannel.I1);
+			}
 		}
 
 		if ((digitalChannel & 2) > 0)
 		{
-			if (!digitalChannels[CurrentDevice].Contains(DigitalChannel.B2))
+			if (!s_digitalChannels.Contains(DigitalChannel.I2))
 			{
-                digitalChannels[CurrentDevice].Add(DigitalChannel.B2);
-                OnDigitalChannelsChange?.Invoke(DigitalChannel.B2);
-            }
+				s_digitalChannels.Add(DigitalChannel.I2);
+				OnDigitalChannelsChange?.Invoke(DigitalChannel.I2);
+			}
 
 		}
 		else 
 		{
-			if (digitalChannels[CurrentDevice].Contains(DigitalChannel.B2))
+			if (s_digitalChannels.Contains(DigitalChannel.I2))
 			{
-				digitalChannels[CurrentDevice].Remove(DigitalChannel.B2);
-            }
+				s_digitalChannels.Remove(DigitalChannel.I2);
+			}
 		}
 
-        if ((digitalChannel & 4) > 0)
-        {
-            if (!digitalChannels[CurrentDevice].Contains(DigitalChannel.B3))
-            {
-                digitalChannels[CurrentDevice].Add(DigitalChannel.B3);
-                OnDigitalChannelsChange?.Invoke(DigitalChannel.B3);
-            }
+		if ((digitalChannel & 4) > 0)
+		{
+			if (!s_digitalChannels.Contains(DigitalChannel.I3))
+			{
+				s_digitalChannels.Add(DigitalChannel.I3);
+				OnDigitalChannelsChange?.Invoke(DigitalChannel.I3);
+			}
 
-        }
-        else
-        {
-            if (digitalChannels[CurrentDevice].Contains(DigitalChannel.B3))
-            {
-                digitalChannels[CurrentDevice].Remove(DigitalChannel.B3);
-            }
-        }
+		}
+		else
+		{
+			if (s_digitalChannels.Contains(DigitalChannel.I3))
+			{
+				s_digitalChannels.Remove(DigitalChannel.I3);
+			}
+		}
 
-        if ((digitalChannel & 8) > 0)
-        {
-            if (!digitalChannels[CurrentDevice].Contains(DigitalChannel.B4))
-            {
-                digitalChannels[CurrentDevice].Add(DigitalChannel.B4);
-                OnDigitalChannelsChange?.Invoke(DigitalChannel.B4);
-            }
+		if ((digitalChannel & 8) > 0)
+		{
+			if (!s_digitalChannels.Contains(DigitalChannel.I4))
+			{
+				s_digitalChannels.Add(DigitalChannel.I4);
+				OnDigitalChannelsChange?.Invoke(DigitalChannel.I4);
+			}
 
-        }
-        else
-        {
-            if (digitalChannels[CurrentDevice].Contains(DigitalChannel.B4))
-            {
-                digitalChannels[CurrentDevice].Remove(DigitalChannel.B4);
-            }
-        }
+		}
+		else
+		{
+			if (s_digitalChannels.Contains(DigitalChannel.I4))
+			{
+				s_digitalChannels.Remove(DigitalChannel.I4);
+			}
+		}
 
-        if ((digitalChannel & 16) > 0)
-        {
-            if (!digitalChannels[CurrentDevice].Contains(DigitalChannel.B5))
-            {
-                digitalChannels[CurrentDevice].Add(DigitalChannel.B5);
-                OnDigitalChannelsChange?.Invoke(DigitalChannel.B5);
-            }
+		if ((digitalChannel & 16) > 0)
+		{
+			if (!s_digitalChannels.Contains(DigitalChannel.I5))
+			{
+				s_digitalChannels.Add(DigitalChannel.I5);
+				OnDigitalChannelsChange?.Invoke(DigitalChannel.I5);
+			}
 
-        }
-        else
-        {
-            if (digitalChannels[CurrentDevice].Contains(DigitalChannel.B5))
-            {
-                digitalChannels[CurrentDevice].Remove(DigitalChannel.B5);
-            }
-        }
-    }
+		}
+		else
+		{
+			if (s_digitalChannels.Contains(DigitalChannel.I5))
+			{
+				s_digitalChannels.Remove(DigitalChannel.I5);
+			}
+		}
+	}
+
+	private static void UpdateAnalogChannel()
+	{
+		int data1 = 0;
+		int data2 = 0;
+		Interface.ReadAllAnalog(ref data1,ref data2);
+		if (s_analogChannels.ContainsKey(AnalogChannel.I1))
+		{
+			if (s_analogChannels[AnalogChannel.I1] != data1) OnAnalogChannelsChange?.Invoke(AnalogChannel.I1, data1);
+			s_analogChannels[AnalogChannel.I1] = data1;
+		}
+		else
+		{
+            OnAnalogChannelsChange?.Invoke(AnalogChannel.I1, data1);
+            s_analogChannels.Add(AnalogChannel.I1, data1);
+		}
+
+		if (s_analogChannels.ContainsKey(AnalogChannel.I2))
+		{
+			if (s_analogChannels[AnalogChannel.I2] != data1) OnAnalogChannelsChange?.Invoke(AnalogChannel.I2, data2);
+			s_analogChannels[AnalogChannel.I2] = data2;
+		}
+		else
+		{
+            OnAnalogChannelsChange?.Invoke(AnalogChannel.I2, data1);
+            s_analogChannels.Add(AnalogChannel.I2, data2);
+		}
+	}
 }
 

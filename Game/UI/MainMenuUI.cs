@@ -153,11 +153,11 @@ namespace K8055Velleman.Game.UI
         internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
 		{
 			if(!_mainMenu.Enabled) return;
-			if(digitalChannel == K8055.DigitalChannel.B1) _playButton.PerformClick();
-			else if(digitalChannel == K8055.DigitalChannel.B2) _settingsButton.PerformClick();
-			else if(digitalChannel == K8055.DigitalChannel.B3) _changePlayer.PerformClick();
-			else if(digitalChannel == K8055.DigitalChannel.B4) _creditMenuButton.PerformClick();
-			else if(digitalChannel == K8055.DigitalChannel.B5) _quitButton.PerformClick();
+			if(digitalChannel == K8055.DigitalChannel.I1) _playButton.PerformClick();
+			else if(digitalChannel == K8055.DigitalChannel.I2) _settingsButton.PerformClick();
+			else if(digitalChannel == K8055.DigitalChannel.I3) _changePlayer.PerformClick();
+			else if(digitalChannel == K8055.DigitalChannel.I4) _creditMenuButton.PerformClick();
+			else if(digitalChannel == K8055.DigitalChannel.I5) _quitButton.PerformClick();
 		}
 
         internal override void OnConnectionChange()

@@ -349,7 +349,7 @@ namespace K8055Velleman.Game.UI
         internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
         {
             if (!_playerSelectorPanel.Enabled) return;
-            if (digitalChannel == K8055.DigitalChannel.B1)
+            if (digitalChannel == K8055.DigitalChannel.I1)
             {
                 if (_playerSelectorPanel.Visible)
                 {
@@ -364,7 +364,7 @@ namespace K8055Velleman.Game.UI
                 }
             }
 
-            else if (digitalChannel == K8055.DigitalChannel.B2)
+            else if (digitalChannel == K8055.DigitalChannel.I2)
             {
                 if (_playerSelectorPanel.Visible)
                 {
@@ -374,15 +374,15 @@ namespace K8055Velleman.Game.UI
                     UpdatePlayerList();
                 }
             }
-            else if (digitalChannel == K8055.DigitalChannel.B3)
+            else if (digitalChannel == K8055.DigitalChannel.I3)
             {
                 if(_playerSelectorPanel.Visible && _selectedPlayer != null) _selectePlayerButton.PerformClick();  
             }
-            else if (digitalChannel == K8055.DigitalChannel.B4)
+            else if (digitalChannel == K8055.DigitalChannel.I4)
             {
                 if(_playerSelectorPanel.Visible) _newPlayerButton.PerformClick();
             }
-            else if (digitalChannel == K8055.DigitalChannel.B5)
+            else if (digitalChannel == K8055.DigitalChannel.I5)
             {
                 if (_playerSelectorPanel.Visible) { if (_selectedPlayer != null) _deletePlayerButton.PerformClick(); }
                 else

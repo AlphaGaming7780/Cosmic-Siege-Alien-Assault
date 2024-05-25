@@ -103,9 +103,9 @@ internal class CreditUI : UIBase
 
 	internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
 	{
-		if (digitalChannel == K8055.DigitalChannel.B1) gameCredit.PerformClick();
-		else if (digitalChannel == K8055.DigitalChannel.B2) musicCredit.PerformClick();
-		else if (digitalChannel == K8055.DigitalChannel.B5) backButton.PerformClick();
+		if (digitalChannel == K8055.DigitalChannel.I1) gameCredit.PerformClick();
+		else if (digitalChannel == K8055.DigitalChannel.I2) musicCredit.PerformClick();
+		else if (digitalChannel == K8055.DigitalChannel.I5) backButton.PerformClick();
 	}
 
 	private void ShowCreditPanel()

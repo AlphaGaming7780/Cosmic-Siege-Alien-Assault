@@ -2,8 +2,8 @@
 
 public class Settings
 {
-    public float GameVolume = 1f;
-    public float UiVolume = 1f;
-    public float MusicVolume = 0.025f;
-    public float EffectVolume = 1f;
+    public float GameVolume { get; set; } = 1f;
+    public float UiVolume { get; set; } = 1f;
+    public float MusicVolume { get; set; } = 0.025f;
+    public float EffectVolume { get; set; } = 1f;
 }
