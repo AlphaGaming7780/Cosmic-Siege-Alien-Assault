@@ -32,7 +32,7 @@ public struct AudioVolume()
 
 internal static class AudioManager
 {
-	private static List<string> musicFiles = ["Musics\\Mr-Blackhole - Category.wav", "Musics\\NOmki - Netrunner.wav", "Musics\\NOmki - Time.wav", "Musics\\punkerrr - Virtual Cataclysm.wav", "Musics\\RyuuAkito & SquashHead - Damaged Artificial Nervous System.wav"];
+	private static readonly List<string> musicFiles = ["Musics\\Mr-Blackhole - Category.wav", "Musics\\NOmki - Netrunner.wav", "Musics\\NOmki - Time.wav", "Musics\\punkerrr - Virtual Cataclysm.wav", "Musics\\RyuuAkito & SquashHead - Damaged Artificial Nervous System.wav"];
 
 	private static readonly Dictionary<AudioFile, List<MediaPlayer>> s_mediaPlayers = [];
 
