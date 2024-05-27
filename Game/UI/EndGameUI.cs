@@ -43,7 +43,7 @@ internal class EndGameUI : UIBase
 
         Label Score = new()
         {
-            Text = $"Score : {_gameSystem.waveNum} 🌟",
+            Text = $"Score : {_gameSystem.Scores} 🌟",
             Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
             ForeColor = Color.White,
             //AutoSize = true,

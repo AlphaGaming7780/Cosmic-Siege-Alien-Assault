@@ -353,9 +353,9 @@ namespace K8055Velleman.Game.UI
             {
                 if (_playerSelectorPanel.Visible)
                 {
-                    int x = SaveManager.PlayersData.IndexOf(_selectedPlayer);
-                    int i = x <= 0 ? SaveManager.PlayersData.Count - 1 : x - 1;
-                    _selectedPlayer = SaveManager.PlayersData[i];
+                    int x = SaveManager.PlayersData.IndexOf(_selectedPlayer) - 1;
+                    if (x < 0) x = SaveManager.PlayersData.Count - 1;
+                    _selectedPlayer = SaveManager.PlayersData[x];
                     UpdatePlayerList();
                 }
                 else 
@@ -368,9 +368,9 @@ namespace K8055Velleman.Game.UI
             {
                 if (_playerSelectorPanel.Visible)
                 {
-                    int x = SaveManager.PlayersData.IndexOf(_selectedPlayer);
-                    int i = x >= SaveManager.PlayersData.Count - 1 ? 0 : x + 1;
-                    _selectedPlayer = SaveManager.PlayersData[i];
+                    int x = SaveManager.PlayersData.IndexOf(_selectedPlayer) + 1;
+                    if (x >= SaveManager.PlayersData.Count) x = 0;
+                    _selectedPlayer = SaveManager.PlayersData[x];
                     UpdatePlayerList();
                 }
             }

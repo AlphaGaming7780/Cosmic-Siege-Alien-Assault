@@ -15,15 +15,13 @@ namespace K8055Velleman
 		{
 			InitializeComponent();
 			stopwatch = new Stopwatch();
-
             SaveManager.LoadData();
-			//this.ShowInTaskbar = false;
-			//this.ControlBox = false;
 			this.Text = null;
 			gameManager = new();
 			uiManager = new(this);
 			Clock.Enabled = true;
 			Clock.Interval = 16;
+			AudioManager.Setup();
 			AudioManager.PlaySound(AudioFile.BackGroundMusic, true);
         }
 

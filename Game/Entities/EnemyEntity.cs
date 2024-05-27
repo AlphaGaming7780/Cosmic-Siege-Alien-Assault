@@ -1,4 +1,5 @@
 ﻿using K8055Velleman.Game.Systems;
+using System;
 using System.Drawing;
 using System.Threading;
 
@@ -20,7 +21,7 @@ namespace K8055Velleman.Game.Entities
 
 		internal override void OnCreate(EntitySystem entitySystem)
 		{
-            mainPanel = new()
+            MainPanel = new()
             {
                 Size = StartSize,
                 BackColor = StartColor,
@@ -34,26 +35,26 @@ namespace K8055Velleman.Game.Entities
 		{
 			CenterLocation = GetSpawnLocation();
 			playerSystem = GameManager.GetSystem<PlayerSystem>();
-			taregtCenterLocation = playerSystem != null ? playerSystem.player.CenterLocation : new();
+			TaregtCenterLocation = playerSystem != null ? playerSystem.player.CenterLocation : new();
 
-			GameUI.GamePanel.Controls.Add(mainPanel);
+			GameUI.GamePanel.Controls.Add(MainPanel);
 		}
 
 		internal override void OnUpdate()
 		{
 			base.OnUpdate();
-			if (taregtCenterLocation == CenterLocation) EntitySystem.DestroyEntity(this);
+			if (TaregtCenterLocation == CenterLocation) EntitySystem.DestroyEntity(this);
 		}
 
-		private Vector2 GetSpawnLocation()
+        private Vector2 GetSpawnLocation()
 		{
 			int spawnArea = GameManager.Random.Next(0, 4);
 			return spawnArea switch
 			{
-				0 => new(GameManager.Random.Next(0, GameUI.GamePanel.Width + mainPanel.Width), GameManager.Random.Next(- 2 * mainPanel.Height, mainPanel.Height)),
-				1 => new(GameManager.Random.Next(GameUI.GamePanel.Width, GameUI.GamePanel.Width + mainPanel.Width), GameManager.Random.Next(0, GameUI.GamePanel.Height + mainPanel.Height)),
-				2 => new(GameManager.Random.Next(-mainPanel.Width, GameUI.GamePanel.Width), GameManager.Random.Next(GameUI.GamePanel.Height, GameUI.GamePanel.Height + mainPanel.Height)),
-				3 => new(GameManager.Random.Next(- 2 * mainPanel.Width, mainPanel.Width), GameManager.Random.Next(-mainPanel.Height, GameUI.GamePanel.Height)),
+				0 => new(GameManager.Random.Next(0, GameUI.GamePanel.Width + MainPanel.Width), GameManager.Random.Next(- 2 * MainPanel.Height, MainPanel.Height)),
+				1 => new(GameManager.Random.Next(GameUI.GamePanel.Width, GameUI.GamePanel.Width + MainPanel.Width), GameManager.Random.Next(0, GameUI.GamePanel.Height + MainPanel.Height)),
+				2 => new(GameManager.Random.Next(-MainPanel.Width, GameUI.GamePanel.Width), GameManager.Random.Next(GameUI.GamePanel.Height, GameUI.GamePanel.Height + MainPanel.Height)),
+				3 => new(GameManager.Random.Next(- 2 * MainPanel.Width, MainPanel.Width), GameManager.Random.Next(-MainPanel.Height, GameUI.GamePanel.Height)),
 				_ => new(),
 			};
 		}
@@ -66,7 +67,8 @@ namespace K8055Velleman.Game.Entities
 				if (Health <= 0)
 				{
 					playerSystem.PayPlayer(Cost);
-					EntitySystem.DestroyEntity(this);
+                    AudioManager.PlaySound(AudioFile.EnemyDeath);
+                    EntitySystem.DestroyEntity(this);
 				}
 			}
 			else if(entityBase is PlayerEnity)

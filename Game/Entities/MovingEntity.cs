@@ -1,17 +1,12 @@
-﻿using K8055Velleman.Game.Systems;
+﻿using K8055Velleman.Game.Interfaces;
+using K8055Velleman.Game.Systems;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace K8055Velleman.Game.Entities
 {
 	internal abstract class MovingEntity : EntityBase
 	{
-        internal Vector2 taregtCenterLocation;
-		//internal int speed = 1;
+        internal Vector2 TaregtCenterLocation;
 		internal abstract float Speed { get; }
 
 		internal override void OnCreate(EntitySystem entitySystem)
@@ -21,26 +16,26 @@ namespace K8055Velleman.Game.Entities
 
 		internal override void OnUpdate()
 		{
-			if (taregtCenterLocation != CenterLocation)
+			if (TaregtCenterLocation != CenterLocation)
 			{
 				Move();
 				foreach (EntityBase entity in EntitySystem.GetEntities())
 				{
-					if(EntitySystem.EntityExist(entity)) CheckColision(entity);
+					if(EntitySystem.EntityExists(entity)) CheckColision(entity);
 				}
 			}
         }
 
 		private void Move()
 		{
-			Vector2 vector2 = taregtCenterLocation - CenterLocation;
+			Vector2 vector2 = TaregtCenterLocation - CenterLocation;
 
 			float multX = vector2.y == 0f ? 1f : Mathf.Clamp01(Math.Abs( vector2.x / (float)vector2.y));
 			float multY = vector2.x == 0f ? 1f : Mathf.Clamp01(Math.Abs( vector2.y / (float)vector2.x));
 
 			Vector2 move = new();
 
-			if (taregtCenterLocation.x > CenterLocation.x)
+			if (TaregtCenterLocation.x > CenterLocation.x)
 			{
 				move.x = (Speed * multX) >= vector2.x ? vector2.x : Speed * multX * Math.Sign(vector2.x); // * UIManager.uiRatio.x
             }
@@ -48,7 +43,7 @@ namespace K8055Velleman.Game.Entities
 			{
 				move.x = (Speed * multX) <= vector2.x ? vector2.x : Speed * multX * Math.Sign(vector2.x); // * UIManager.uiRatio.x
             }
-			if (taregtCenterLocation.y > CenterLocation.y)
+			if (TaregtCenterLocation.y > CenterLocation.y)
 			{
 
 				move.y = (Speed * multY) >= vector2.y ? vector2.y : Speed * multY * Math.Sign(vector2.y); // * UIManager.uiRatio.y
@@ -61,17 +56,17 @@ namespace K8055Velleman.Game.Entities
 			CenterLocation += move;
         }
 
-        internal virtual void CheckColision(EntityBase entityBase)
+        private void CheckColision(EntityBase entityBase)
         {
 
-            if (entityBase is null || !EntitySystem.EntityExist(entityBase) || entityBase.mainPanel is null || mainPanel is null) return;
+            if (entityBase is null || entityBase.MainPanel is null || MainPanel is null) return;
             if (
                 (
-                    (mainPanel.Left >= entityBase.mainPanel.Left && mainPanel.Left <= entityBase.mainPanel.Right) ||
-                    (mainPanel.Right >= entityBase.mainPanel.Left && mainPanel.Right <= entityBase.mainPanel.Right)
+                    (MainPanel.Left >= entityBase.MainPanel.Left && MainPanel.Left <= entityBase.MainPanel.Right) ||
+                    (MainPanel.Right >= entityBase.MainPanel.Left && MainPanel.Right <= entityBase.MainPanel.Right)
                 ) && (
-                    (mainPanel.Top >= entityBase.mainPanel.Top && mainPanel.Top <= entityBase.mainPanel.Bottom) ||
-                    (mainPanel.Bottom >= entityBase.mainPanel.Top && mainPanel.Bottom <= entityBase.mainPanel.Bottom)
+                    (MainPanel.Top >= entityBase.MainPanel.Top && MainPanel.Top <= entityBase.MainPanel.Bottom) ||
+                    (MainPanel.Bottom >= entityBase.MainPanel.Top && MainPanel.Bottom <= entityBase.MainPanel.Bottom)
                 )
             )
             {
@@ -79,6 +74,5 @@ namespace K8055Velleman.Game.Entities
                 entityBase.OnCollide(this);
             };
         }
-
     }
 }

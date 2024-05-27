@@ -4,8 +4,6 @@ namespace K8055Velleman.Game.Entities.Stratagems
 {
     internal class GuidedMissileLuncher : TurretStratagemBase
     {
-        internal override string IconPath => "";
-
         internal override string Name => "Guided Missile Luncher";
 
         internal override int MaxLevel => 8;
@@ -23,10 +21,5 @@ namespace K8055Velleman.Game.Entities.Stratagems
         internal override BulletInfo BulletInfo => new() { Damage = 10, Speed = 5f, Size = new(10, 10), Color = Color.DarkGray, Guided = true };
 
         internal override void OnCollide(EntityBase entityBase) {}
-
-        //internal override void OnCreate(EntitySystem entitySystem)
-        //{
-        //    base.OnCreate(entitySystem);
-        //}
     }
 }

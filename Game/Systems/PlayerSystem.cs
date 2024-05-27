@@ -11,17 +11,20 @@ namespace K8055Velleman.Game.Systems
 {
     internal class PlayerSystem : SystemBase
     {
-        EntitySystem entitySystem;
+        EntitySystem _entitySystem;
+        GameSystem _gameSystem;
         internal PlayerUI playerUI;
         internal PlayerEnity player;
 
         internal override void OnCreate()
         {
             base.OnCreate();
-            entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
-            player = entitySystem.CreateEntity<PlayerEnity>();
+            _entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
+            _gameSystem = GameManager.GetOrCreateSystem<GameSystem>();
+            player = _entitySystem.CreateEntity<PlayerEnity>();
             playerUI = UIManager.GetOrCreateUI<PlayerUI>();
             playerUI.PlayerLife.Text = $"❤️ : {player.Health}";
+            if (!_entitySystem.GameUI.IsStratInfoPanelShowed) _gameSystem.UpdateDigitalChannels(player.Health);
         }
 
         internal void DamagePlayer(int value)
@@ -29,6 +32,7 @@ namespace K8055Velleman.Game.Systems
             player.Health -= value;
             playerUI.PlayerLife.Text = $"❤️ : {player.Health}";
             if (player.Health <= 0) GameManager.instance.Load(GameStatus.EndGame);
+            if(!_entitySystem.GameUI.IsStratInfoPanelShowed) _gameSystem.UpdateDigitalChannels(player.Health);
         }
 
         internal void PayPlayer(int value)
@@ -38,11 +42,17 @@ namespace K8055Velleman.Game.Systems
             playerUI.PlayerMoney.Text = $"💲 : {player.Money}";
         }
 
+        internal void RemoveMoneyFromPlayer(int value)
+        {
+            player.Money -= value;
+            playerUI.PlayerMoney.Text = $"💲 : {player.Money}";
+        }   
+
         internal override void OnDestroy()
         {
             base.OnDestroy();
             GameManager.DestroySystem<EntitySystem>();
-            entitySystem.DestroyEntity(player);
+            _entitySystem.DestroyEntity(player);
             player = null;
             UIManager.DestroyUI<PlayerUI>();
         }

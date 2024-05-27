@@ -25,7 +25,6 @@ internal abstract class StratagemEntityBase : StaticEntity
 	internal abstract int UiID { get; }
 	internal abstract bool Unlockable { get; }
 	internal abstract int UnkockPrice { get; }
-    internal abstract string IconPath { get; }
     internal abstract Color Color { get; }
     internal abstract string Name { get; }
 	internal abstract int MaxLevel { get; }
@@ -39,7 +38,7 @@ internal abstract class StratagemEntityBase : StaticEntity
 
 	internal override void OnCreate(EntitySystem entitySystem)
 	{
-		mainPanel = new()
+		MainPanel = new()
 		{
 			Name = Name,
 			BackColor = Color,

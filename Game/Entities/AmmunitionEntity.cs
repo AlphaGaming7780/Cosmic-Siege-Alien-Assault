@@ -27,10 +27,10 @@ internal class AmmunitionEntity : MovingEntity
 
 	internal override void OnCreate(EntitySystem entitySystem)
 	{
-        mainPanel = new()
+        MainPanel = new()
         {
-            Width = (int)(BulletSize.Width * UIManager.uiRatio.x),
-            Height = (int)(BulletSize.Height * UIManager.uiRatio.y),
+            Width = BulletSize.Width,
+            Height = BulletSize.Height,
             BackColor = BulletColor,
         };
         base.OnCreate(entitySystem);
@@ -48,19 +48,19 @@ internal class AmmunitionEntity : MovingEntity
         enabled = true;
         playerSystem = GameManager.GetOrCreateSystem<PlayerSystem>();
         CenterLocation = playerSystem.player.CenterLocation;
-        GameUI.GamePanel.Controls.Add(mainPanel);
+        GameUI.GamePanel.Controls.Add(MainPanel);
     }
 
     internal override void OnUpdate()
     {
         base.OnUpdate();
-        if (!EntitySystem.EntityExist(this)) return;
+        if (!EntitySystem.EntityExists(this)) return;
         if (Guided) {
             if (target == null) GetNewTarget();
-            else if (EntitySystem.EntityExist(target)) taregtCenterLocation = target.CenterLocation;
+            else if (EntitySystem.EntityExists(target)) TaregtCenterLocation = target.CenterLocation;
             else target = null;
 		}
-		else if(taregtCenterLocation == CenterLocation) EntitySystem.DestroyEntity(this);
+		else if(TaregtCenterLocation == CenterLocation) EntitySystem.DestroyEntity(this);
     }
 
 	internal override void OnCollide(EntityBase entityBase)
@@ -89,7 +89,7 @@ internal class AmmunitionEntity : MovingEntity
 
     private void UpdateMainPanel()
     {
-        mainPanel.Size = BulletSize;
-        mainPanel.BackColor = BulletColor;
+        MainPanel.Size = BulletSize;
+        MainPanel.BackColor = BulletColor;
     }
 }

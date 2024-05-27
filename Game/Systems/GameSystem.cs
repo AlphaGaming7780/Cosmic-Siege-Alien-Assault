@@ -1,5 +1,4 @@
 ﻿using K8055Velleman.Game.Entities;
-using K8055Velleman.Game.Entities.Enemy;
 using K8055Velleman.Game.UI;
 using System;
 using System.Collections.Generic;
@@ -10,33 +9,31 @@ namespace K8055Velleman.Game.Systems
 {
 	internal class GameSystem : SystemBase
 	{
-		EntitySystem entitySystem;
-		internal PlayerSystem playerSystem;
-        List<StratagemEntityBase> selectedStratagemEntities = [];
+		private EntitySystem _entitySystem;
+        private List<StratagemEntityBase> _selectedStratagemEntities = [];
 
-		int waveMoneyBank = 0, waveMoneyPay = 1;
-		internal int waveNum = 0;
-        //readonly List<EnemyEntity> enemyToGenerate = [];
+		internal int Scores = 0, WaveMoneyBank = 0, WaveMoneyPay = 1;
+        internal PlayerSystem playerSystem;
+        internal PreGameUI PreGameUI { get; private set; } = null;
 
-        //internal GameUI gameUI { get; private set; } = null;
-        internal PreGameUI preGameUI { get; private set; } = null;
+
 		internal override void OnCreate()
 		{
 			base.OnCreate();
             //PreGameUI = UIManager.GetOrCreateUI<PreGameUI>();
             InputManager.OnKeyDown += OnKeyDown;
-            entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
+            _entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
         }
 
-		internal override void OnDestroy()
+        internal override void OnDestroy()
 		{
 			base.OnDestroy();
-            entitySystem = null;
+            _entitySystem = null;
 			playerSystem = null;
             GameManager.DestroySystem<EntitySystem>();
             GameManager.DestroySystem<PlayerSystem>();
 			//gameUI = null;
-			preGameUI = null;
+			PreGameUI = null;
 			UIManager.DestroyUI<GameUI>();
 			UIManager.DestroyUI<PreGameUI>();
 			UIManager.DestroyUI<PauseUI>();
@@ -49,10 +46,10 @@ namespace K8055Velleman.Game.Systems
             base.OnUpdate();
 			if(GameManager.instance.gameStatus == GameStatus.Game)
 			{
-                if (entitySystem.GetEntitiesByType<EnemyEntity>().Count <= 0)
+                if (_entitySystem.GetEntitiesByType<EnemyEntity>().Count <= 0)
                 {
                     GenerateWave();
-					waveNum++;
+					Scores += WaveMoneyPay;
                 }
 
             }
@@ -64,20 +61,26 @@ namespace K8055Velleman.Game.Systems
 			List<EnemyEntity> enemyEntities = [];
 			foreach (Type type in types)
 			{
-				enemyEntities.Add(entitySystem.CreateEntity<EnemyEntity>(type));
+				enemyEntities.Add(_entitySystem.CreateEntity<EnemyEntity>(type));
 			}
-			int currentMoneyWave = waveMoneyBank += waveMoneyPay;
+			int currentMoneyWave = WaveMoneyBank += WaveMoneyPay;
 			while(currentMoneyWave > 0) 
 			{
 				EnemyEntity enemyType = enemyEntities[GameManager.Random.Next(0, enemyEntities.Count)];
 
                 if (currentMoneyWave - enemyType.Cost >= 0)
 				{
-                    EnemyEntity enemyEntity = entitySystem.CreateEntity<EnemyEntity>(enemyType.GetType());
+                    EnemyEntity enemyEntity = _entitySystem.CreateEntity<EnemyEntity>(enemyType.GetType());
                     enemyEntity.Spawn();
 					currentMoneyWave -= enemyEntity.Cost;
 				}
 			}
+
+			foreach(EnemyEntity enemyEntity in enemyEntities)
+			{
+				_entitySystem.DestroyEntity(enemyEntity);
+			}
+
 		}
 
         internal override void OnGameStatusChange(GameStatus status)
@@ -86,7 +89,7 @@ namespace K8055Velleman.Game.Systems
 			switch (status)
 			{
 				case GameStatus.PreGame:
-                    preGameUI = UIManager.GetOrCreateUI<PreGameUI>();
+                    PreGameUI = UIManager.GetOrCreateUI<PreGameUI>();
                     break;
 				case GameStatus.Game:
 					SetupGame();
@@ -102,21 +105,22 @@ namespace K8055Velleman.Game.Systems
 
 		private void SetupGame()
 		{	
-			foreach (StratagemEntityBase stratagemEntityBase in preGameUI.selectedStratagemEntities)
+			foreach (StratagemEntityBase stratagemEntityBase in PreGameUI.selectedStratagemEntities)
 			{
 				if(stratagemEntityBase is null) continue;
-				selectedStratagemEntities.Add(entitySystem.CreateEntity<StratagemEntityBase>(stratagemEntityBase.GetType()));
-				entitySystem.DestroyEntity(stratagemEntityBase);
+				_selectedStratagemEntities.Add(_entitySystem.CreateEntity<StratagemEntityBase>(stratagemEntityBase.GetType()));
+				_entitySystem.DestroyEntity(stratagemEntityBase);
 			}
-			entitySystem.GameUI = UIManager.GetOrCreateUI<GameUI>();
-			entitySystem.GameUI.UpdateStratagemList(selectedStratagemEntities);
+			_entitySystem.GameUI = UIManager.GetOrCreateUI<GameUI>();
+			_entitySystem.GameUI.UpdateStratagemList(_selectedStratagemEntities);
             playerSystem = GameManager.GetOrCreateSystem<PlayerSystem>();
-            preGameUI = null;
+            PreGameUI = null;
 			UIManager.DestroyUI<PreGameUI>();
-            foreach (StratagemEntityBase entity in selectedStratagemEntities)
+            foreach (StratagemEntityBase entity in _selectedStratagemEntities)
 			{
                 entity.EnableStratagem();
 			}
+			Scores = WaveMoneyBank;
         }
 
         private void OnKeyDown(Keys key)
@@ -133,27 +137,27 @@ namespace K8055Velleman.Game.Systems
 
 		internal void PauseLogique()
 		{
-            if (entitySystem.enabled) PauseGame();
+            if (_entitySystem.enabled) PauseGame();
             else UnPauseGame();
         }
 
         internal void PauseGame()
 		{
-			entitySystem.enabled = false;
-            entitySystem.GameUI.GamePanel.Enabled = false;
+			_entitySystem.enabled = false;
+            _entitySystem.GameUI.GamePanel.Enabled = false;
 			PauseUI pauseUI = UIManager.GetOrCreateUI<PauseUI>();
 			pauseUI.gameSystem = this;
-            foreach (StratagemEntityBase stratagemEntityBase in selectedStratagemEntities)
+            foreach (StratagemEntityBase stratagemEntityBase in _selectedStratagemEntities)
 			{
 				stratagemEntityBase?.PauseStratagem();
 			}
         }
 		internal void UnPauseGame()
 		{
-            entitySystem.enabled = true;
-            entitySystem.GameUI.GamePanel.Enabled = true;
+            _entitySystem.enabled = true;
+            _entitySystem.GameUI.GamePanel.Enabled = true;
             UIManager.DestroyUI<PauseUI>();
-            foreach (StratagemEntityBase stratagemEntityBase in selectedStratagemEntities)
+            foreach (StratagemEntityBase stratagemEntityBase in _selectedStratagemEntities)
             {
                 stratagemEntityBase?.ResumeStratagem();
             }
@@ -161,10 +165,10 @@ namespace K8055Velleman.Game.Systems
 
 		private void SetupEndGame()
 		{
-            entitySystem.enabled = false;
-            entitySystem.GameUI.GamePanel.Enabled = false;
+            _entitySystem.enabled = false;
+            _entitySystem.GameUI.GamePanel.Enabled = false;
             SaveManager.CurrentPlayerData.Money += playerSystem.player.TotalMoney;
-			if(SaveManager.CurrentPlayerData.HigestScore < waveNum) SaveManager.CurrentPlayerData.HigestScore = waveNum;
+			if(SaveManager.CurrentPlayerData.HigestScore < Scores) SaveManager.CurrentPlayerData.HigestScore = Scores;
 			SaveManager.SaveCurrentPlayerData();
 			UIManager.GetOrCreateUI<EndGameUI>();
 			//GameManager.instance.Load(GameStatus.MainMenu);
@@ -180,8 +184,14 @@ namespace K8055Velleman.Game.Systems
 		{
             if(stratagemEntityBase.Upgrade(upgrades))
 			{
-				playerSystem.PayPlayer(-GetStartagemUpgradeCost(stratagemEntityBase.level - 1));
+				playerSystem.RemoveMoneyFromPlayer(GetStartagemUpgradeCost(stratagemEntityBase.level - 1));
 			}
+        }
+
+		internal void UpdateDigitalChannels(int value)
+		{
+            //K8055.ClearAllDigital();
+            K8055.WriteAllDigital((int)Math.Pow(2, value) - 1);
         }
     }
 }

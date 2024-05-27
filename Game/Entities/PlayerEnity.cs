@@ -14,7 +14,7 @@ internal class PlayerEnity : StaticEntity
 	internal override void OnCreate(EntitySystem entitySystem)
 	{
 		Health = StartHealth;
-		mainPanel = new() //Panel
+		MainPanel = new() //Panel
 		{
 			Size = new(50, 50),
 			BackColor = Color.Green,
@@ -23,18 +23,12 @@ internal class PlayerEnity : StaticEntity
 		base.OnCreate(entitySystem);
 		CenterLocation = new(GameUI.GamePanel.Width / 2, GameUI.GamePanel.Height / 2);
 
-		GameUI.GamePanel.Controls.Add(mainPanel);
+		GameUI.GamePanel.Controls.Add(MainPanel);
 	}
 
 	internal override void OnUpdate()
 	{
 
-	}
-
-	internal override void OnResize()
-	{
-		base.OnResize();
-		CenterLocation = new(GameUI.GamePanel.Width / 2, GameUI.GamePanel.Height / 2);
 	}
 
 	internal override void OnCollide(EntityBase entityBase)

@@ -22,9 +22,11 @@ namespace K8055Velleman.Game.UI
 		BButton _FirstUpgrade;
 		BButton _SecondeUpgrade;
 
-		private bool upgrading = false;
+        private bool upgrading = false;
 
-		internal override void OnCreate()
+        internal bool IsStratInfoPanelShowed { get { return StratInfoPanel != null; } }
+
+        internal override void OnCreate()
 		{
 			base.OnCreate();
 			gameSystem = GameManager.GetOrCreateSystem<GameSystem>();
@@ -55,6 +57,7 @@ namespace K8055Velleman.Game.UI
 			EndGameMenu?.Dispose();
 			GamePanel = null;
 			EndGameMenu = null;
+			K8055.ClearAllDigital();
 		}
 
 		//internal override void OnResize()
@@ -68,25 +71,34 @@ namespace K8055Velleman.Game.UI
 			int i = 0;
 			foreach(StratagemEntityBase stratagemEntityBase in stratagemEntityBases) 
 			{
-				stratagemEntityBase.mainPanel.Location = new Point(2 * (i + 1) + 130 * i, 1);
-				stratagemEntityBase.mainPanel.Size = new(128,128);
-				selectedStratPanel.Controls.Add(stratagemEntityBase.mainPanel);
-				selectedStratPanel.Controls.SetChildIndex(stratagemEntityBase.mainPanel, 0);
-				stratagemEntityBase.mainPanel.Enabled = true;
-				stratagemEntityBase.mainPanel.MouseEnter += (s, e) => { ShowStratInfo(stratagemEntityBase); };
-				stratagemEntityBase.mainPanel.MouseLeave += (s, e) => { if (!upgrading) { HideStratInfo(); } };
-				stratagemEntityBase.mainPanel.Click += (s, e) => { ShowStratInfo(stratagemEntityBase, true); };
+				stratagemEntityBase.MainPanel.Location = new Point(2 * (i + 1) + 130 * i, 1);
+				stratagemEntityBase.MainPanel.Size = new(128,128);
+				selectedStratPanel.Controls.Add(stratagemEntityBase.MainPanel);
+				selectedStratPanel.Controls.SetChildIndex(stratagemEntityBase.MainPanel, 0);
+				stratagemEntityBase.MainPanel.Enabled = true;
+				stratagemEntityBase.MainPanel.MouseEnter += (s, e) => { ShowStratInfo(stratagemEntityBase); };
+				stratagemEntityBase.MainPanel.MouseLeave += (s, e) => { if (!upgrading) { HideStratInfo(); } };
+				stratagemEntityBase.MainPanel.Click += (s, e) => { ShowStratInfo(stratagemEntityBase, true); };
 				i++;
 			}
 		}
 
-		internal void ShowStratInfo(StratagemEntityBase stratagemEntityBase, bool upgrade = false)
+        private void ShowStratInfo(int index)
+        {
+            if (_StratagemEntityBases.Count <= index) return;
+
+            ShowStratInfo(_StratagemEntityBases[index], _StratagemEntity == _StratagemEntityBases[index]);
+        }
+
+        private void ShowStratInfo(StratagemEntityBase stratagemEntityBase, bool upgrade = false)
 		{
 			if (StratInfoPanel is not null) HideStratInfo();
 			if(stratagemEntityBase.level >= stratagemEntityBase.MaxLevel) upgrade = false;
 			upgrading = upgrade;
 
 			_StratagemEntity = stratagemEntityBase;
+
+			if (K8055.IsConnected) gameSystem.UpdateDigitalChannels(stratagemEntityBase.level);
 
 			StratInfoPanel = new()
 			{
@@ -277,7 +289,7 @@ namespace K8055Velleman.Game.UI
 
 		}
 
-		internal void HideStratInfo()
+        internal void HideStratInfo()
 		{
 			_FirstUpgrade = null;
 			_SecondeUpgrade = null;
@@ -286,100 +298,7 @@ namespace K8055Velleman.Game.UI
 			GamePanel.Controls.Remove(StratInfoPanel);
 			StratInfoPanel.Dispose();
 			StratInfoPanel = null;
-		}
-
-		internal void ShowEndGameMenu()
-		{
-			EndGameMenu = new()
-			{
-				Width = 1280,
-				Height = 720,
-				BorderStyle = BorderStyle.FixedSingle,
-				ForeColor = Color.White,
-			};
-			EndGameMenu.Location = new Point(GameWindow.Width / 2 - EndGameMenu.Width / 2, GameWindow.Height /  2 - EndGameMenu.Height / 2);
-
-			Label gameEndedText = new()
-			{
-				Text = "You died.",
-				Font = new Font(UIManager.CustomFonts.Families[0], 30f, FontStyle.Bold),
-				ForeColor = Color.White,
-				//AutoSize = true,
-				Width = 250,
-				Height = 50,
-				TextAlign = ContentAlignment.MiddleCenter,
-				BorderStyle = BorderStyle.FixedSingle,
-			};
-			gameEndedText.Location = new(EndGameMenu.Width / 2 - gameEndedText.Width / 2, 25);
-
-			Label Score = new()
-			{
-				Text = $"Score : {gameSystem.waveNum} 🌟",
-				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
-				ForeColor = Color.White,
-				//AutoSize = true,
-				Width = 500,
-				Height = 50,
-				TextAlign = ContentAlignment.MiddleCenter,
-				//BorderStyle = BorderStyle.FixedSingle,
-			};
-			Score.Location = new(EndGameMenu.Width / 4 - Score.Width / 2, 100);
-
-			Label TotalEarnedMoney = new()
-			{
-				Text = $"Total Earned Money : {gameSystem.playerSystem.player.TotalMoney} 💲",
-				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
-				ForeColor = Color.White,
-				AutoSize = true,
-				Width = 500,
-				Height = 50,
-				TextAlign = ContentAlignment.MiddleCenter,
-				//BorderStyle = BorderStyle.FixedSingle,
-			};
-			TotalEarnedMoney.Location = new(EndGameMenu.Width / 4 * 3 - TotalEarnedMoney.Width / 2, 100);
-
-			BButton tryAgainButton = new()
-			{
-				Text = "Try again",
-				Width = 250,
-				Height = 50,
-				ForeColor = Color.White,
-				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
-			};
-			tryAgainButton.Click += (s, e) => { GameManager.DestroySystem<GameSystem>(); GameManager.instance.Load(GameStatus.PreGame); };
-			tryAgainButton.Location = new(EndGameMenu.Width / 4 - tryAgainButton.Width / 2, EndGameMenu.Height - tryAgainButton.Height - 25);
-
-			BButton settingsButton = new()
-			{
-				Text = "Settings",
-				Width = 250,
-				Height = 50,
-				ForeColor = Color.White,
-				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
-			};
-			settingsButton.Click += (s, e) => { GameManager.instance.Load(GameStatus.MainMenu); };
-			settingsButton.Location = new(EndGameMenu.Width / 2  - settingsButton.Width / 2, EndGameMenu.Height - tryAgainButton.Height - 25);
-
-			BButton mainMenuButton = new()
-			{
-				Text = "Main Menu",
-				Width = 250,
-				Height = 50,
-				ForeColor = Color.White,
-				Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
-			};
-			mainMenuButton.Click += (s, e) => { GameManager.instance.Load(GameStatus.MainMenu); };
-			mainMenuButton.Location = new(EndGameMenu.Width / 4 * 3 - mainMenuButton.Width / 2, EndGameMenu.Height - tryAgainButton.Height - 25);
-
-			EndGameMenu.Controls.Add(gameEndedText);
-			EndGameMenu.Controls.Add(Score);
-			EndGameMenu.Controls.Add(TotalEarnedMoney);
-			EndGameMenu.Controls.Add(tryAgainButton);
-			EndGameMenu.Controls.Add(settingsButton);
-			EndGameMenu.Controls.Add(mainMenuButton);
-			GameWindow.Controls.Add(EndGameMenu);
-			GameWindow.Controls.SetChildIndex(EndGameMenu, 0);
-
+			gameSystem.UpdateDigitalChannels(gameSystem.playerSystem.player.Health);
 		}
 
         internal override void OnConnectionChange()
@@ -423,12 +342,5 @@ namespace K8055Velleman.Game.UI
 				else gameSystem.PauseLogique();
 			}
         }
-
-		private void ShowStratInfo(int index)
-		{
-			if (_StratagemEntityBases.Count <= index) return;
-
-			ShowStratInfo(_StratagemEntityBases[index], _StratagemEntity == _StratagemEntityBases[index]);
-		}
     }
 }

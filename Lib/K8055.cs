@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Channels;
 using System.Security.Policy;
 using System.Windows.Forms;
 using System.Windows.Media.Animation;
+using static K8055Velleman.K8055;
 
 namespace K8055Velleman;
 
@@ -236,14 +237,52 @@ static public class K8055
 		Interface.SetDigitalChannel(-(int)channel);
 	}
 
-	public static void ClearDigitalChannel(DigitalChannel channel)
+	public static void WriteAllDigital(int data)
+	{
+		if ((data & 1) > 0 && !s_digitalChannels.Contains(DigitalChannel.O1)) s_digitalChannels.Add(DigitalChannel.O1);
+		else s_digitalChannels.Remove(DigitalChannel.O1);
+
+		if((data & 2) > 0 && !s_digitalChannels.Contains(DigitalChannel.O2)) s_digitalChannels.Add(DigitalChannel.O2);
+        else s_digitalChannels.Remove(DigitalChannel.O2);
+
+        if ((data & 4) > 0 && !s_digitalChannels.Contains(DigitalChannel.O3)) s_digitalChannels.Add(DigitalChannel.O3);
+        else s_digitalChannels.Remove(DigitalChannel.O3);
+
+        if ((data & 8) > 0 && !s_digitalChannels.Contains(DigitalChannel.O4)) s_digitalChannels.Add(DigitalChannel.O4);
+        else s_digitalChannels.Remove(DigitalChannel.O4);
+
+        if ((data & 16) > 0 && !s_digitalChannels.Contains(DigitalChannel.O5)) s_digitalChannels.Add(DigitalChannel.O5);
+        else s_digitalChannels.Remove(DigitalChannel.O5);
+
+        if ((data & 32) > 0 && !s_digitalChannels.Contains(DigitalChannel.O6)) s_digitalChannels.Add(DigitalChannel.O6);
+        else s_digitalChannels.Remove(DigitalChannel.O6);
+
+        if ((data & 64) > 0 && !s_digitalChannels.Contains(DigitalChannel.O7)) s_digitalChannels.Add(DigitalChannel.O7);
+        else s_digitalChannels.Remove(DigitalChannel.O7);
+
+        if ((data & 128) > 0 && !s_digitalChannels.Contains(DigitalChannel.O8)) s_digitalChannels.Add(DigitalChannel.O8);
+        else s_digitalChannels.Remove(DigitalChannel.O8);
+
+        Interface.WriteAllDigital(data);
+    }
+
+    public static void ClearDigitalChannel(DigitalChannel channel)
 	{
 		if (!IsConnected || channel >= 0) return;
 		s_digitalChannels.Remove(channel);
 		Interface.ClearDigitalChannel(-(int)channel);
 	}
 
-	public static void SetAnalogChannel(AnalogChannel channel)
+	public static void ClearAllDigital()
+	{
+		for(int i = -1; i >= -8; i--)
+		{
+			s_digitalChannels.Remove((DigitalChannel)i);
+		}
+		Interface.ClearAllDigital();
+	}
+
+    public static void SetAnalogChannel(AnalogChannel channel)
 	{
 		if (!IsConnected || channel >= 0) return;
 		if (s_analogChannels.ContainsKey(channel)) s_analogChannels[channel] = 255;

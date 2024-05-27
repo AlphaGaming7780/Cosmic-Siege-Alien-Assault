@@ -35,14 +35,14 @@ namespace K8055Velleman.Game.UI
 			{
 				Name = "MainMenuGameName",
 				Text = "Cosmic Siege: Alien Assault",
-				Width = (int)(500 * UIRatio.x),
-				Height = (int)(100 * UIRatio.y),
+				Width = 750,
+				Height = 150,
 				TextAlign = ContentAlignment.MiddleCenter,
 				Font = new(FontFamily.GenericSerif, 45f, FontStyle.Bold),
-				ForeColor = Color.WhiteSmoke,
+				ForeColor = Color.White,
 				BorderStyle = BorderStyle.FixedSingle,
 			};
-			GameName.Location = new(_mainMenu.Width/2 - GameName.Width/2, (int)(100 * UIRatio.y));
+			GameName.Location = new(_mainMenu.Width/2 - GameName.Width/2, 200);
 
             Label PlayerName = new()
 			{
@@ -55,8 +55,8 @@ namespace K8055Velleman.Game.UI
 
 			_vellmanBoardStatusPanel = new()
 			{
-				Width = 150,//(int)(150 * UIRatio.x),
-				Height = 30,//(int)(30 * UIRatio.y),
+				Width = 150,
+				Height = 30,
 				Name = "MainMenuStatusPanel",
 				BackColor = K8055.IsConnected ? Color.Green : Color.Red
 			};
@@ -75,37 +75,37 @@ namespace K8055Velleman.Game.UI
 			_playButton = new()
 			{
 				Name = "MainMenuButtonPlay",
-				Height = (int)(50 * UIRatio.y),
-				Width = (int)(200 * UIRatio.x),
+				Height = 96,
+				Width = 350,
 				Text = K8055.IsConnected ? "Play (INP1)" : "Play",
 				ForeColor = Color.White,
 				Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 			};
-			_playButton.Location = new(_mainMenu.Left + _mainMenu.Width / 2 - _playButton.Width/2, (int)(275 * UIRatio.y));
+			_playButton.Location = new(_mainMenu.Left + _mainMenu.Width / 2 - _playButton.Width/2, 450);
 			_playButton.Click += (s, e) => { GameManager.instance.Load(GameStatus.PreGame); };
 
 			_settingsButton = new()
 			{
 				Name = "MainMenuButtonSettings",
-				Height = (int)(50 * UIRatio.y),
-				Width = (int)(200 * UIRatio.x),
+				Height = 96,
+				Width = 350,
 				Text = K8055.IsConnected ? "Settings (INP2)" : "Settings",
                 ForeColor = Color.White,
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 			};
-			_settingsButton.Location = new(_mainMenu.Left + _mainMenu.Width / 2 - _settingsButton.Width / 2, (int)(375 * UIRatio.y));
+			_settingsButton.Location = new(_mainMenu.Left + _mainMenu.Width / 2 - _settingsButton.Width / 2, 600);
 			_settingsButton.Click += (s, e) => { UIManager.GetOrCreateUI<SettingsUI>().Show(_mainMenu); };
 
 			_quitButton = new()
 			{
 				Name = "MainMenuButtonQuit",
-				Height = (int)(50 * UIRatio.y),
-				Width = (int)(200 * UIRatio.x),
+				Height = 96,
+				Width = 350,
 				Text = K8055.IsConnected ? "Quit (INP5)" : "Quit",
                 ForeColor = Color.White,
                 Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 			};
-			_quitButton.Location = new(_mainMenu.Left + _mainMenu.Width / 2 - _quitButton.Width / 2, (int)(475 * UIRatio.y));
+			_quitButton.Location = new(_mainMenu.Left + _mainMenu.Width / 2 - _quitButton.Width / 2, 750);
 			_quitButton.Click += (s, e) => { GameWindow.Close(); };
 
 			UpdateScoreboard();

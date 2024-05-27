@@ -25,8 +25,11 @@ internal class GameManager
 
     public static GameManager instance;
 
-    private static readonly Dictionary<Type, SystemBase> Systems = [];
+    private static readonly Dictionary<Type, SystemBase> s_systems = [];
 
+    /// <summary>
+    /// The status of the game.
+    /// </summary>
     internal GameStatus gameStatus = GameStatus.unknown;
 
     public static Random Random { get; private set; } = new();
@@ -36,6 +39,10 @@ internal class GameManager
         instance = this;
     }
 
+    /// <summary>
+    /// Called when the game need to load a new status.
+    /// </summary>
+    /// <param name="gameStatus">The new status.</param>
     internal void Load(GameStatus gameStatus) 
     {
         this.gameStatus = gameStatus;
@@ -52,46 +59,69 @@ internal class GameManager
                 break;
 
         }
-        foreach (SystemBase system in new List<SystemBase>(Systems.Values))
+        foreach (SystemBase system in new List<SystemBase>(s_systems.Values))
         {
             system.OnGameStatusChange(gameStatus);
         }
     }
 
+    /// <summary>
+    /// Update all the systems.
+    /// </summary>
     internal void Update()
     {
-        List<SystemBase> temp = new(Systems.Values);
+        List<SystemBase> temp = new(s_systems.Values);
         foreach (SystemBase system in temp)
         {
-            if(Systems.Values.Contains(system) && system.enabled) system.OnUpdate();
+            if(s_systems.Values.Contains(system) && system.enabled) system.OnUpdate();
         }
     }
 
+    /// <summary>
+    /// Get an exesting system.
+    /// </summary>
+    /// <typeparam name="T">The type of the system to get.</typeparam>
+    /// <returns></returns>
     internal static T GetSystem<T>() where T : SystemBase
     {
-        if (Systems.ContainsKey(typeof(T))) return (T)Systems[typeof(T)];
+        if (s_systems.ContainsKey(typeof(T))) return (T)s_systems[typeof(T)];
         return null;
     }
 
-    internal static bool SystemExist<T>() where T : SystemBase
+    /// <summary>
+    /// Check if a system exist.
+    /// </summary>
+    /// <typeparam name="T">The type of the system to check.</typeparam>
+    /// <returns>True if the system exists.</returns>
+    internal static bool SystemExists<T>() where T : SystemBase
     {
-        return Systems.ContainsKey(typeof(T));
+        return s_systems.ContainsKey(typeof(T));
     }
 
+    /// <summary>
+    /// Get or create a system.
+    /// </summary>
+    /// <typeparam name="T">The type of the wnated system.</typeparam>
+    /// <returns>The wanted system.</returns>
     internal static T GetOrCreateSystem<T>() where T: SystemBase, new()
     {
-        if (Systems.ContainsKey(typeof(T))) return (T)Systems[typeof(T)];
+        if (s_systems.ContainsKey(typeof(T))) return (T)s_systems[typeof(T)];
         T system = new();
-        Systems.Add(typeof(T), system);
+        s_systems.Add(typeof(T), system);
         system.OnCreate(); 
         return system;
     }
 
+    /// <summary>
+    /// Destroy a system.
+    /// </summary>
+    /// <typeparam name="T">The type of the system to destroy.</typeparam>
+    /// <returns>True if the system have been destroyed, False if the system doesn't exists.</returns>
     internal static bool DestroySystem<T>() where T : SystemBase
     {
-        if (!Systems.ContainsKey(typeof(T))) return false;
-        Systems[typeof(T)].OnDestroy();
-        Systems.Remove(typeof(T));
+        if (!s_systems.ContainsKey(typeof(T))) return false;
+        s_systems[typeof(T)].OnDestroy();
+        s_systems.Remove(typeof(T));
         return true;
     }
 

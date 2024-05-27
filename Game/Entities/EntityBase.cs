@@ -9,42 +9,81 @@ namespace K8055Velleman.Game.Entities
 {
     internal abstract class EntityBase
     {
-        private Vector2 location;
-        internal Vector2 Location { get => location; set { mainPanel.Location = value; location = value; } }
-        internal Vector2 CenterLocation { get => Location + Size.Divide(2); set => Location = value - Size.Divide(2); }
-        internal Size Size { get => mainPanel.Size; set => mainPanel.Size = value; }
+        private Vector2 _location;
 
-        internal Control mainPanel;
+        /// <summary>
+        /// The location of the entity from is top right corner.
+        /// </summary>
+        internal Vector2 Location { get => _location; set { MainPanel.Location = value; _location = value; } }
+
+        /// <summary>
+        /// The location of the entity from its center.
+        /// </summary>
+        internal Vector2 CenterLocation { get => Location + Size.Divide(2); set => Location = value - Size.Divide(2); }
+
+        /// <summary>
+        /// The Size of the entity.
+        /// </summary>
+        internal Size Size { get => MainPanel.Size; set => MainPanel.Size = value; }
+
+        /// <summary>
+        /// The Control of the entity.
+        /// </summary>
+        internal Control MainPanel;
+
+        /// <summary>
+        /// The EntitySystem
+        /// </summary>
         internal EntitySystem EntitySystem { get; private set; }
-        //internal GameWindow GameWindow { get { return EntitySystem.GameWindow; } }
+
+        /// <summary>
+        /// The game UI.
+        /// </summary>
         internal GameUI GameUI { get { return EntitySystem.GameUI; } }
 
+        /// <summary>
+        /// Controle if the entity should be updated.
+        /// </summary>
         internal bool enabled = true;
 
+        /// <summary>
+        /// Called when the entity is created.
+        /// </summary>
+        /// <param name="entitySystem">The EntitySystem that created the entity.</param>
         internal virtual void OnCreate(EntitySystem entitySystem)
         {
             this.EntitySystem = entitySystem;
-            location = mainPanel.Location;
+            _location = MainPanel.Location;
         }
+
+        /// <summary>
+        /// Called when the entity is destroyed.
+        /// </summary>
         internal virtual void OnDestroy()
         {
             enabled = false;
-            if (mainPanel != null)
+            if (MainPanel != null)
             {
-                mainPanel.Parent?.Controls.Remove(mainPanel);
-                mainPanel.Dispose();
-                mainPanel = null;
+                MainPanel.Parent?.Controls.Remove(MainPanel);
+                MainPanel.Dispose();
+                MainPanel = null;
             }
         }
+
+        /// <summary>
+        /// Called when the entity is updated.
+        /// </summary>
         internal abstract void OnUpdate();
 
+        /// <summary>
+        /// Called when the entity collide with another entity.
+        /// </summary>
+        /// <param name="entityBase">The entity that collide with this entity.</param>
         internal abstract void OnCollide(EntityBase entityBase);
-        internal virtual void OnResize()
+
+        public static implicit operator Control(EntityBase entityBase)
         {
-            //Console.WriteLine(deltaRatio.x);
-            //Console.WriteLine(deltaRatio.y);
-            //mainPanel.Size = new((int)(mainPanel.Size.Width * deltaRatio.x), (int)(mainPanel.Size.Width * deltaRatio.y));
-            //mainPanel.Location = new((int)(mainPanel.Location.X * deltaRatio.x), (int)(mainPanel.Location.Y * deltaRatio.y));
+            return entityBase.MainPanel;
         }
 
     }

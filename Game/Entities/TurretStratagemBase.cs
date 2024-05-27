@@ -38,7 +38,7 @@ internal abstract class TurretStratagemBase : StratagemEntityBase
 
     private void GetTarget()
 	{
-        if (target == null || !EntitySystem.EntityExist(target))
+        if (target == null || !EntitySystem.EntityExists(target))
 		{
 			List<EnemyEntity> enemyEntities = EntitySystem.GetEntitiesByType<EnemyEntity>();
 
@@ -73,11 +73,11 @@ internal abstract class TurretStratagemBase : StratagemEntityBase
 	internal void Shot()
     {
         GetTarget();
-        if (target == null || !EntitySystem.EntityExist(target)) return;
+        if (target == null || !EntitySystem.EntityExists(target)) return;
 		AmmunitionEntity ammunitionEntity = EntitySystem.CreateEntity<AmmunitionEntity>();
 		ammunitionEntity.Create(bulletInfo);
 		ammunitionEntity.target = target;
-		ammunitionEntity.taregtCenterLocation = target.CenterLocation;
+		ammunitionEntity.TaregtCenterLocation = target.CenterLocation;
 		targetLife -= ammunitionEntity.Damage;
     }
 }

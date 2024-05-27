@@ -9,7 +9,7 @@ using System.Timers;
 
 namespace K8055Velleman.Lib;
 
-// SOURCCE ; https://stackoverflow.com/questions/26964192/c-sharp-how-to-pause-a-timer
+// SOURCE ; https://stackoverflow.com/questions/26964192/c-sharp-how-to-pause-a-timer
 
 public class PausableTimer : Timer
 {

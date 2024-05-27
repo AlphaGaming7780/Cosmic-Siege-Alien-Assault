@@ -151,4 +151,13 @@
   <data name="RyuuAkito___SquashHead___Damaged_Artificial_Nervous_System" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Audio\Musics\RyuuAkito &amp; SquashHead - Damaged Artificial Nervous System.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Death" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio\EnemyDeath\Death.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Death_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio\EnemyDeath\Death 1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Death_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio\EnemyDeath\Death 2.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

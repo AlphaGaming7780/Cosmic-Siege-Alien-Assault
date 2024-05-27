@@ -11,47 +11,39 @@ namespace K8055Velleman.Game;
 
 internal class UIManager
 {
-    internal static UIManager instance;
     internal static GameWindow GameWindow;
     internal static PrivateFontCollection CustomFonts = new();
-    private static readonly Dictionary<Type, UIBase> UIs = [];
-    private static Size initialWindowSize = new(1280,720);
-    internal static Float2 uiRatio { get { return (Float2)GameWindow.Size / (Float2)initialWindowSize; } }
-    //internal Float2 dynamicUIRatio;
-    //private Float2 OldWindowSize;
+    private static readonly Dictionary<Type, UIBase> s_UIs = [];
     public UIManager(GameWindow gameWindow) 
     { 
-        instance = this;
         GameWindow = gameWindow;
-        //initialWindowSize = GameWindow.Size;
-        //OldWindowSize = GameWindow.Size;
         CustomFonts.AddFontFile("Resources\\PixeloidSans.ttf");
     }
 
-    //internal void OnResize()
-    //{   
-    //    //dynamicUIRatio = GameWindow.Size/OldWindowSize;
-    //    //OldWindowSize = GameWindow.Size;
-    //    foreach (UIBase UI in UIs.Values)
-    //    {
-    //        UI.OnResize();
-    //    }
-    //}
-
+    /// <summary>
+    /// Create the UI of the input type.
+    /// </summary>
+    /// <typeparam name="T">The type of the needed UI.</typeparam>
+    /// <returns>The UI of type T.</returns>
     internal static T GetOrCreateUI<T>() where T : UIBase, new()
     {
-        if (UIs.ContainsKey(typeof(T))) return (T)UIs[typeof(T)];
+        if (s_UIs.ContainsKey(typeof(T))) return (T)s_UIs[typeof(T)];
         T UI = new();
         UI.OnCreate();
-        UIs.Add(typeof(T), UI);
+        s_UIs.Add(typeof(T), UI);
         return UI;
     }
 
+    /// <summary>
+    /// Destory the UI of type T.
+    /// </summary>
+    /// <typeparam name="T">The type of the UI to destroy.</typeparam>
+    /// <returns>True if the UI have been destroyed, false if it doesn't exist.</returns>
     internal static bool DestroyUI<T>() where T : UIBase, new()
     {
-        if (!UIs.ContainsKey(typeof(T))) return false;
-        UIs[typeof(T)].OnDestroy();
-        UIs.Remove(typeof(T));
+        if (!s_UIs.ContainsKey(typeof(T))) return false;
+        s_UIs[typeof(T)].OnDestroy();
+        s_UIs.Remove(typeof(T));
         return true;
     }
 }

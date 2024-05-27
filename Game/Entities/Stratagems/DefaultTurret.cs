@@ -9,8 +9,6 @@ namespace K8055Velleman.Game.Entities.Stratagems
 {
     internal class DefaultTurret : TurretStratagemBase
     {
-        internal override string IconPath => "";
-
         internal override string Name => "Default Turret";
 
         internal override int MaxLevel => 8;
@@ -28,10 +26,5 @@ namespace K8055Velleman.Game.Entities.Stratagems
         internal override BulletInfo BulletInfo => new() { Damage = 5, Color = Color.Orange, Size = new(25,25), Speed = 2 };
 
         internal override void OnCollide(EntityBase entityBase) {}
-
-        //internal override void OnCreate(EntitySystem entitySystem)
-        //{
-        //    base.OnCreate(entitySystem);
-        //}
     }
 }
