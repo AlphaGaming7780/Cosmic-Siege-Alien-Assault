@@ -75,7 +75,7 @@ internal class EndGameUI : UIBase
             ForeColor = Color.White,
             Font = new Font(UIManager.CustomFonts.Families[0], K8055.IsConnected ? 10f : 20f, FontStyle.Bold),
         };
-        _tryAgainButton.Click += (s, e) => { GameManager.DestroySystem<GameSystem>(); GameManager.instance.Load(GameStatus.PreGame); };
+        _tryAgainButton.Click += (s, e) => { GameManager.DestroySystem<GameSystem>(); GameManager.Load(GameStatus.PreGame); };
         _tryAgainButton.Location = new(_endGameMenu.Width / 4 - _tryAgainButton.Width / 2, _endGameMenu.Height - _tryAgainButton.Height - 25);
 
         _settingsButton = new()
@@ -97,7 +97,7 @@ internal class EndGameUI : UIBase
             ForeColor = Color.White,
             Font = new Font(UIManager.CustomFonts.Families[0], K8055.IsConnected ? 10f : 20f, FontStyle.Bold),
         };
-        _mainMenuButton.Click += (s, e) => { GameManager.instance.Load(GameStatus.MainMenu); };
+        _mainMenuButton.Click += (s, e) => { GameManager.Load(GameStatus.MainMenu); };
         _mainMenuButton.Location = new(_endGameMenu.Width / 4 * 3 - _mainMenuButton.Width / 2, _endGameMenu.Height - _tryAgainButton.Height - 25);
 
         _endGameMenu.Controls.Add(gameEndedText);

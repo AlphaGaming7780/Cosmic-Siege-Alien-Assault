@@ -13,7 +13,7 @@ internal static class SaveManager
 
     internal static Settings Settings;
 	internal static PlayerData CurrentPlayerData;
-	internal static List<PlayerData> PlayersData = [];
+	internal static List<PlayerData> s_playersData = [];
 
 	private static string _savePath;
     private static string _settingsPath;
@@ -47,7 +47,7 @@ internal static class SaveManager
                 {
                     PlayerData playerData = JsonSerializer.Deserialize<PlayerData>(File.ReadAllText(playerSave.FullName));
                     _ = playerData ?? new PlayerData();
-                    PlayersData.Add(playerData);
+                    s_playersData.Add(playerData);
                 } catch { 
                     DialogResult dialogResult = MessageBox.Show($"Failed to load the save of the {playerSave.Name} player.\n\nDo you want to delete this save ?", "Error when loading the saves.", MessageBoxButtons.YesNo, MessageBoxIcon.Error); 
                     if(dialogResult == DialogResult.OK)
@@ -73,7 +73,7 @@ internal static class SaveManager
     {
         string path = Path.Combine(_playersPath, $"{playerData.Name}{kExtension}");
         if (File.Exists(path)) File.Delete(path);
-        PlayersData.Remove(playerData);
+        s_playersData.Remove(playerData);
     }
 
     private static async void Save(string fullPath, object objectToSave)

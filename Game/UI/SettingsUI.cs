@@ -17,6 +17,8 @@ internal class SettingsUI : UIBase
 	Panel _settingsPanel;
 
 	BButton _backButton;
+	Label _inputLabel;
+	Label _potLabel;
 	internal override void OnCreate()
 	{
 		base.OnCreate();
@@ -52,11 +54,37 @@ internal class SettingsUI : UIBase
 			Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular),
 			ForeColor = Color.White,
 		};
-		_backButton.Location = new Point(25, _settingsPanel.Height - _backButton.Height - 25);
+		_backButton.Location = new Point(_settingsPanel.Width / 4 * 1 - _backButton.Width / 2, _settingsPanel.Height - _backButton.Height - 25);
 		_backButton.Click += (s, e) => { UIManager.DestroyUI<SettingsUI>(); SaveManager.SaveSettings(); };
 		_settingsPanel.Controls.Add(_backButton);
 
-		Control c1 = CreateBaseSetting("Game Volume");
+		_inputLabel = new()
+		{
+            Text = "↑ INP1 | INP2 ↓",
+            Font = new Font(FontFamily.GenericSansSerif, 20f, FontStyle.Regular),
+            TextAlign = ContentAlignment.MiddleLeft,
+            ForeColor = Color.White,
+            Width = _backButton.Width,
+            Height = _backButton.Height,
+            Location = new(_settingsPanel.Width / 4 * 2 - _backButton.Width / 2, _backButton.Location.Y),
+			Visible = K8055.IsConnected,
+        };
+		_settingsPanel.Controls.Add(_inputLabel);
+
+        _potLabel = new()
+        {
+            Text = "↔ ATT1",
+            Font = new Font(FontFamily.GenericSansSerif, 20f, FontStyle.Regular),
+            TextAlign = ContentAlignment.MiddleLeft,
+            ForeColor = Color.White,
+            Width = _backButton.Width,
+            Height = _backButton.Height,
+            Location = new(_settingsPanel.Width / 4 * 3 - _backButton.Width / 2, _backButton.Location.Y),
+            Visible = K8055.IsConnected,
+        };
+        _settingsPanel.Controls.Add(_potLabel);
+
+        Control c1 = CreateBaseSetting("Game Volume");
 		TrackBar trackBar = new()
 		{
 			Width = c1.Width / 2,
@@ -74,9 +102,9 @@ internal class SettingsUI : UIBase
 		Control c2 = CreateBaseSetting("Music Volume");
 		TrackBar trackBar2 = new()
 		{
-			Width = c1.Width / 2,
-			Height = c1.Height,
-			Location = new(c1.Width / 2, c1.Height / 4),
+			Width = c2.Width / 2,
+			Height = c2.Height,
+			Location = new(c2.Width / 2, c2.Height / 4),
 			Maximum = 100,
 			Minimum = 0,
 			Cursor = Cursors.SizeWE,
@@ -89,9 +117,9 @@ internal class SettingsUI : UIBase
 		Control c3 = CreateBaseSetting("UI Volume");
 		TrackBar trackBar3 = new()
 		{
-			Width = c1.Width / 2,
-			Height = c1.Height,
-			Location = new(c1.Width / 2, c1.Height / 4),
+			Width = c3.Width / 2,
+			Height = c3.Height,
+			Location = new(c3.Width / 2, c3.Height / 4),
 			Maximum = 100,
 			Minimum = 0,
 			Cursor = Cursors.SizeWE,
@@ -101,7 +129,22 @@ internal class SettingsUI : UIBase
 		c3.Controls.Add(trackBar3);
 		FinishSettings(c3);
 
-	}
+        Control c4 = CreateBaseSetting("Effect Volume");
+        TrackBar trackBar4 = new()
+        {
+            Width = c4.Width / 2,
+            Height = c4.Height,
+            Location = new(c4.Width / 2, c4.Height / 4),
+            Maximum = 100,
+            Minimum = 0,
+            Cursor = Cursors.SizeWE,
+            Value = (int)(SaveManager.Settings.UiVolume * 100),
+        };
+        trackBar4.ValueChanged += (s, e) => { AudioManager.AudioVolume.EffectVolume = trackBar4.Value / 100f; };
+        c4.Controls.Add(trackBar4);
+        FinishSettings(c4);
+
+    }
 
 	internal override void OnDestroy()
 	{
@@ -114,6 +157,8 @@ internal class SettingsUI : UIBase
 	internal override void OnConnectionChange()
 	{
 		_backButton.Text = K8055.IsConnected ? "Back (INP5)" : "Back";
+		_inputLabel.Visible = K8055.IsConnected;
+		_potLabel.Visible = K8055.IsConnected;
 	}
 
 	internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)

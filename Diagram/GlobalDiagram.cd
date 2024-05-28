@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="K8055Velleman.Program">
+    <Position X="56.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.GameWindow">
+    <Position X="55" Y="2.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACCIAAAAAACAAAACAAIABAAAAAgAAAEAAgA=</HashCode>
+      <FileName>GameWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.K8055">
+    <Position X="117.75" Y="3.75" Width="4.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="K8055Velleman.K8055.Interface">
+        <TypeIdentifier>
+          <NewMemberFileName>Lib\K8055.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Enum Name="K8055Velleman.K8055.DigitalChannel">
+        <TypeIdentifier>
+          <NewMemberFileName>Lib\K8055.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="K8055Velleman.K8055.AnalogChannel">
+        <TypeIdentifier>
+          <NewMemberFileName>Lib\K8055.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Delegate Name="K8055Velleman.K8055.onConnectionChanged">
+        <TypeIdentifier>
+          <NewMemberFileName>Lib\K8055.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="K8055Velleman.K8055.onDigitalChannelsChange">
+        <TypeIdentifier>
+          <NewMemberFileName>Lib\K8055.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="K8055Velleman.K8055.onAnalogChannelsChange">
+        <TypeIdentifier>
+          <NewMemberFileName>Lib\K8055.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ACQAIgAoCAAEBAJAAEAgACQAAABIAACIAIIAAAEAEEA=</HashCode>
+      <FileName>Lib\K8055.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.GameManager">
+    <Position X="33.75" Y="9.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAGAAIAAAAAAACAAAAAAABAAAAAAAEACAAAA=</HashCode>
+      <FileName>Game\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.InputManager">
+    <Position X="44.25" Y="4.5" Width="2.25" />
+    <NestedTypes>
+      <Delegate Name="K8055Velleman.Game.InputManager.onKeyDown" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Game\InputManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAgAAAAAAAIAAAAAACAAAAAEAAA=</HashCode>
+      <FileName>Game\InputManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.SaveManager">
+    <Position X="106.25" Y="8.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>CgAIAIAAEAAQAAAgABAAAAAAAEAAAAAIkAAQAAAAAQA=</HashCode>
+      <FileName>Game\SaveManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UIManager">
+    <Position X="75.25" Y="8.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAACgAAgBAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\UIManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Utility">
+    <Position X="123" Y="3.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Utility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UI.CreditUI">
+    <Position X="95.75" Y="14.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>BAABAAAAQQQAAAAAAAAAAKAEACAAAAAAAEACAgQgAAA=</HashCode>
+      <FileName>Game\UI\CreditUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UI.UIBase">
+    <Position X="74.25" Y="11" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AgABAAAAAgAAAAAAAEAAACAAACAAAAAAAAAAAAQAAgA=</HashCode>
+      <FileName>Game\UI\UIBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UI.SettingsUI">
+    <Position X="53.5" Y="14.75" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AABRAAAIAAAABAggAEBAECAAACAEAAAAAAQCAAQAAAA=</HashCode>
+      <FileName>Game\UI\SettingsUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UI.PreGameUI">
+    <Position X="59" Y="14.75" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>EgEPAAYMAgAAAAEAIOAAACAAZCAAACEAAAACAAQAgEA=</HashCode>
+      <FileName>Game\UI\PreGameUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UI.PlayerUI">
+    <Position X="64.5" Y="14.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAABQAIAAAAAAAAAAAAAhCAAACAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Game\UI\PlayerUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UI.PlayerSelectorUI">
+    <Position X="69.5" Y="14.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAABBgAoCAAAECAAA4BAASAAACBAAACAAGAAABQAACA=</HashCode>
+      <FileName>Game\UI\PlayerSelectorUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UI.PauseUI">
+    <Position X="74.5" Y="14.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAABBAAAAAAAgAAAAAAAASAAACAAAAAAAAAABAQAAAA=</HashCode>
+      <FileName>Game\UI\PauseUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UI.MainMenuUI">
+    <Position X="79.5" Y="14.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>hAABAAAAAAEAgAAAAAAAACAAQKAAACAAAAAEAAQAAgA=</HashCode>
+      <FileName>Game\UI\MainMenuUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UI.GameUI">
+    <Position X="84.5" Y="14.75" Width="5.5" />
+    <TypeIdentifier>
+      <HashCode>AAkBAAAIACAAAAhAgEAAACAQACAAAHAAAIAAEAQBAIA=</HashCode>
+      <FileName>Game\UI\GameUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.UI.EndGameUI">
+    <Position X="90.75" Y="14.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAEBBAAAAAAIgAAAAAAAACAAACAAAAAAAAAAAARAAAA=</HashCode>
+      <FileName>Game\UI\EndGameUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Systems.EntitySystem">
+    <Position X="22.25" Y="15.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>EACBAEQAAAAIAQAAAAAAAAAAACAAEQAAAAAAAAEAAAA=</HashCode>
+      <FileName>Game\Systems\EntitySystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Systems.GameSystem">
+    <Position X="28" Y="15.75" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>AAIBAAgAAAAgAAgAQIQAACAggDIBAAAAAIKAQAEAAAg=</HashCode>
+      <FileName>Game\Systems\GameSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Systems.MainMenuSystem">
+    <Position X="34.5" Y="15.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Game\Systems\MainMenuSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Systems.PlayerSelectorSystem">
+    <Position X="38.75" Y="15.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Game\Systems\PlayerSelectorSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Systems.PlayerSystem">
+    <Position X="43" Y="15.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAEFAAACAAAAAAAAAIAAAAgAACAgAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Systems\PlayerSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.SystemBase">
+    <Position X="33.5" Y="12.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAACAAAAAACAAAAAAAACAAAEAAAA=</HashCode>
+      <FileName>Game\Systems\SystemBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Saves.PlayerData">
+    <Position X="106.25" Y="13" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAgAAAAAQAAAAAAIAAQAABAAAAAiA=</HashCode>
+      <FileName>Game\Saves\PlayerData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Saves.Settings">
+    <Position X="103.5" Y="13" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAACEAIAAAAAAAAAA=</HashCode>
+      <FileName>Game\Saves\Settings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Saves.StratagemData">
+    <Position X="110.75" Y="13" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Saves\StratagemData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.TurretStratagemBase">
+    <Position X="14.25" Y="32.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>oAAQAAAAEAAAAAAAIAAgAAAAACAIAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Game\Entities\TurretStratagemBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.StaticEntity">
+    <Position X="16.75" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Entities\StaticEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.PlayerEnity">
+    <Position X="21.25" Y="26.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>IAAQCAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAHAAAA=</HashCode>
+      <FileName>Game\Entities\PlayerEnity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.MovingEntity">
+    <Position X="29.25" Y="25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAIAAAAAAAAACAAABACAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Game\Entities\MovingEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.EntityBase">
+    <Position X="21.75" Y="20.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>MACBAAAAACAAgAAgAQKAAAAAACAAAAAAACAAAAEAAAA=</HashCode>
+      <FileName>Game\Entities\EntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.EnemyEntity">
+    <Position X="27.25" Y="28.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>IAAACACAEAAAAAABAAMAABAAACAAAAAAQAAAAAGAAAg=</HashCode>
+      <FileName>Game\Entities\EnemyEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.AmmunitionEntity">
+    <Position X="33.25" Y="28.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>MAAAAACAAAAAgAIAIAAAAAABACgAAUAAAAAAAAECAAg=</HashCode>
+      <FileName>Game\Entities\AmmunitionEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.Stratagems.DefaultTurret">
+    <Position X="10.75" Y="37" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
+      <FileName>Game\Entities\Stratagems\DefaultTurret.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.Stratagems.GuidedMissileLuncher">
+    <Position X="14.25" Y="37" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
+      <FileName>Game\Entities\Stratagems\GuidedMissileLuncher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.Stratagems.MissileLuncher">
+    <Position X="17.75" Y="37" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
+      <FileName>Game\Entities\Stratagems\MissileLuncher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.Enemy.ClassicEnemyEntity">
+    <Position X="25" Y="33.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAABAAAAABABAAAAAAAAQAAAAACAAAA=</HashCode>
+      <FileName>Game\Entities\Enemy\ClassicEnemyEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.Enemy.FastEnemy">
+    <Position X="27.75" Y="33.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAABAAAAABABAAAAAAAAQAAAAACAAAA=</HashCode>
+      <FileName>Game\Entities\Enemy\FastEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.Enemy.TankEnemy">
+    <Position X="30.5" Y="33.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAABAAAAABABAAAAAAAAQAAAAACAAAA=</HashCode>
+      <FileName>Game\Entities\Enemy\TankEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Mathf">
+    <Position X="123" Y="5.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Lib\Mathf.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Lib.PausableTimer">
+    <Position X="123" Y="7" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAACAABAAAAAABAAAAAAAABAAgAQAQAAgAAAA=</HashCode>
+      <FileName>Lib\PausableTimer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.SizeExtention">
+    <Position X="128.75" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Lib\SizeExtention.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Lib.ClassExtension.BButton">
+    <Position X="123" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAABAEAAAABAAAAAAAA=</HashCode>
+      <FileName>Lib\ClassExtension\ButtonExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.StratagemEntityBase">
+    <Position X="14.25" Y="26.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>ABQAhAAAAQAAIAACBAAgAAQAACEAEADABAAAgAEAAEQ=</HashCode>
+      <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="K8055Velleman.Game.Entities.BulletInfo">
+    <Position X="17.5" Y="33.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAgAIAAAAAAAABAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Game\Entities\TurretStratagemBase.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="K8055Velleman.Vector2">
+    <Position X="123" Y="11" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAFwAEAAAAAAABAAoBAAQFgAAAAAiA=</HashCode>
+      <FileName>Lib\Vector2.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="K8055Velleman.Game.Entities.UpgradesValue">
+    <Position X="17.5" Y="28" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="K8055Velleman.Game.GameStatus">
+    <Position X="37" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAwAAgAAAAAgAAAACAQAAA=</HashCode>
+      <FileName>Game\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="K8055Velleman.Game.Entities.Upgrades">
+    <Position X="17.5" Y="26.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

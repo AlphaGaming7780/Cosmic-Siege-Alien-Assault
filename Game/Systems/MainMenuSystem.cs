@@ -17,11 +17,6 @@ namespace K8055Velleman.Game.Systems
             UIManager.DestroyUI<MainMenuUI>();
         }
 
-        internal override void OnUpdate()
-		{
-			base.OnUpdate();
-		}
-
         internal override void OnGameStatusChange(GameStatus status)
         {
             base.OnGameStatusChange(status);

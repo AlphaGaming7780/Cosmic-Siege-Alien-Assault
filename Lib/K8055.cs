@@ -416,6 +416,7 @@ static public class K8055
 
 	private static void UpdateAnalogChannel()
 	{
+		if(Interface.SetCurrentDevice(CurrentDevice) < 0) return;
 		int data1 = 0;
 		int data2 = 0;
 		Interface.ReadAllAnalog(ref data1,ref data2);

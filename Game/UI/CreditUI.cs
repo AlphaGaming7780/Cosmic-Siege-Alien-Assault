@@ -2,31 +2,33 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace K8055Velleman.Game.UI;
 
 internal class CreditUI : UIBase
 {
-	Control mainControl;
-	Panel buttonsBox;
-	BButton backButton;
-	BButton gameCredit;
-	BButton musicCredit;
+	Control _mainControl;
+	Panel _buttonsBox;
+	BButton _backButton;
+	BButton _gameCredit;
+	BButton _musicCredit;
+	BButton _miscCredit;
 
-	Panel creditPanelOpned;
+    Panel _creditPanelOpned;
 
 	internal override void OnCreate()
 	{
 		base.OnCreate();
-		mainControl = new()
+		_mainControl = new()
 		{
 			Size = GameWindow.Size,
 			BackColor = Color.Black,
 		};
-		GameWindow.Controls.Add(mainControl);
-		GameWindow.Controls.SetChildIndex(mainControl, 0);
+		GameWindow.Controls.Add(_mainControl);
+		GameWindow.Controls.SetChildIndex(_mainControl, 0);
 
-		backButton = new()
+		_backButton = new()
 		{
 			Width = 256,
 			Height = 94,
@@ -34,46 +36,58 @@ internal class CreditUI : UIBase
 			ForeColor = Color.White,
 			Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular),
 		};
-		backButton.Location = new(50, mainControl.Height - backButton.Height - 50);
-		backButton.Click += (s, e) => BackToMainMenu();
-		mainControl.Controls.Add(backButton);
+		_backButton.Location = new(50, _mainControl.Height - _backButton.Height - 50);
+		_backButton.Click += (s, e) => BackToMainMenu();
+		_mainControl.Controls.Add(_backButton);
 
-		buttonsBox = new()
+		_buttonsBox = new()
 		{
 			Height = 720,
 			Width = 256,
 			BorderStyle = BorderStyle.FixedSingle,
 			ForeColor = Color.White,
 		};
-		buttonsBox.Location = new(256, mainControl.Height / 2 - buttonsBox.Height / 2);
-		mainControl.Controls.Add(buttonsBox);
+		_buttonsBox.Location = new(256, _mainControl.Height / 2 - _buttonsBox.Height / 2);
+		_mainControl.Controls.Add(_buttonsBox);
 
-		gameCredit = new()
+		_gameCredit = new()
 		{
-			Width = buttonsBox.Width - 50,
+			Width = _buttonsBox.Width - 50,
 			Height = 128,
 			Text = K8055.IsConnected ? "Game (INP1)" : "Game",
 			ForeColor = Color.White,
 			Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular),
 		};
-		gameCredit.Location = new(buttonsBox.Width / 2 - gameCredit.Width / 2, 25 );
-		gameCredit.Click += (s, e) => ShowGameCreditPanel();
-		buttonsBox.Controls.Add(gameCredit);
+		_gameCredit.Location = new(_buttonsBox.Width / 2 - _gameCredit.Width / 2, 25 );
+		_gameCredit.Click += (s, e) => ShowGameCreditPanel();
+		_buttonsBox.Controls.Add(_gameCredit);
 
-		musicCredit = new()
+		_musicCredit = new()
 		{
-			Width = buttonsBox.Width - 50,
+			Width = _buttonsBox.Width - 50,
 			Height = 128,
 			Text = K8055.IsConnected ? "Music (INP2)" : "Music",
 			ForeColor = Color.White,
 			Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 		};
-		musicCredit.Location = new(buttonsBox.Width / 2 - musicCredit.Width / 2, 50 + 128);
-		musicCredit.Click += (s, e) => ShowMuiscCreditPanel();
-		buttonsBox.Controls.Add(musicCredit);
+		_musicCredit.Location = new(_buttonsBox.Width / 2 - _musicCredit.Width / 2, 50 + 128);
+		_musicCredit.Click += (s, e) => ShowMuiscCreditPanel();
+		_buttonsBox.Controls.Add(_musicCredit);
 
-		ShowGameCreditPanel();
-		gameCredit.Focus();
+        _miscCredit = new()
+        {
+            Width = _buttonsBox.Width - 50,
+            Height = 128,
+            Text = K8055.IsConnected ? "Misc (INP3)" : "Misc",
+            ForeColor = Color.White,
+            Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
+        };
+        _miscCredit.Location = new(_buttonsBox.Width / 2 - _miscCredit.Width / 2, 75 + 256);
+        _miscCredit.Click += (s, e) => ShowMiscCreditPanel();
+        _buttonsBox.Controls.Add(_miscCredit);
+
+        ShowGameCreditPanel();
+		_gameCredit.Focus();
 
 		Console.WriteLine("CreditUI created");
 
@@ -88,39 +102,41 @@ internal class CreditUI : UIBase
 	internal override void OnDestroy()
 	{
 		base.OnDestroy();
-		GameWindow.Controls.Remove(mainControl);
-		mainControl.Dispose();
-		mainControl = null;
+		GameWindow.Controls.Remove(_mainControl);
+		_mainControl.Dispose();
+		_mainControl = null;
 		Console.WriteLine("CreditUI Destroyed");
 	}
 
 	internal override void OnConnectionChange()
 	{
-		gameCredit.Text = K8055.IsConnected ? "Game (INP1)" : "Game";
-		musicCredit.Text = K8055.IsConnected ? "Music (INP2)" : "Music";
-		backButton.Text = K8055.IsConnected ? "Back (INP5)" : "Back";
+		_gameCredit.Text = K8055.IsConnected ? "Game (INP1)" : "Game";
+		_musicCredit.Text = K8055.IsConnected ? "Music (INP2)" : "Music";
+		_miscCredit.Text = K8055.IsConnected ? "Misc (INP3)" : "Misc";
+		_backButton.Text = K8055.IsConnected ? "Back (INP5)" : "Back";
 	}
 
 	internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
 	{
-		if (digitalChannel == K8055.DigitalChannel.I1) gameCredit.PerformClick();
-		else if (digitalChannel == K8055.DigitalChannel.I2) musicCredit.PerformClick();
-		else if (digitalChannel == K8055.DigitalChannel.I5) backButton.PerformClick();
+		if (digitalChannel == K8055.DigitalChannel.I1) _gameCredit.PerformClick();
+		else if (digitalChannel == K8055.DigitalChannel.I2) _musicCredit.PerformClick();
+		else if (digitalChannel == K8055.DigitalChannel.I3) _miscCredit.PerformClick();
+		else if (digitalChannel == K8055.DigitalChannel.I5) _backButton.PerformClick();
 	}
 
 	private void ShowCreditPanel()
 	{
-		creditPanelOpned?.Dispose();
-		creditPanelOpned = new()
+		_creditPanelOpned?.Dispose();
+		_creditPanelOpned = new()
 		{
 			Width = 1080,
-			Height = buttonsBox.Height,
+			Height = _buttonsBox.Height,
 			BorderStyle = BorderStyle.FixedSingle,
 			ForeColor = Color.White,
 			AutoScroll = true,
 		};
-		creditPanelOpned.Location = new Point(buttonsBox.Left + buttonsBox.Width + 25, buttonsBox.Top);
-		mainControl.Controls.Add(creditPanelOpned);
+		_creditPanelOpned.Location = new Point(_buttonsBox.Left + _buttonsBox.Width + 25, _buttonsBox.Top);
+		_mainControl.Controls.Add(_creditPanelOpned);
 
 
 	}
@@ -130,7 +146,16 @@ internal class CreditUI : UIBase
 	{
 
 		ShowCreditPanel();
-
+		Label GameCredit = new()
+		{
+            Width = _creditPanelOpned.Width - 10,
+            Height = _creditPanelOpned.Height - 10,
+            Text = "The game have been made by Trioen Loïc, student at HEH: Department of Sciences and Technologies. Year 2023-2024.",
+            TextAlign = ContentAlignment.MiddleCenter,
+            ForeColor = Color.White,
+            Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Regular)
+        };
+		_creditPanelOpned.Controls.Add(GameCredit);
 	}
 
 	private void ShowMuiscCreditPanel()
@@ -144,18 +169,26 @@ internal class CreditUI : UIBase
 		AddMusicPanel("Mr-Blackhole - Category", "https://www.newgrounds.com/audio/listen/1090910", 3);
 		AddMusicPanel("RyuuAkito & SquashHead - Damaged Artificial Nervous System", "https://www.newgrounds.com/audio/listen/1197066", 4);
     }
+    private void ShowMiscCreditPanel()
+    {
 
-	private void AddMusicPanel(string name, string link, int pos)
+        ShowCreditPanel();
+
+        AddMusicPanel("Pixeloid Font by GGBotNet", "https://www.fontspace.com/pixeloid-font-f69232", 0);
+        AddMusicPanel("Dustyroom Casual Game Sound", "https://dustyroom.com/free-casual-game-sounds/", 1);
+    }
+
+    private void AddMusicPanel(string name, string link, int pos)
 	{
         Panel panel = new()
         {
-            Width = creditPanelOpned.Width - 50,
+            Width = _creditPanelOpned.Width - 50,
             Height = 100,
             BorderStyle = BorderStyle.FixedSingle,
             ForeColor = Color.White,
         };
-        panel.Location = new(creditPanelOpned.Width / 2 - panel.Width / 2, 25 + panel.Height * pos + 10 * pos);
-        creditPanelOpned.Controls.Add(panel);
+        panel.Location = new(_creditPanelOpned.Width / 2 - panel.Width / 2, 25 + panel.Height * pos + 10 * pos);
+        _creditPanelOpned.Controls.Add(panel);
 
         Label label = new()
         {

@@ -20,33 +20,26 @@ public enum GameStatus
     Settings,
 }
 
-internal class GameManager
+internal static class GameManager
 {
-
-    public static GameManager instance;
 
     private static readonly Dictionary<Type, SystemBase> s_systems = [];
 
     /// <summary>
     /// The status of the game.
     /// </summary>
-    internal GameStatus gameStatus = GameStatus.unknown;
+    internal static GameStatus GameStatus = GameStatus.unknown;
 
-    public static Random Random { get; private set; } = new();
-
-    public GameManager() 
-    {
-        instance = this;
-    }
+    internal static Random Random { get; private set; } = new();
 
     /// <summary>
     /// Called when the game need to load a new status.
     /// </summary>
     /// <param name="gameStatus">The new status.</param>
-    internal void Load(GameStatus gameStatus) 
+    internal static void Load(GameStatus gameStatus) 
     {
-        this.gameStatus = gameStatus;
-        switch (gameStatus)
+        GameStatus = gameStatus;
+        switch (GameStatus)
         {
             case GameStatus.PlayerSelector:
                 GetOrCreateSystem<PlayerSelectorSystem>();
@@ -61,14 +54,14 @@ internal class GameManager
         }
         foreach (SystemBase system in new List<SystemBase>(s_systems.Values))
         {
-            system.OnGameStatusChange(gameStatus);
+            system.OnGameStatusChange(GameStatus);
         }
     }
 
     /// <summary>
     /// Update all the systems.
     /// </summary>
-    internal void Update()
+    internal static void Update()
     {
         List<SystemBase> temp = new(s_systems.Values);
         foreach (SystemBase system in temp)

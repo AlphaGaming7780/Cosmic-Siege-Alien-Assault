@@ -55,6 +55,7 @@ internal static class AudioManager
 			float f = (float)Math.Round(value / 255f, 1);
 			if (f != AudioVolume.GameVolume)
 			{
+				Console.WriteLine(f);
 				AudioVolume.GameVolume = f;
 			}
         }

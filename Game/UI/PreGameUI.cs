@@ -69,11 +69,11 @@ internal class PreGameUI : UIBase
 			Width = 300,
 			Height = 100,
 			Location = new Point(20, 900),
-			Text = K8055.IsConnected ? "Back (INP5)" : "Back",
+			Text = K8055.IsConnected ? "Main Menu (INP5)" : "Main Menu",
 			ForeColor = Color.White,
 			Font = new(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
 		};
-		_backButton.Click += (sender, e) => { GameManager.instance.Load(GameStatus.MainMenu); };
+		_backButton.Click += (sender, e) => { GameManager.Load(GameStatus.MainMenu); };
 
 		_startGameButton = new()
 		{
@@ -84,7 +84,7 @@ internal class PreGameUI : UIBase
 			ForeColor = Color.White,
 			Font = new(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
 		};
-		_startGameButton.Click += (sender, e) => { GameManager.instance.Load(GameStatus.Game); };
+		_startGameButton.Click += (sender, e) => { GameManager.Load(GameStatus.Game); };
 
 		_stratagemList = new Panel()
 		{
@@ -173,7 +173,7 @@ internal class PreGameUI : UIBase
 			Location = new(_selectedStratPanel.Location.X, _selectedStratPanel.Location.Y + _selectedStratPanel.Height + 10),
 			ForeColor = Color.White,
 			BorderStyle	= BorderStyle.FixedSingle,
-			Text = "<= INP1 | INP2 =>",
+			Text = "<= INP1 | INP3 | INP2 =>",
 			TextAlign = ContentAlignment.MiddleCenter,
 			Font = new(UIManager.CustomFonts.Families[0], 20f, FontStyle.Regular),
 			Visible = K8055.IsConnected,
@@ -186,7 +186,7 @@ internal class PreGameUI : UIBase
             Location = new(_stratagemList.Location.X, _stratagemList.Location.Y + _stratagemList.Height + 10),
             ForeColor = Color.White,
             BorderStyle = BorderStyle.FixedSingle,
-            Text = "<= INP1 | INP2 =>",
+            Text = "<= INP1 | INP3 | INP2 =>",
             TextAlign = ContentAlignment.MiddleCenter,
             Font = new(UIManager.CustomFonts.Families[0], 20f, FontStyle.Regular),
 			Visible = false,
@@ -564,8 +564,8 @@ internal class PreGameUI : UIBase
 
             } else
 			{
-                if (_currentStratagemIndex >= selectedStratagemEntities.Count - 1) _currentStratagemIndex = 0;
-                else _currentStratagemIndex++;
+                if (_currentStratagemIndex <= 0) _currentStratagemIndex = selectedStratagemEntities.Count - 1;
+                else _currentStratagemIndex--;
                 SelectSlot();
             }
         }
@@ -588,8 +588,8 @@ internal class PreGameUI : UIBase
                 ShowStratagemInfo(control, null);
             } else
 			{
-                if (_currentStratagemIndex <= 0) _currentStratagemIndex = selectedStratagemEntities.Count - 1;
-                else _currentStratagemIndex--;
+                if (_currentStratagemIndex >= selectedStratagemEntities.Count - 1) _currentStratagemIndex = 0;
+                else _currentStratagemIndex++;
                 SelectSlot();
             }
         }
@@ -607,8 +607,13 @@ internal class PreGameUI : UIBase
                 {
 					SelectStratagem(_lastBackGroundMouseOver, null);
 					HideStratagemInfo(_lastBackGroundMouseOver, null);
-                } 
-            } else
+                }
+				if (!IsThereAnyStratLeft())
+				{
+					_vellemanModeStratagemeSelection = false;
+					UpdateButtonLabelForMode();
+                }
+            } else if(IsThereAnyStratLeft())
 			{
 				_vellemanModeStratagemeSelection = true;
 				UpdateButtonLabelForMode();
@@ -637,8 +642,8 @@ internal class PreGameUI : UIBase
 
     private void UpdateButtonLabelForMode()
 	{
-		_backButton.Text = (K8055.IsConnected && !_vellemanModeStratagemeSelection) ? "Back (INP5)" : "Back";
-		_startGameButton.Text = (K8055.IsConnected && !_vellemanModeStratagemeSelection) ? "Start Game (INP4)" : "Start Game";
+		_backButton.Text = (K8055.IsConnected && !_vellemanModeStratagemeSelection) ? "Main Menu (INP5)" : "Main Menu";
+        _startGameButton.Text = (K8055.IsConnected && !_vellemanModeStratagemeSelection) ? "Start Game (INP4)" : "Start Game";
 		_vellemanInputSlotSelector.Visible = K8055.IsConnected && !_vellemanModeStratagemeSelection;
 		_vellemanInputStratSelector.Visible = K8055.IsConnected && _vellemanModeStratagemeSelection;
 

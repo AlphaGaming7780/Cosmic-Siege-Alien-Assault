@@ -132,6 +132,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="CodeMap.dgml" />
+    <None Include="Diagram\EntitiesDiagram.cd" />
+    <None Include="Diagram\GlobalDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -146,7 +149,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="Lisence.txt" />
+    <Content Include="Resources\license.txt" />
     <None Include="Resources\Audio\Musics\Mr-Blackhole - Category.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -180,6 +183,7 @@
     <Content Include="Resources\PixeloidSansBold.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\license.pdf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

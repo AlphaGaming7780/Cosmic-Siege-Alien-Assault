@@ -33,7 +33,6 @@ namespace K8055Velleman.Game.UI
 
             Label GameName = new()
 			{
-				Name = "MainMenuGameName",
 				Text = "Cosmic Siege: Alien Assault",
 				Width = 750,
 				Height = 150,
@@ -57,14 +56,12 @@ namespace K8055Velleman.Game.UI
 			{
 				Width = 150,
 				Height = 30,
-				Name = "MainMenuStatusPanel",
 				BackColor = K8055.IsConnected ? Color.Green : Color.Red
 			};
 			_vellmanBoardStatusPanel.Location = new(_mainMenu.Right - 10 - _vellmanBoardStatusPanel.Width - RightOffeset, _mainMenu.Location.Y + 10);
 
 			_vellmanBoardStatusLabel = new()
 			{
-				Name = "MainMenuStatusPanelLabel",
 				Height = _vellmanBoardStatusPanel.Height,
 				Width = _vellmanBoardStatusPanel.Width,
 				Text = K8055.IsConnected ? "Connected" : "Disconnected",
@@ -74,7 +71,6 @@ namespace K8055Velleman.Game.UI
 
 			_playButton = new()
 			{
-				Name = "MainMenuButtonPlay",
 				Height = 96,
 				Width = 350,
 				Text = K8055.IsConnected ? "Play (INP1)" : "Play",
@@ -82,11 +78,10 @@ namespace K8055Velleman.Game.UI
 				Font = new Font(FontFamily.GenericSansSerif, 17f, FontStyle.Regular)
 			};
 			_playButton.Location = new(_mainMenu.Left + _mainMenu.Width / 2 - _playButton.Width/2, 450);
-			_playButton.Click += (s, e) => { GameManager.instance.Load(GameStatus.PreGame); };
+			_playButton.Click += (s, e) => { GameManager.Load(GameStatus.PreGame); };
 
 			_settingsButton = new()
 			{
-				Name = "MainMenuButtonSettings",
 				Height = 96,
 				Width = 350,
 				Text = K8055.IsConnected ? "Settings (INP2)" : "Settings",
@@ -98,7 +93,6 @@ namespace K8055Velleman.Game.UI
 
 			_quitButton = new()
 			{
-				Name = "MainMenuButtonQuit",
 				Height = 96,
 				Width = 350,
 				Text = K8055.IsConnected ? "Quit (INP5)" : "Quit",
@@ -162,7 +156,6 @@ namespace K8055Velleman.Game.UI
 
         internal override void OnConnectionChange()
 		{
-			Console.WriteLine(K8055.IsConnected);
 			_vellmanBoardStatusPanel.BackColor = K8055.IsConnected ? Color.Green : Color.Red;
 			_vellmanBoardStatusLabel.Text = K8055.IsConnected ? "Connected" : "Disconnected";
 			_playButton.Text = K8055.IsConnected ? "Play (INP1)" : "Play";
@@ -220,11 +213,11 @@ namespace K8055Velleman.Game.UI
 				Font = new Font(FontFamily.GenericSansSerif, K8055.IsConnected ? 15f : 17f, FontStyle.Regular),
             };
 			_changePlayer.Location = new(25, _scoreboard.Height - _changePlayer.Height - 25);
-            _changePlayer.Click += (s, e) => { GameManager.instance.Load(GameStatus.PlayerSelector); };
+            _changePlayer.Click += (s, e) => { GameManager.Load(GameStatus.PlayerSelector); };
 
             int x = 0;
 			int offsetSpace = 20;
-			List<PlayerData> playerDatas = new(SaveManager.PlayersData);
+			List<PlayerData> playerDatas = new(SaveManager.s_playersData);
 			playerDatas.Sort(delegate (PlayerData x, PlayerData y)
             {
                 return y.HigestScore.CompareTo(x.HigestScore);

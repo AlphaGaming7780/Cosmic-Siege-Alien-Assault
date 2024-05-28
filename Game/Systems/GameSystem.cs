@@ -44,7 +44,7 @@ namespace K8055Velleman.Game.Systems
         internal override void OnUpdate()
         {
             base.OnUpdate();
-			if(GameManager.instance.gameStatus == GameStatus.Game)
+			if(GameManager.GameStatus == GameStatus.Game)
 			{
                 if (_entitySystem.GetEntitiesByType<EnemyEntity>().Count <= 0)
                 {
@@ -128,8 +128,8 @@ namespace K8055Velleman.Game.Systems
             switch (key)
 			{
 				case Keys.Escape:
-					if (GameManager.instance.gameStatus == GameStatus.PreGame) { GameManager.instance.Load(GameStatus.MainMenu); break; }
-					else if (GameManager.instance.gameStatus != GameStatus.Game) break;
+					if (GameManager.GameStatus == GameStatus.PreGame) { GameManager.Load(GameStatus.MainMenu); break; }
+					else if (GameManager.GameStatus != GameStatus.Game) break;
 					PauseLogique();
 					break;
 			}

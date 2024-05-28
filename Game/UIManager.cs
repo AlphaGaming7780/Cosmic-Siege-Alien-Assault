@@ -9,15 +9,20 @@ using System.Threading.Tasks;
 
 namespace K8055Velleman.Game;
 
-internal class UIManager
+internal static class UIManager
 {
     internal static GameWindow GameWindow;
     internal static PrivateFontCollection CustomFonts = new();
     private static readonly Dictionary<Type, UIBase> s_UIs = [];
-    public UIManager(GameWindow gameWindow) 
-    { 
-        GameWindow = gameWindow;
+
+    /// <summary>
+    /// Setup the UIManager.
+    /// </summary>
+    /// <param name="gameWindow">The main game windows.</param>
+    internal static void Setup(GameWindow gameWindow)
+    {
         CustomFonts.AddFontFile("Resources\\PixeloidSans.ttf");
+        GameWindow = gameWindow; 
     }
 
     /// <summary>

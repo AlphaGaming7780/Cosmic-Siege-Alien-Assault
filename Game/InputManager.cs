@@ -5,22 +5,22 @@ namespace K8055Velleman.Game;
 
 static internal class InputManager
 {
-    private static readonly List<Keys> pressedKeys = [];
+    private static readonly List<Keys> s_pressedKeys = [];
 
     public delegate void onKeyDown(Keys key);
     public static event onKeyDown OnKeyDown;
 
     internal static void KeyDown(Keys key)
     {
-        pressedKeys.Add(key);
+        s_pressedKeys.Add(key);
         OnKeyDown?.Invoke(key);
     }
 
     internal static void KeyUp(Keys key)
     {
-        pressedKeys.Remove(key);
+        s_pressedKeys.Remove(key);
     }
 
-    public static bool IsKeyPressed(Keys key) { return pressedKeys.Contains(key); }
+    public static bool IsKeyPressed(Keys key) { return s_pressedKeys.Contains(key); }
 
 }

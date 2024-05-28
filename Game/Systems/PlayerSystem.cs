@@ -31,7 +31,7 @@ namespace K8055Velleman.Game.Systems
         {
             player.Health -= value;
             playerUI.PlayerLife.Text = $"❤️ : {player.Health}";
-            if (player.Health <= 0) GameManager.instance.Load(GameStatus.EndGame);
+            if (player.Health <= 0) GameManager.Load(GameStatus.EndGame);
             if(!_entitySystem.GameUI.IsStratInfoPanelShowed) _gameSystem.UpdateDigitalChannels(player.Health);
         }
 

@@ -66,7 +66,7 @@ internal class PauseUI : UIBase
             ForeColor = Color.White,
             Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
         };
-        _mainMenuButton.Click += (s, e) => { GameManager.instance.Load(GameStatus.MainMenu); };
+        _mainMenuButton.Click += (s, e) => { GameManager.Load(GameStatus.MainMenu); };
         _mainMenuButton.Location = new(_pauseMenu.Width / 2 - _mainMenuButton.Width / 2, 250);
 
         _pauseMenu.Controls.Add(gamePausedText);

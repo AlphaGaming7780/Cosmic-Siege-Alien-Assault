@@ -14,8 +14,8 @@ namespace K8055Velleman.Game.UI
 		StratagemEntityBase _StratagemEntity;
 
         internal Panel GamePanel { get; private set; }
-		Panel selectedStratPanel;
-		Panel StratInfoPanel;
+		Panel _selectedStratPanel;
+		Panel _stratInfoPanel;
 		GameSystem _gameSystem;
 
 		BButton _FirstUpgrade;
@@ -24,9 +24,9 @@ namespace K8055Velleman.Game.UI
 		internal Label Score;
 		Label _gameDiffictyIncreaseLabel;
 
-        private bool upgrading = false;
+        private bool _upgrading = false;
 
-        internal bool IsStratInfoPanelShowed { get { return StratInfoPanel != null; } }
+        internal bool IsStratInfoPanelShowed { get { return _stratInfoPanel != null; } }
 
         internal override void OnCreate()
 		{
@@ -40,7 +40,7 @@ namespace K8055Velleman.Game.UI
 				BackColor = Color.Black,
 			};
 
-			selectedStratPanel = new()
+			_selectedStratPanel = new()
 			{
 				Width = 522,
 				Height = 132,
@@ -48,14 +48,16 @@ namespace K8055Velleman.Game.UI
 				BorderStyle = BorderStyle.FixedSingle,
 				ForeColor = Color.White,
 			};
-			GamePanel.Controls.Add(selectedStratPanel);
+			GamePanel.Controls.Add(_selectedStratPanel);
 
-            Panel GameInfo = new()
+            GroupBox GameInfo = new()
             {
+                Text = "Game Info",
+                Font = new(UIManager.CustomFonts.Families[0], 10f, FontStyle.Bold),
                 Width = 128,
-                Height = 50,
+                Height = 75,
                 ForeColor = Color.White,
-                BorderStyle = BorderStyle.FixedSingle,
+                BackColor = Color.Transparent,
             };
 			GameInfo.Location = new Point(GamePanel.Width - GameInfo.Width - RightOffeset - 5, 0);
 			GamePanel.Controls.Add(GameInfo);
@@ -64,23 +66,25 @@ namespace K8055Velleman.Game.UI
             {
                 Text = $"{_gameSystem.Scores} 🌟",
                 Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
-                ForeColor = Color.White,
-                Width = GameInfo.Width,
-                Height = 20,
+                ForeColor = Color.LightBlue,
+				BackColor = Color.Transparent,
+                Width = GameInfo.Width - 10,
+                Height = 25,
                 TextAlign = ContentAlignment.MiddleRight,
             };
-            Score.Location = new(GameInfo.Width / 2 - Score.Width / 2, 0);
+            Score.Location = new(5, 17);
             GameInfo.Controls.Add(Score);
 
             _gameDiffictyIncreaseLabel = new()
 			{
 				Text = $"{_gameSystem.WaveMoneyPay} 📛",
 				Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
-				ForeColor = Color.White,
-				Width = GameInfo.Width,
-				Height = 20, 
+				ForeColor = Color.OrangeRed,
+                BackColor = Color.Transparent,
+                Width = GameInfo.Width - 10,
+				Height = 25, 
 				TextAlign = ContentAlignment.MiddleRight,
-				Location = new Point(0, Score.Height),
+				Location = new Point(5, Score.Height + Score.Location.Y),
             };
 			GameInfo.Controls.Add(_gameDiffictyIncreaseLabel);
             GameWindow.Controls.Add(GamePanel);
@@ -109,11 +113,11 @@ namespace K8055Velleman.Game.UI
 			{
 				stratagemEntityBase.MainPanel.Location = new Point(2 * (i + 1) + 130 * i, 1);
 				stratagemEntityBase.MainPanel.Size = new(128,128);
-				selectedStratPanel.Controls.Add(stratagemEntityBase.MainPanel);
-				selectedStratPanel.Controls.SetChildIndex(stratagemEntityBase.MainPanel, 0);
+				_selectedStratPanel.Controls.Add(stratagemEntityBase.MainPanel);
+				_selectedStratPanel.Controls.SetChildIndex(stratagemEntityBase.MainPanel, 0);
 				stratagemEntityBase.MainPanel.Enabled = true;
 				stratagemEntityBase.MainPanel.MouseEnter += (s, e) => { ShowStratInfo(stratagemEntityBase); };
-				stratagemEntityBase.MainPanel.MouseLeave += (s, e) => { if (!upgrading) { HideStratInfo(); } };
+				stratagemEntityBase.MainPanel.MouseLeave += (s, e) => { if (!_upgrading) { HideStratInfo(); } };
 				stratagemEntityBase.MainPanel.Click += (s, e) => { ShowStratInfo(stratagemEntityBase, true); };
 				i++;
 			}
@@ -128,28 +132,28 @@ namespace K8055Velleman.Game.UI
 
         private void ShowStratInfo(StratagemEntityBase stratagemEntityBase, bool upgrade = false)
 		{
-			if (StratInfoPanel is not null) HideStratInfo();
+			if (_stratInfoPanel is not null) HideStratInfo();
 			if(stratagemEntityBase.level >= stratagemEntityBase.MaxLevel) upgrade = false;
-			upgrading = upgrade;
+			_upgrading = upgrade;
 
 			_StratagemEntity = stratagemEntityBase;
 
 			if (K8055.IsConnected) _gameSystem.UpdateDigitalChannels(stratagemEntityBase.level);
 
-			StratInfoPanel = new()
+			_stratInfoPanel = new()
 			{
 				Width = 622,
 				Height = upgrade ? 256 : 128,
 				BorderStyle = BorderStyle.FixedSingle,
 				ForeColor = Color.White,
 			};
-			StratInfoPanel.Location = new Point(selectedStratPanel.Location.X + selectedStratPanel.Width / 2 - StratInfoPanel.Width / 2, selectedStratPanel.Location.Y - StratInfoPanel.Height - 10);
+			_stratInfoPanel.Location = new Point(_selectedStratPanel.Location.X + _selectedStratPanel.Width / 2 - _stratInfoPanel.Width / 2, _selectedStratPanel.Location.Y - _stratInfoPanel.Height - 10);
 			//StratInfoPanel.MouseLeave += (s, e) => { HideStratInfo(); };
 
 			Label stratName = new()
 			{
 				Text = $"{stratagemEntityBase.Name} ({stratagemEntityBase.level}/{stratagemEntityBase.MaxLevel})",
-				Width = StratInfoPanel.Width,
+				Width = _stratInfoPanel.Width,
 				Height = 50,
 				Location = new(0, 0),
 				//AutoSize = true,
@@ -158,7 +162,7 @@ namespace K8055Velleman.Game.UI
 				ForeColor = Color.White,
 				BorderStyle = BorderStyle.FixedSingle,
 			};
-			StratInfoPanel.Controls.Add(stratName);
+			_stratInfoPanel.Controls.Add(stratName);
 
 			GroupBox upgradeGroupBox = null;
 			if(upgrade)
@@ -166,13 +170,13 @@ namespace K8055Velleman.Game.UI
 				upgradeGroupBox = new()
 				{
 					Text = $"Upgrade for {_gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.level)}$",
-					Width = StratInfoPanel.Width - 20,
-					Height = StratInfoPanel.Height / 2 - 10,
-					Location = new(10, StratInfoPanel.Height / 2 ),
+					Width = _stratInfoPanel.Width - 20,
+					Height = _stratInfoPanel.Height / 2 - 10,
+					Location = new(10, _stratInfoPanel.Height / 2 ),
 					ForeColor = Color.White,
                     Font = new Font(UIManager.CustomFonts.Families[0], 12f, FontStyle.Bold),
                 };
-				StratInfoPanel.Controls.Add(upgradeGroupBox);
+				_stratInfoPanel.Controls.Add(upgradeGroupBox);
 
 
 				if (_gameSystem.playerSystem.player.Money < _gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.level))
@@ -199,13 +203,13 @@ namespace K8055Velleman.Game.UI
 					Text = $"Shooting speed : {turretStratagem.ActionSpeed/1000d}s",
 					Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
 					TextAlign = ContentAlignment.MiddleLeft,
-                    Width = StratInfoPanel.Width / 2,
+                    Width = _stratInfoPanel.Width / 2,
                     ForeColor = Color.White,
 					Location = new(0, 55),
 				};
 				ShotSpeed.MinimumSize = ShotSpeed.Size;
 				ShotSpeed.AutoSize = true;
-                StratInfoPanel.Controls.Add(ShotSpeed);
+                _stratInfoPanel.Controls.Add(ShotSpeed);
 
                 Label Damage = new()
                 {
@@ -213,12 +217,12 @@ namespace K8055Velleman.Game.UI
                     Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
                     TextAlign = ContentAlignment.MiddleRight,
                     ForeColor = Color.White,
-                    Location = new(StratInfoPanel.Width / 2, 55),
-                    Width = StratInfoPanel.Width / 2,
+                    Location = new(_stratInfoPanel.Width / 2, 55),
+                    Width = _stratInfoPanel.Width / 2,
                 };
                 Damage.MinimumSize = Damage.Size;
                 Damage.AutoSize = true;
-                StratInfoPanel.Controls.Add(Damage);
+                _stratInfoPanel.Controls.Add(Damage);
 
                 Label DPS = new()
 				{
@@ -226,11 +230,11 @@ namespace K8055Velleman.Game.UI
 					Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
                     ForeColor = Color.White,
                     Location = new(0, 90),
-					Width = StratInfoPanel.Width / 2,
+					Width = _stratInfoPanel.Width / 2,
                     TextAlign = ContentAlignment.MiddleLeft,
                     AutoSize = true
                 };
-				StratInfoPanel.Controls.Add(DPS);
+				_stratInfoPanel.Controls.Add(DPS);
 
 				Label Speed = new()
 				{
@@ -238,10 +242,10 @@ namespace K8055Velleman.Game.UI
 					Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
                     TextAlign = ContentAlignment.MiddleRight,
                     ForeColor = Color.White,
-					Location = new(StratInfoPanel.Width / 2, 90),
-					Width = StratInfoPanel.Width / 2,
+					Location = new(_stratInfoPanel.Width / 2, 90),
+					Width = _stratInfoPanel.Width / 2,
 				};
-				StratInfoPanel.Controls.Add(Speed);
+				_stratInfoPanel.Controls.Add(Speed);
 
 				//Label Size = new()
 				//{
@@ -320,8 +324,8 @@ namespace K8055Velleman.Game.UI
 				_SecondeUpgrade.Text = $"{_SecondeUpgrade.Text} (INP3)";
             }
 
-			GamePanel.Controls.Add(StratInfoPanel);
-			GamePanel.Controls.SetChildIndex(StratInfoPanel, 0);
+			GamePanel.Controls.Add(_stratInfoPanel);
+			GamePanel.Controls.SetChildIndex(_stratInfoPanel, 0);
 
 		}
 
@@ -329,11 +333,11 @@ namespace K8055Velleman.Game.UI
 		{
 			_FirstUpgrade = null;
 			_SecondeUpgrade = null;
-			upgrading = false;
+			_upgrading = false;
 			_StratagemEntity = null;
-			GamePanel.Controls.Remove(StratInfoPanel);
-			StratInfoPanel.Dispose();
-			StratInfoPanel = null;
+			GamePanel.Controls.Remove(_stratInfoPanel);
+			_stratInfoPanel.Dispose();
+			_stratInfoPanel = null;
 			_gameSystem.UpdateDigitalChannels(_gameSystem.playerSystem.player.Health);
 		}
 
@@ -348,7 +352,7 @@ namespace K8055Velleman.Game.UI
 			if(!GamePanel.Enabled) return;
 			if (digitalChannel == K8055.DigitalChannel.I1)
 			{
-                if (!upgrading) ShowStratInfo(0);
+                if (!_upgrading) ShowStratInfo(0);
 				else if(_FirstUpgrade != null)
 				{
 					if(!_FirstUpgrade.Focused) _FirstUpgrade.Focus();
@@ -357,11 +361,11 @@ namespace K8055Velleman.Game.UI
             }
 			else if (digitalChannel == K8055.DigitalChannel.I2)
 			{
-                if (!upgrading) ShowStratInfo(1);
+                if (!_upgrading) ShowStratInfo(1);
             }
 			else if (digitalChannel == K8055.DigitalChannel.I3)
 			{
-                if (!upgrading) ShowStratInfo(2);
+                if (!_upgrading) ShowStratInfo(2);
                 else if (_SecondeUpgrade != null)
                 {
                     if (!_SecondeUpgrade.Focused) _SecondeUpgrade.Focus();
@@ -370,11 +374,11 @@ namespace K8055Velleman.Game.UI
             }
 			else if (digitalChannel == K8055.DigitalChannel.I4)
 			{
-                if (!upgrading) ShowStratInfo(3);
+                if (!_upgrading) ShowStratInfo(3);
             }
 			else if (digitalChannel == K8055.DigitalChannel.I5)
 			{
-				if(StratInfoPanel != null) HideStratInfo();
+				if(_stratInfoPanel != null) HideStratInfo();
 				else _gameSystem.PauseLogique();
 			}
         }

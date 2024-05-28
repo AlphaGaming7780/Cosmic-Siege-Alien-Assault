@@ -10,26 +10,26 @@ namespace K8055Velleman.Game.UI
 {
 	internal class PlayerUI : UIBase
 	{
-		private GroupBox PlayerInfo;
+		private GroupBox _playerInfo;
 		internal Label PlayerLife { get; private set; }
 		internal Label PlayerMoney { get; private set; }
 
-        GameUI gameUI;
+        GameUI _gameUI;
 
 		internal override void OnCreate()
 		{
 
-			gameUI = UIManager.GetOrCreateUI<GameUI>();
+			_gameUI = UIManager.GetOrCreateUI<GameUI>();
 
-			PlayerInfo = new()
+			_playerInfo = new()
 			{
 				Text = "Player Informations",
-                Location = new(10, 10),
-                Font = new(UIManager.CustomFonts.Families[0], 10f, FontStyle.Bold),
-                ForeColor = Color.White,
+				Location = new(10, 10),
+				Font = new(UIManager.CustomFonts.Families[0], 10f, FontStyle.Bold),
+				ForeColor = Color.White,
 				AutoSize = true,
-                BackColor = Color.Transparent,
-            };
+				BackColor = Color.Transparent,
+			};
 
 			PlayerLife = new()
 			{
@@ -57,14 +57,14 @@ namespace K8055Velleman.Game.UI
 			//{
 			//	Console.WriteLine(fontFamily.Name);
 			//}
-			PlayerInfo.Controls.Add(PlayerLife);
-			PlayerInfo.Controls.Add(PlayerMoney);
-            gameUI.GamePanel.Controls.Add(PlayerInfo);
+			_playerInfo.Controls.Add(PlayerLife);
+			_playerInfo.Controls.Add(PlayerMoney);
+            _gameUI.GamePanel.Controls.Add(_playerInfo);
 		}
 
 		internal override void OnDestroy()
 		{
-			gameUI.GamePanel.Controls.Remove(PlayerLife);
+			_gameUI.GamePanel.Controls.Remove(PlayerLife);
 			PlayerLife.Dispose();
 		}
 

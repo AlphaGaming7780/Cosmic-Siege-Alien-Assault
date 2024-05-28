@@ -71,7 +71,7 @@ namespace K8055Velleman.Game.UI
                 Visible = _selectedPlayer != null,
                 Enabled = _selectedPlayer != null
             };
-            _selectePlayerButton.Click += (s, e) => { SaveManager.CurrentPlayerData = _selectedPlayer; GameManager.instance.Load(GameStatus.MainMenu); UIManager.DestroyUI<PlayerSelectorUI>(); };
+            _selectePlayerButton.Click += (s, e) => { SaveManager.CurrentPlayerData = _selectedPlayer; GameManager.Load(GameStatus.MainMenu); UIManager.DestroyUI<PlayerSelectorUI>(); };
 
             UpdatePlayerList();
 
@@ -109,7 +109,7 @@ namespace K8055Velleman.Game.UI
             _playerSelectorPanel.Controls.Add(_playerSelectorScrollPanel);
 
             int x = 0;
-            foreach (PlayerData playerData in SaveManager.PlayersData)
+            foreach (PlayerData playerData in SaveManager.s_playersData)
             {
                 Panel Player = new()
                 {
@@ -262,7 +262,7 @@ namespace K8055Velleman.Game.UI
             _createNewPlayerButton.Click += (s, e) =>
             {
                 bool already = false;
-                foreach (PlayerData playerData in SaveManager.PlayersData)
+                foreach (PlayerData playerData in SaveManager.s_playersData)
                 {
                     if (playerData.Name == textBox.Text)
                     {
@@ -276,12 +276,12 @@ namespace K8055Velleman.Game.UI
                     {
                         Name = textBox.Text,
                     };
-                    SaveManager.PlayersData.Add(_selectedPlayer);
+                    SaveManager.s_playersData.Add(_selectedPlayer);
                     SaveManager.CurrentPlayerData = _selectedPlayer;
                     SaveManager.SaveCurrentPlayerData();
                     panel.Dispose();
                     panel = null;
-                    GameManager.instance.Load(GameStatus.MainMenu);
+                    GameManager.Load(GameStatus.MainMenu);
                     UIManager.DestroyUI<PlayerSelectorUI>();
                 }
             };
@@ -348,14 +348,14 @@ namespace K8055Velleman.Game.UI
 
         internal override void OnDigitalChannelsChange(K8055.DigitalChannel digitalChannel)
         {
-            if (!_playerSelectorPanel.Enabled) return;
+            //if (!_playerSelectorPanel.Enabled) return;
             if (digitalChannel == K8055.DigitalChannel.I1)
             {
                 if (_playerSelectorPanel.Visible)
                 {
-                    int x = SaveManager.PlayersData.IndexOf(_selectedPlayer) - 1;
-                    if (x < 0) x = SaveManager.PlayersData.Count - 1;
-                    _selectedPlayer = SaveManager.PlayersData[x];
+                    int x = SaveManager.s_playersData.IndexOf(_selectedPlayer) - 1;
+                    if (x < 0) x = SaveManager.s_playersData.Count - 1;
+                    _selectedPlayer = SaveManager.s_playersData[x];
                     UpdatePlayerList();
                 }
                 else 
@@ -368,9 +368,9 @@ namespace K8055Velleman.Game.UI
             {
                 if (_playerSelectorPanel.Visible)
                 {
-                    int x = SaveManager.PlayersData.IndexOf(_selectedPlayer) + 1;
-                    if (x >= SaveManager.PlayersData.Count) x = 0;
-                    _selectedPlayer = SaveManager.PlayersData[x];
+                    int x = SaveManager.s_playersData.IndexOf(_selectedPlayer) + 1;
+                    if (x >= SaveManager.s_playersData.Count) x = 0;
+                    _selectedPlayer = SaveManager.s_playersData[x];
                     UpdatePlayerList();
                 }
             }
