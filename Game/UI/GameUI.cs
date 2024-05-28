@@ -16,11 +16,13 @@ namespace K8055Velleman.Game.UI
         internal Panel GamePanel { get; private set; }
 		Panel selectedStratPanel;
 		Panel StratInfoPanel;
-		Panel EndGameMenu;
-		GameSystem gameSystem;
+		GameSystem _gameSystem;
 
 		BButton _FirstUpgrade;
 		BButton _SecondeUpgrade;
+
+		internal Label Score;
+		Label _gameDiffictyIncreaseLabel;
 
         private bool upgrading = false;
 
@@ -29,7 +31,8 @@ namespace K8055Velleman.Game.UI
         internal override void OnCreate()
 		{
 			base.OnCreate();
-			gameSystem = GameManager.GetOrCreateSystem<GameSystem>();
+			_gameSystem = GameManager.GetOrCreateSystem<GameSystem>();
+			SetupAnalogChannelEvent();
 			GamePanel = new()
 			{
 				Size = GameWindow.Size,
@@ -46,7 +49,42 @@ namespace K8055Velleman.Game.UI
 				ForeColor = Color.White,
 			};
 			GamePanel.Controls.Add(selectedStratPanel);
-			GameWindow.Controls.Add(GamePanel);
+
+            Panel GameInfo = new()
+            {
+                Width = 128,
+                Height = 50,
+                ForeColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+            };
+			GameInfo.Location = new Point(GamePanel.Width - GameInfo.Width - RightOffeset - 5, 0);
+			GamePanel.Controls.Add(GameInfo);
+
+            Score = new()
+            {
+                Text = $"{_gameSystem.Scores} 🌟",
+                Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
+                ForeColor = Color.White,
+                Width = GameInfo.Width,
+                Height = 20,
+                TextAlign = ContentAlignment.MiddleRight,
+            };
+            Score.Location = new(GameInfo.Width / 2 - Score.Width / 2, 0);
+            GameInfo.Controls.Add(Score);
+
+            _gameDiffictyIncreaseLabel = new()
+			{
+				Text = $"{_gameSystem.WaveMoneyPay} 📛",
+				Font = new Font(UIManager.CustomFonts.Families[0], 15f, FontStyle.Bold),
+				ForeColor = Color.White,
+				Width = GameInfo.Width,
+				Height = 20, 
+				TextAlign = ContentAlignment.MiddleRight,
+				Location = new Point(0, Score.Height),
+            };
+			GameInfo.Controls.Add(_gameDiffictyIncreaseLabel);
+            GameWindow.Controls.Add(GamePanel);
+			K8055.OutputAnalogChannel(K8055.AnalogChannel.O1, (int)(_gameSystem.WaveMoneyPay / 10f * 255));
 		}
 
 		internal override void OnDestroy()
@@ -54,9 +92,7 @@ namespace K8055Velleman.Game.UI
 			base.OnDestroy();
 			GameWindow.Controls.Remove(GamePanel);
 			GamePanel.Dispose();
-			EndGameMenu?.Dispose();
 			GamePanel = null;
-			EndGameMenu = null;
 			K8055.ClearAllDigital();
 		}
 
@@ -98,7 +134,7 @@ namespace K8055Velleman.Game.UI
 
 			_StratagemEntity = stratagemEntityBase;
 
-			if (K8055.IsConnected) gameSystem.UpdateDigitalChannels(stratagemEntityBase.level);
+			if (K8055.IsConnected) _gameSystem.UpdateDigitalChannels(stratagemEntityBase.level);
 
 			StratInfoPanel = new()
 			{
@@ -129,7 +165,7 @@ namespace K8055Velleman.Game.UI
 			{
 				upgradeGroupBox = new()
 				{
-					Text = $"Upgrade for {gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.level)}$",
+					Text = $"Upgrade for {_gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.level)}$",
 					Width = StratInfoPanel.Width - 20,
 					Height = StratInfoPanel.Height / 2 - 10,
 					Location = new(10, StratInfoPanel.Height / 2 ),
@@ -139,7 +175,7 @@ namespace K8055Velleman.Game.UI
 				StratInfoPanel.Controls.Add(upgradeGroupBox);
 
 
-				if (gameSystem.playerSystem.player.Money < gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.level))
+				if (_gameSystem.playerSystem.player.Money < _gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.level))
 				{
 					Label label = new()
 					{
@@ -250,7 +286,7 @@ namespace K8055Velleman.Game.UI
 						ShotSpeed.Text = $"Shooting speed : {turretStratagem.ActionSpeed / 1000d}s";
 						DPS.Text = $"DPS : {turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d)} D/s";
 					};
-                    _FirstUpgrade.Click += (s, e) => { gameSystem.UpgradeStratagem(turretStratagem, Upgrades.ActionSpeed); ShowStratInfo(stratagemEntityBase, true); };
+                    _FirstUpgrade.Click += (s, e) => { _gameSystem.UpgradeStratagem(turretStratagem, Upgrades.ActionSpeed); ShowStratInfo(stratagemEntityBase, true); };
                     upgradeGroupBox.Controls.Add(_FirstUpgrade);
 
                     _SecondeUpgrade = new()
@@ -272,7 +308,7 @@ namespace K8055Velleman.Game.UI
                         Damage.Text = $"Bullet Damage : {turretStratagem.bulletInfo.Damage}";
                         DPS.Text = $"DPS : {Math.Round(turretStratagem.bulletInfo.Damage / (turretStratagem.ActionSpeed / 1000d),3)} D/s";
                     };
-                    _SecondeUpgrade.Click += (s, e) => { gameSystem.UpgradeStratagem(turretStratagem, Upgrades.BulletDamage); ShowStratInfo(stratagemEntityBase, true); };
+                    _SecondeUpgrade.Click += (s, e) => { _gameSystem.UpgradeStratagem(turretStratagem, Upgrades.BulletDamage); ShowStratInfo(stratagemEntityBase, true); };
                     upgradeGroupBox.Controls.Add(_SecondeUpgrade);
                 }
 
@@ -298,7 +334,7 @@ namespace K8055Velleman.Game.UI
 			GamePanel.Controls.Remove(StratInfoPanel);
 			StratInfoPanel.Dispose();
 			StratInfoPanel = null;
-			gameSystem.UpdateDigitalChannels(gameSystem.playerSystem.player.Health);
+			_gameSystem.UpdateDigitalChannels(_gameSystem.playerSystem.player.Health);
 		}
 
         internal override void OnConnectionChange()
@@ -339,8 +375,24 @@ namespace K8055Velleman.Game.UI
 			else if (digitalChannel == K8055.DigitalChannel.I5)
 			{
 				if(StratInfoPanel != null) HideStratInfo();
-				else gameSystem.PauseLogique();
+				else _gameSystem.PauseLogique();
 			}
+        }
+
+        internal override void OnAnalogChannelsChange(K8055.AnalogChannel analogChannel, int value)
+        {
+            if (!GamePanel.Enabled) return;
+            base.OnAnalogChannelsChange(analogChannel, value);
+			if(analogChannel == K8055.AnalogChannel.I2)
+			{
+				int i = (int)(value / 255f * 9) + 1;
+				if(i != _gameSystem.WaveMoneyPay)
+				{
+					_gameSystem.WaveMoneyPay = i;
+                    _gameDiffictyIncreaseLabel.Text = $"{_gameSystem.WaveMoneyPay} 📛";
+                    K8055.OutputAnalogChannel(K8055.AnalogChannel.O1, (int)(_gameSystem.WaveMoneyPay / 10f * 255));
+                }
+            }
         }
     }
 }

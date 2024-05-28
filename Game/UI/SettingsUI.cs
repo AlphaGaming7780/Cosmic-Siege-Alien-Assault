@@ -139,7 +139,7 @@ internal class SettingsUI : UIBase
 		if(!_settingsControl.Enabled) return;
 		if(analogChannel == K8055.AnalogChannel.I1)
 		{
-			foreach (Control control in _currentSelectedSettings.Controls)
+			if(_currentSelectedSettings != null) foreach (Control control in _currentSelectedSettings.Controls)
 			{
 				if (control is TrackBar trackBar)
 				{

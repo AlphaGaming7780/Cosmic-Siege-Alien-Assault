@@ -50,12 +50,19 @@ internal static class AudioManager
 
     private static void K8055_OnAnalogChannelsChange(K8055.AnalogChannel analogChannel, int value)
     {
-        if(analogChannel == K8055.AnalogChannel.I1) AudioVolume.GameVolume = value / 255f;
+		if (analogChannel == K8055.AnalogChannel.I1)
+		{
+			float f = (float)Math.Round(value / 255f, 1);
+			if (f != AudioVolume.GameVolume)
+			{
+				AudioVolume.GameVolume = f;
+			}
+        }
     }
 
     private static void K8055_OnConnectionChanged()
     {
-       K8055.OutputAnalogChannel(K8055.AnalogChannel.O2, (int)(AudioVolume.GameVolume * 255));
+		K8055.OutputAnalogChannel(K8055.AnalogChannel.O2, (int)(AudioVolume.GameVolume * 255));
     }
 
 	/// <summary>

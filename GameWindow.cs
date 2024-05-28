@@ -49,7 +49,7 @@ namespace K8055Velleman
 			stopwatch.Stop();
 			int i = kClockInternal - (int)stopwatch.ElapsedMilliseconds;
 			Clock.Interval = i <= 0 ? 1 : i;
-			float x = 1 / ((stopwatch.ElapsedMilliseconds + Clock.Interval + 0f) / 1000f);
+			float x = 1 / ((stopwatch.ElapsedMilliseconds + Clock.Interval) / 1000f);
             if(x < 60) Console.WriteLine(x);
 		}
 

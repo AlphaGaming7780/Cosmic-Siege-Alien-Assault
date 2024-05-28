@@ -16,7 +16,7 @@ namespace K8055Velleman.Game.UI
         internal GameWindow GameWindow { get { return UIManager.GameWindow; } }
         //internal Float2 UIRatio { get { return UIManager.uiRatio; } }
 
-        internal const int RightOffeset = 16;
+        internal const int RightOffeset = 8; //16
 
         /// <summary>
         /// Called when the UI is created.

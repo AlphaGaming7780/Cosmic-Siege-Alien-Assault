@@ -86,7 +86,7 @@ internal class EndGameUI : UIBase
             ForeColor = Color.White,
             Font = new Font(UIManager.CustomFonts.Families[0], K8055.IsConnected ? 10f : 20f, FontStyle.Bold),
         };
-        _settingsButton.Click += (s, e) => { GameManager.instance.Load(GameStatus.MainMenu); };
+        _settingsButton.Click += (s, e) => { UIManager.GetOrCreateUI<SettingsUI>().Show(_endGameMenu); };
         _settingsButton.Location = new(_endGameMenu.Width / 2 - _settingsButton.Width / 2, _endGameMenu.Height - _tryAgainButton.Height - 25);
 
         _mainMenuButton = new()

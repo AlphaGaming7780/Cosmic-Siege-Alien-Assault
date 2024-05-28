@@ -62,7 +62,7 @@ internal class PreGameUI : UIBase
 			BorderStyle = BorderStyle.FixedSingle,
             ForeColor = Color.WhiteSmoke,
         };
-		_playerMoney.Left = _preGameUI.Width - _playerMoney.Width - 10;
+		_playerMoney.Left = _preGameUI.Width - _playerMoney.Width - RightOffeset - 5;
 
         _backButton = new()
 		{
@@ -530,6 +530,7 @@ internal class PreGameUI : UIBase
 		base.OnDestroy();
 		GameWindow.Controls.Remove(_preGameUI);
 		_preGameUI.Dispose();
+		K8055.ClearAnalogChannel(K8055.AnalogChannel.O1);
 	}
 
     internal override void OnConnectionChange()
@@ -629,6 +630,7 @@ internal class PreGameUI : UIBase
 
     internal override void OnAnalogChannelsChange(K8055.AnalogChannel analogChannel, int value)
     {
+        if (!_preGameUI.Enabled) return;
         base.OnAnalogChannelsChange(analogChannel, value);
 		if (analogChannel == K8055.AnalogChannel.I2) _startMoneyBank.Value = (int)(value / 255f * _startMoneyBank.Maximum);
     }

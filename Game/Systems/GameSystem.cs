@@ -50,8 +50,8 @@ namespace K8055Velleman.Game.Systems
                 {
                     GenerateWave();
 					Scores += WaveMoneyPay;
+					_entitySystem.GameUI.Score.Text = $"{Scores} 🌟";
                 }
-
             }
 		}
 
