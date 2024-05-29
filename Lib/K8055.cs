@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Channels;
-using System.Security.Policy;
-using System.Windows.Forms;
-using System.Windows.Media.Animation;
-using static K8055Velleman.K8055;
-
 namespace K8055Velleman;
 
 static public class K8055
@@ -324,7 +316,6 @@ static public class K8055
 	private static void UpdateDigitalsChannel()
 	{
 		int digitalChannel = Interface.ReadAllDigital();
-        //digitalChannels[CurrentDevice].RemoveAll(new Predicate<DigitalChannel>((e) => { return e == DigitalChannel.B1 || e == DigitalChannel.B2 || e == DigitalChannel.B3 || e == DigitalChannel.B4 || e == DigitalChannel.B5; } ));
 
         DigitalChannel dC = DigitalChannel.I1;
 		for(int i = 1; i <= 16; i *= 2)
