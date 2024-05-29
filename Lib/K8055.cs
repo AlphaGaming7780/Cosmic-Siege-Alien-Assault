@@ -116,7 +116,6 @@ static public class K8055
 		if (!IsConnected)
 		{
 			SearchAndOpenDevice();
-			//if(!IsConnected) return;
 		}
 
 		if (IsConnected != oldIsConnected)
@@ -128,8 +127,6 @@ static public class K8055
 
 		UpdateDigitalsChannel();
 		UpdateAnalogChannel();
-
-		//if((digitalChannel & 1) > 0)
 	}
 
 	public static int OpenDevice(int CardAddress)
@@ -327,91 +324,27 @@ static public class K8055
 	private static void UpdateDigitalsChannel()
 	{
 		int digitalChannel = Interface.ReadAllDigital();
-		//digitalChannels[CurrentDevice].RemoveAll(new Predicate<DigitalChannel>((e) => { return e == DigitalChannel.B1 || e == DigitalChannel.B2 || e == DigitalChannel.B3 || e == DigitalChannel.B4 || e == DigitalChannel.B5; } ));
-		if ((digitalChannel & 1) > 0)
-		{
-			if (!s_digitalChannels.Contains(DigitalChannel.I1))
-			{
-				s_digitalChannels.Add(DigitalChannel.I1);
-				OnDigitalChannelsChange?.Invoke(DigitalChannel.I1);
-			}
+        //digitalChannels[CurrentDevice].RemoveAll(new Predicate<DigitalChannel>((e) => { return e == DigitalChannel.B1 || e == DigitalChannel.B2 || e == DigitalChannel.B3 || e == DigitalChannel.B4 || e == DigitalChannel.B5; } ));
 
-		}
-		else 
+        DigitalChannel dC = DigitalChannel.I1;
+		for(int i = 1; i <= 16; i *= 2)
 		{
-			if (s_digitalChannels.Contains(DigitalChannel.I1))
-			{
-				s_digitalChannels.Remove(DigitalChannel.I1);
-			}
-		}
+            if ((digitalChannel & i) > 0)
+            {
+				
+                if (!s_digitalChannels.Contains(dC))
+                {
+                    s_digitalChannels.Add(dC);
+                    OnDigitalChannelsChange?.Invoke(dC);
+                }
 
-		if ((digitalChannel & 2) > 0)
-		{
-			if (!s_digitalChannels.Contains(DigitalChannel.I2))
-			{
-				s_digitalChannels.Add(DigitalChannel.I2);
-				OnDigitalChannelsChange?.Invoke(DigitalChannel.I2);
-			}
-
-		}
-		else 
-		{
-			if (s_digitalChannels.Contains(DigitalChannel.I2))
-			{
-				s_digitalChannels.Remove(DigitalChannel.I2);
-			}
-		}
-
-		if ((digitalChannel & 4) > 0)
-		{
-			if (!s_digitalChannels.Contains(DigitalChannel.I3))
-			{
-				s_digitalChannels.Add(DigitalChannel.I3);
-				OnDigitalChannelsChange?.Invoke(DigitalChannel.I3);
-			}
-
-		}
-		else
-		{
-			if (s_digitalChannels.Contains(DigitalChannel.I3))
-			{
-				s_digitalChannels.Remove(DigitalChannel.I3);
-			}
-		}
-
-		if ((digitalChannel & 8) > 0)
-		{
-			if (!s_digitalChannels.Contains(DigitalChannel.I4))
-			{
-				s_digitalChannels.Add(DigitalChannel.I4);
-				OnDigitalChannelsChange?.Invoke(DigitalChannel.I4);
-			}
-
-		}
-		else
-		{
-			if (s_digitalChannels.Contains(DigitalChannel.I4))
-			{
-				s_digitalChannels.Remove(DigitalChannel.I4);
-			}
-		}
-
-		if ((digitalChannel & 16) > 0)
-		{
-			if (!s_digitalChannels.Contains(DigitalChannel.I5))
-			{
-				s_digitalChannels.Add(DigitalChannel.I5);
-				OnDigitalChannelsChange?.Invoke(DigitalChannel.I5);
-			}
-
-		}
-		else
-		{
-			if (s_digitalChannels.Contains(DigitalChannel.I5))
-			{
-				s_digitalChannels.Remove(DigitalChannel.I5);
-			}
-		}
+            }
+            else if (s_digitalChannels.Contains(dC))
+            {
+                s_digitalChannels.Remove(dC);
+            }
+			dC++;
+        }
 	}
 
 	private static void UpdateAnalogChannel()
