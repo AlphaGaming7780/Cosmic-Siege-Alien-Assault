@@ -21,7 +21,8 @@ namespace K8055Velleman.Game.Systems
 			base.OnDestroy();
 			_entitiesToDelete.AddRange(_entities);
 			_entities.Clear();
-		}
+			DestroyEntities();
+        }
 
 		internal override void OnUpdate() 
 		{ 

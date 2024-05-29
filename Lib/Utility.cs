@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace K8055Velleman.Game
+namespace K8055Velleman.Lib
 {
     internal static class Utility
     {

@@ -9,6 +9,12 @@ namespace K8055Velleman.Game.Systems
 {
     internal class PlayerSelectorSystem : SystemBase
     {
+        internal override void OnCreate()
+        {
+            base.OnCreate();
+            enabled = false;
+        }
+
         internal override void OnDestroy()
         {
             base.OnDestroy();

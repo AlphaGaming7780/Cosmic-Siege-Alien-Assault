@@ -9,7 +9,7 @@ namespace K8055Velleman.Game
     public class SystemBase
     {
         /// <summary>
-        /// Control if the system should be updated.
+        /// Control if the system should be updated each frame.
         /// </summary>
         internal bool enabled = true;
 

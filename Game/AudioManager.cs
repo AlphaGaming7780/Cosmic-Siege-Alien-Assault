@@ -6,33 +6,6 @@ using System.Windows.Media;
 
 namespace K8055Velleman.Game;
 
-public enum AudioFile
-{
-	MouseOver,
-	BackGroundMusic,
-	EnemyDeath,
-}
-
-public struct AudioVolume()
-{
-    public readonly float GameVolume { get { return SaveManager.Settings.GameVolume; } set { SaveManager.Settings.GameVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
-	public readonly float UiVolume { get { return SaveManager.Settings.UiVolume; } set { SaveManager.Settings.UiVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
-	public readonly float MusicVolume { get { return SaveManager.Settings.MusicVolume; } set { SaveManager.Settings.MusicVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
-    public readonly float EffectVolume { get { return SaveManager.Settings.EffectVolume; } set { SaveManager.Settings.EffectVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
-
-	public readonly float GetVolumeByAudioFile(AudioFile audioFile)
-	{
-        return audioFile switch
-        {
-            AudioFile.MouseOver => UiVolume * GameVolume,
-            AudioFile.BackGroundMusic => MusicVolume * GameVolume,
-			AudioFile.EnemyDeath => EffectVolume * GameVolume,
-            _ => GameVolume,
-        };
-    }
-
-}
-
 internal static class AudioManager
 {
 	private static readonly List<string> s_musicFiles = ["Musics\\Mr-Blackhole - Category.wav", "Musics\\NOmki - Netrunner.wav", "Musics\\NOmki - Time.wav", "Musics\\punkerrr - Virtual Cataclysm.wav", "Musics\\RyuuAkito & SquashHead - Damaged Artificial Nervous System.wav"];
@@ -126,4 +99,31 @@ internal static class AudioManager
             _ => null,
 		};
 	}
+}
+
+public enum AudioFile
+{
+    MouseOver,
+    BackGroundMusic,
+    EnemyDeath,
+}
+
+public struct AudioVolume()
+{
+    public readonly float GameVolume { get { return SaveManager.Settings.GameVolume; } set { SaveManager.Settings.GameVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
+    public readonly float UiVolume { get { return SaveManager.Settings.UiVolume; } set { SaveManager.Settings.UiVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
+    public readonly float MusicVolume { get { return SaveManager.Settings.MusicVolume; } set { SaveManager.Settings.MusicVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
+    public readonly float EffectVolume { get { return SaveManager.Settings.EffectVolume; } set { SaveManager.Settings.EffectVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
+
+    public readonly float GetVolumeByAudioFile(AudioFile audioFile)
+    {
+        return audioFile switch
+        {
+            AudioFile.MouseOver => UiVolume * GameVolume,
+            AudioFile.BackGroundMusic => MusicVolume * GameVolume,
+            AudioFile.EnemyDeath => EffectVolume * GameVolume,
+            _ => GameVolume,
+        };
+    }
+
 }

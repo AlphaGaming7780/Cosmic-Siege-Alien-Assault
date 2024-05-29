@@ -1,5 +1,6 @@
 ﻿using K8055Velleman.Game.Entities;
 using K8055Velleman.Game.UI;
+using K8055Velleman.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace K8055Velleman.Game.Systems
 	internal class GameSystem : SystemBase
 	{
 		private EntitySystem _entitySystem;
-        private List<StratagemEntityBase> _selectedStratagemEntities = [];
+        private readonly List<StratagemEntityBase> _selectedStratagemEntities = [];
 
 		internal int Scores = 0, WaveMoneyBank = 0, WaveMoneyPay = 1;
         internal PlayerSystem playerSystem;

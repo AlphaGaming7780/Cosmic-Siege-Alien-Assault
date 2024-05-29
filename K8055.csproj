@@ -105,7 +105,7 @@
     <Compile Include="Game\UI\PreGameUI.cs" />
     <Compile Include="Game\UI\SettingsUI.cs" />
     <Compile Include="Game\UI\UIBase.cs" />
-    <Compile Include="Game\Utility.cs" />
+    <Compile Include="Lib\Utility.cs" />
     <Compile Include="Lib\ClassExtension\ButtonExtension.cs">
       <SubType>Component</SubType>
     </Compile>

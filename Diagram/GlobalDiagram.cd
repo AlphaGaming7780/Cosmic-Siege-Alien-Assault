@@ -91,17 +91,17 @@
       <FileName>Game\UIManager.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="K8055Velleman.Game.Utility">
+  <Class Name="K8055Velleman.Lib.Utility">
     <Position X="123" Y="3.75" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Game\Utility.cs</FileName>
+      <FileName>Lib\Utility.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.UI.CreditUI">
     <Position X="95.75" Y="14.75" Width="4.25" />
     <TypeIdentifier>
-      <HashCode>BAABAAAAQQQAAAAAAAAAAKAEACAAAAAAAEACAgQgAAA=</HashCode>
+      <HashCode>BAABAAAAQQQAAAAAAAAAAKAEECAAAAAAAEACAgQgAAA=</HashCode>
       <FileName>Game\UI\CreditUI.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -115,7 +115,7 @@
   <Class Name="K8055Velleman.Game.UI.SettingsUI">
     <Position X="53.5" Y="14.75" Width="4.75" />
     <TypeIdentifier>
-      <HashCode>AABRAAAIAAAABAggAEBAECAAACAEAAAAAAQCAAQAAAA=</HashCode>
+      <HashCode>gABRAAAIAAAABAggAEBAECAAACAEAAAAAAQCAAQBAAA=</HashCode>
       <FileName>Game\UI\SettingsUI.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -357,6 +357,13 @@
       <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="K8055Velleman.Game.AudioManager">
+    <Position X="63" Y="3.5" Width="5.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAKAAIAAAAAAAAAAgAIAAAACIACAgAAAQAAAA=</HashCode>
+      <FileName>Game\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Struct Name="K8055Velleman.Game.Entities.BulletInfo">
     <Position X="17.5" Y="33.75" Width="1.5" />
     <TypeIdentifier>
@@ -378,6 +385,13 @@
       <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
     </TypeIdentifier>
   </Struct>
+  <Struct Name="K8055Velleman.Game.AudioVolume">
+    <Position X="63" Y="7" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAACEAIgAAAAAAAAA=</HashCode>
+      <FileName>Game\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
   <Enum Name="K8055Velleman.Game.GameStatus">
     <Position X="37" Y="9.25" Width="1.5" />
     <TypeIdentifier>
@@ -390,6 +404,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
       <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="K8055Velleman.Game.AudioFile">
+    <Position X="66.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAgAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\AudioManager.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

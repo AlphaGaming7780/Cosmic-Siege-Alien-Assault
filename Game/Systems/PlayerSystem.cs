@@ -19,6 +19,7 @@ namespace K8055Velleman.Game.Systems
         internal override void OnCreate()
         {
             base.OnCreate();
+            enabled = false;
             _entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
             _gameSystem = GameManager.GetOrCreateSystem<GameSystem>();
             player = _entitySystem.CreateEntity<PlayerEnity>();
