@@ -119,11 +119,25 @@
       <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
     </TypeIdentifier>
   </Struct>
+  <Struct Name="K8055Velleman.Game.Interfaces.UpgradesValue" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Interfaces\IUpgradableStratagemEntity.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
   <Enum Name="K8055Velleman.Game.Entities.Upgrades">
     <Position X="32" Y="14" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
       <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="K8055Velleman.Game.Interfaces.Upgrades" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Interfaces\IUpgradableStratagemEntity.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

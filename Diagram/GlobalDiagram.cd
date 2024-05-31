@@ -185,21 +185,21 @@
   <Class Name="K8055Velleman.Game.Systems.MainMenuSystem">
     <Position X="34.5" Y="15.75" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAACAAAAAAAACAAAAAAAA=</HashCode>
       <FileName>Game\Systems\MainMenuSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.Systems.PlayerSelectorSystem">
     <Position X="38.75" Y="15.75" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAACAAAAAAAACAAAAAAAA=</HashCode>
       <FileName>Game\Systems\PlayerSelectorSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.Systems.PlayerSystem">
     <Position X="43" Y="15.75" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAEFAAACAAAAAAAAAIAAAAgAACAgAAABAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEFAAAAAAgAAAAAAIAAAAgAACAgAAABAAAAAAAAAAA=</HashCode>
       <FileName>Game\Systems\PlayerSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -365,7 +365,7 @@
     </TypeIdentifier>
   </Class>
   <Struct Name="K8055Velleman.Game.Entities.BulletInfo">
-    <Position X="17.5" Y="33.75" Width="1.5" />
+    <Position X="17.5" Y="32.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAACAAAAAgAIAAAAAAAABAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Game\Entities\TurretStratagemBase.cs</FileName>
@@ -378,18 +378,18 @@
       <FileName>Lib\Vector2.cs</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="K8055Velleman.Game.Entities.UpgradesValue">
-    <Position X="17.5" Y="28" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
-    </TypeIdentifier>
-  </Struct>
   <Struct Name="K8055Velleman.Game.AudioVolume">
     <Position X="63" Y="7" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAACEAIgAAAAAAAAA=</HashCode>
       <FileName>Game\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="K8055Velleman.Game.Interfaces.UpgradesValue">
+    <Position X="12.25" Y="34" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Interfaces\IUpgradableStratagemEntity.cs</FileName>
     </TypeIdentifier>
   </Struct>
   <Enum Name="K8055Velleman.Game.GameStatus">
@@ -399,18 +399,18 @@
       <FileName>Game\GameManager.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="K8055Velleman.Game.Entities.Upgrades">
-    <Position X="17.5" Y="26.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
   <Enum Name="K8055Velleman.Game.AudioFile">
     <Position X="66.75" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAgAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Game\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="K8055Velleman.Game.Interfaces.Upgrades">
+    <Position X="12.5" Y="32.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Interfaces\IUpgradableStratagemEntity.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

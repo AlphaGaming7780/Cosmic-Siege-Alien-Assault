@@ -1,9 +1,4 @@
-﻿using K8055Velleman.Game.Entities.Enemy;
-using K8055Velleman.Game.Systems;
-using System;
-using System.Drawing;
-using System.Timers;
-using System.Windows.Forms;
+﻿using System.Drawing;
 
 namespace K8055Velleman.Game.Entities.Stratagems
 {

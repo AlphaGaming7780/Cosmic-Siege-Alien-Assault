@@ -43,7 +43,7 @@ namespace K8055Velleman.Game.Systems
             playerUI.PlayerMoney.Text = $"💲 : {player.Money}";
         }
 
-        internal void RemoveMoneyFromPlayer(int value)
+        internal void IndebtedPlayer(int value)
         {
             player.Money -= value;
             playerUI.PlayerMoney.Text = $"💲 : {player.Money}";

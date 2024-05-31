@@ -101,13 +101,6 @@ internal static class AudioManager
 	}
 }
 
-public enum AudioFile
-{
-    MouseOver,
-    BackGroundMusic,
-    EnemyDeath,
-}
-
 public struct AudioVolume()
 {
     public readonly float GameVolume { get { return SaveManager.Settings.GameVolume; } set { SaveManager.Settings.GameVolume = value; SaveManager.SaveSettings(); AudioManager.UpdateAudioVolume(); } }
@@ -126,4 +119,11 @@ public struct AudioVolume()
         };
     }
 
+}
+
+public enum AudioFile
+{
+    MouseOver,
+    BackGroundMusic,
+    EnemyDeath,
 }

@@ -1,22 +1,9 @@
 ﻿using K8055Velleman.Game.Systems;
+using K8055Velleman.Game.Interfaces;
 using K8055Velleman.Lib;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace K8055Velleman.Game.Entities;
-
-internal enum Upgrades
-{
-    ActionSpeed,
-    BulletDamage,
-}
-
-internal struct UpgradesValue()
-{
-
-    internal const int ActionSpeed = 100;
-    internal const float BulletDamage = 2.5f;
-}
 
 internal abstract class StratagemEntityBase : StaticEntity
 {

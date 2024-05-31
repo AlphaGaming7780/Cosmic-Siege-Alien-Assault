@@ -1,4 +1,5 @@
 ﻿using K8055Velleman.Game.Systems;
+using K8055Velleman.Game.Interfaces;
 using System.Collections.Generic;
 using System.Drawing;
 

@@ -138,7 +138,7 @@ internal class SettingsUI : UIBase
             Maximum = 100,
             Minimum = 0,
             Cursor = Cursors.SizeWE,
-            Value = (int)(SaveManager.Settings.UiVolume * 100),
+            Value = (int)(SaveManager.Settings.EffectVolume * 100),
         };
         trackBar4.ValueChanged += (s, e) => { AudioManager.AudioVolume.EffectVolume = trackBar4.Value / 100f; };
         c4.Controls.Add(trackBar4);

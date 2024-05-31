@@ -1,5 +1,6 @@
 ﻿using K8055Velleman.Game.Entities;
 using K8055Velleman.Game.UI;
+using K8055Velleman.Game.Interfaces;
 using K8055Velleman.Lib;
 using System;
 using System.Collections.Generic;
@@ -185,7 +186,7 @@ namespace K8055Velleman.Game.Systems
 		{
             if(stratagemEntityBase.Upgrade(upgrades))
 			{
-				playerSystem.RemoveMoneyFromPlayer(GetStartagemUpgradeCost(stratagemEntityBase.level - 1));
+				playerSystem.IndebtedPlayer(GetStartagemUpgradeCost(stratagemEntityBase.level - 1));
 			}
         }
 

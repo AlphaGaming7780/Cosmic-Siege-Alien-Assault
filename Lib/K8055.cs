@@ -341,9 +341,9 @@ static public class K8055
 	private static void UpdateAnalogChannel()
 	{
 		if(Interface.SetCurrentDevice(CurrentDevice) < 0) return;
-		int data1 = 0;
-		int data2 = 0;
-		Interface.ReadAllAnalog(ref data1,ref data2);
+		int data1 = s_analogChannels.ContainsKey(AnalogChannel.I1) ? s_analogChannels[AnalogChannel.I1] : 0;
+		int data2 = s_analogChannels.ContainsKey(AnalogChannel.I2) ? s_analogChannels[AnalogChannel.I2] : 0;
+        Interface.ReadAllAnalog(ref data1,ref data2);
 		if (s_analogChannels.ContainsKey(AnalogChannel.I1))
 		{
 			if (s_analogChannels[AnalogChannel.I1] != data1) OnAnalogChannelsChange?.Invoke(AnalogChannel.I1, data1);
