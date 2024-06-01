@@ -2,6 +2,9 @@
 using System.Runtime.InteropServices;
 namespace K8055Velleman;
 
+/// <summary>
+/// Static class that can be used to comunicate with the Velleman board.
+/// </summary>
 static public class K8055
 {
 	private class Interface
