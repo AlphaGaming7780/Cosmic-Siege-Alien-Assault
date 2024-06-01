@@ -14,7 +14,7 @@ namespace K8055Velleman.Game.Systems
         EntitySystem _entitySystem;
         GameSystem _gameSystem;
         internal PlayerUI playerUI;
-        internal PlayerEnity player;
+        internal PlayerEntity player;
 
         internal override void OnCreate()
         {
@@ -22,7 +22,7 @@ namespace K8055Velleman.Game.Systems
             enabled = false;
             _entitySystem = GameManager.GetOrCreateSystem<EntitySystem>();
             _gameSystem = GameManager.GetOrCreateSystem<GameSystem>();
-            player = _entitySystem.CreateEntity<PlayerEnity>();
+            player = _entitySystem.CreateEntity<PlayerEntity>();
             playerUI = UIManager.GetOrCreateUI<PlayerUI>();
             playerUI.PlayerLife.Text = $"❤️ : {player.Health}";
             if (!_entitySystem.GameUI.IsStratInfoPanelShowed) _gameSystem.UpdateDigitalChannels(player.Health);

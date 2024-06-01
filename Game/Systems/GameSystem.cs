@@ -48,7 +48,7 @@ namespace K8055Velleman.Game.Systems
             base.OnUpdate();
 			if(GameManager.GameStatus == GameStatus.Game)
 			{
-                if (_entitySystem.GetEntitiesByType<EnemyEntity>().Count <= 0)
+                if (_entitySystem.GetEntitiesByType<EnemyEntityBase>().Count <= 0)
                 {
                     GenerateWave();
 					Scores += WaveMoneyPay;
@@ -59,26 +59,26 @@ namespace K8055Velleman.Game.Systems
 
 		private void GenerateWave()
 		{
-			List<Type> types = Utility.GetAllSubclassOf(typeof(EnemyEntity)).ToList();
-			List<EnemyEntity> enemyEntities = [];
+			List<Type> types = Utility.GetAllSubclassOf(typeof(EnemyEntityBase)).ToList();
+			List<EnemyEntityBase> enemyEntities = [];
 			foreach (Type type in types)
 			{
-				enemyEntities.Add(_entitySystem.CreateEntity<EnemyEntity>(type));
+				enemyEntities.Add(_entitySystem.CreateEntity<EnemyEntityBase>(type));
 			}
 			int currentMoneyWave = WaveMoneyBank += WaveMoneyPay;
 			while(currentMoneyWave > 0) 
 			{
-				EnemyEntity enemyType = enemyEntities[GameManager.Random.Next(0, enemyEntities.Count)];
+				EnemyEntityBase enemyType = enemyEntities[GameManager.Random.Next(0, enemyEntities.Count)];
 
                 if (currentMoneyWave - enemyType.Cost >= 0)
 				{
-                    EnemyEntity enemyEntity = _entitySystem.CreateEntity<EnemyEntity>(enemyType.GetType());
+                    EnemyEntityBase enemyEntity = _entitySystem.CreateEntity<EnemyEntityBase>(enemyType.GetType());
                     enemyEntity.Spawn();
 					currentMoneyWave -= enemyEntity.Cost;
 				}
 			}
 
-			foreach(EnemyEntity enemyEntity in enemyEntities)
+			foreach(EnemyEntityBase enemyEntity in enemyEntities)
 			{
 				_entitySystem.DestroyEntity(enemyEntity);
 			}
@@ -186,7 +186,7 @@ namespace K8055Velleman.Game.Systems
 		{
             if(stratagemEntityBase.Upgrade(upgrades))
 			{
-				playerSystem.IndebtedPlayer(GetStartagemUpgradeCost(stratagemEntityBase.level - 1));
+				playerSystem.IndebtedPlayer(GetStartagemUpgradeCost(stratagemEntityBase.Level - 1));
 			}
         }
 

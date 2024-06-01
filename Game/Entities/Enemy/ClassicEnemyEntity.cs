@@ -2,7 +2,7 @@
 
 namespace K8055Velleman.Game.Entities.Enemy;
 
-internal class ClassicEnemyEntity : EnemyEntity
+internal class ClassicEnemyEntity : EnemyEntityBase
 {
     internal override int StartHealth => 10;
 

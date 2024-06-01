@@ -6,13 +6,6 @@ namespace K8055Velleman.Game.Entities;
 
 internal class AmmunitionEntity : MovingEntity
 {
-    //abstract internal int Damage { get; }
-
-    //abstract internal Size BulletSize { get; }
-    //abstract internal Color BulletColor { get; }
-
-    //abstract internal bool Guided { get; }
-
     private float speed = 1;
     internal float Damage { get; private set; } = 1;
     internal Size BulletSize { get; private set; } = new Size(25,25);
@@ -65,20 +58,20 @@ internal class AmmunitionEntity : MovingEntity
 
 	internal override void OnCollide(EntityBase entityBase)
 	{
-		if(entityBase is EnemyEntity) EntitySystem.DestroyEntity(this);
+		if(entityBase is EnemyEntityBase) EntitySystem.DestroyEntity(this);
 	}
 
 	private void GetNewTarget()
 	{
-        List<EnemyEntity> enemyEntities = EntitySystem.GetEntitiesByType<EnemyEntity>();
+        List<EnemyEntityBase> enemyEntities = EntitySystem.GetEntitiesByType<EnemyEntityBase>();
         if (enemyEntities.Count <= 0) { return; } //target = null;
 
-        enemyEntities.Sort(delegate (EnemyEntity x, EnemyEntity y)
+        enemyEntities.Sort(delegate (EnemyEntityBase x, EnemyEntityBase y)
         {
             return (x.CenterLocation - this.CenterLocation).sqrMagnitude.CompareTo((y.CenterLocation - this.CenterLocation).sqrMagnitude);
         });
 
-        foreach (EnemyEntity enemy in enemyEntities)
+        foreach (EnemyEntityBase enemy in enemyEntities)
         {
             if (enemy.targeted) continue;
             target = enemy;

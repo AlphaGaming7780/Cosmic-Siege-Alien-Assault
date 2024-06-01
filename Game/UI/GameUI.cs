@@ -134,12 +134,12 @@ namespace K8055Velleman.Game.UI
         private void ShowStratInfo(StratagemEntityBase stratagemEntityBase, bool upgrade = false)
 		{
 			if (_stratInfoPanel is not null) HideStratInfo();
-			if(stratagemEntityBase.level >= stratagemEntityBase.MaxLevel) upgrade = false;
+			if(stratagemEntityBase.Level >= stratagemEntityBase.MaxLevel) upgrade = false;
 			_upgrading = upgrade;
 
 			_StratagemEntity = stratagemEntityBase;
 
-			if (K8055.IsConnected) _gameSystem.UpdateDigitalChannels(stratagemEntityBase.level);
+			if (K8055.IsConnected) _gameSystem.UpdateDigitalChannels(stratagemEntityBase.Level);
 
 			_stratInfoPanel = new()
 			{
@@ -153,7 +153,7 @@ namespace K8055Velleman.Game.UI
 
 			Label stratName = new()
 			{
-				Text = $"{stratagemEntityBase.Name} ({stratagemEntityBase.level}/{stratagemEntityBase.MaxLevel})",
+				Text = $"{stratagemEntityBase.Name} ({stratagemEntityBase.Level}/{stratagemEntityBase.MaxLevel})",
 				Width = _stratInfoPanel.Width,
 				Height = 50,
 				Location = new(0, 0),
@@ -170,7 +170,7 @@ namespace K8055Velleman.Game.UI
 			{
 				upgradeGroupBox = new()
 				{
-					Text = $"Upgrade for {_gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.level)}$",
+					Text = $"Upgrade for {_gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.Level)}$",
 					Width = _stratInfoPanel.Width - 20,
 					Height = _stratInfoPanel.Height / 2 - 10,
 					Location = new(10, _stratInfoPanel.Height / 2 ),
@@ -180,7 +180,7 @@ namespace K8055Velleman.Game.UI
 				_stratInfoPanel.Controls.Add(upgradeGroupBox);
 
 
-				if (_gameSystem.playerSystem.player.Money < _gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.level))
+				if (_gameSystem.playerSystem.player.Money < _gameSystem.GetStartagemUpgradeCost(stratagemEntityBase.Level))
 				{
 					Label label = new()
 					{

@@ -7,8 +7,8 @@ namespace K8055Velleman.Game.Entities;
 
 internal abstract class StratagemEntityBase : StaticEntity
 {
-	private int actionSpeed = 1000;
-	internal int level = 1;
+	private int _actionSpeed = 1000;
+	internal int Level = 1;
 	internal abstract int UiID { get; }
 	internal abstract bool Unlockable { get; }
 	internal abstract int UnkockPrice { get; }
@@ -16,7 +16,7 @@ internal abstract class StratagemEntityBase : StaticEntity
     internal abstract string Name { get; }
 	internal abstract int MaxLevel { get; }
 	internal abstract int StartActionSpeed { get; }
-	internal int ActionSpeed { get { return actionSpeed; } set { actionSpeed = value; timer.Interval = value; } }
+	internal int ActionSpeed { get { return _actionSpeed; } set { _actionSpeed = value; timer.Interval = value; } }
 
 	//private System.Timers.Timer timer;
 	//private Timer timer;
@@ -31,11 +31,11 @@ internal abstract class StratagemEntityBase : StaticEntity
 			BackColor = Color,
         };
 		base.OnCreate(entitySystem);
-        actionSpeed = StartActionSpeed;
+        _actionSpeed = StartActionSpeed;
 		//timer = new System.Timers.Timer(actionSpeed);
 		//timer.Elapsed += (e, h) => { action = true; };
 		//timer.AutoReset = true;
-		timer = new(actionSpeed);
+		timer = new(_actionSpeed);
 		timer.Elapsed += (s, e) => { action = true; };
 		DisableStratagem();
 	}
@@ -58,7 +58,7 @@ internal abstract class StratagemEntityBase : StaticEntity
 			if (ActionSpeed <= 1000) return false;
 			ActionSpeed -= UpgradesValue.ActionSpeed;
 		}
-		level++;
+		Level++;
 		return true;
     }
 

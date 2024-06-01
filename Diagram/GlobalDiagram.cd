@@ -238,18 +238,11 @@
       <FileName>Game\Entities\TurretStratagemBase.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="K8055Velleman.Game.Entities.StaticEntity">
-    <Position X="16.75" Y="25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Game\Entities\StaticEntity.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="K8055Velleman.Game.Entities.PlayerEnity">
+  <Class Name="K8055Velleman.Game.Entities.PlayerEntity">
     <Position X="21.25" Y="26.75" Width="3" />
     <TypeIdentifier>
       <HashCode>IAAQCAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAHAAAA=</HashCode>
-      <FileName>Game\Entities\PlayerEnity.cs</FileName>
+      <FileName>Game\Entities\PlayerEntity.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.Entities.MovingEntity">
@@ -266,18 +259,11 @@
       <FileName>Game\Entities\EntityBase.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="K8055Velleman.Game.Entities.EnemyEntity">
+  <Class Name="K8055Velleman.Game.Entities.EnemyEntityBase">
     <Position X="27.25" Y="28.5" Width="3" />
     <TypeIdentifier>
       <HashCode>IAAACACAEAAAAAABAAMAABAAACAAAAAAQAAAAAGAAAg=</HashCode>
-      <FileName>Game\Entities\EnemyEntity.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="K8055Velleman.Game.Entities.AmmunitionEntity">
-    <Position X="33.25" Y="28.5" Width="3" />
-    <TypeIdentifier>
-      <HashCode>MAAAAACAAAAAgAIAIAAAAAABACgAAUAAAAAAAAECAAg=</HashCode>
-      <FileName>Game\Entities\AmmunitionEntity.cs</FileName>
+      <FileName>Game\Entities\EnemyEntityBase.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.Entities.Stratagems.DefaultTurret">
@@ -353,7 +339,7 @@
   <Class Name="K8055Velleman.Game.Entities.StratagemEntityBase">
     <Position X="14.25" Y="26.75" Width="3" />
     <TypeIdentifier>
-      <HashCode>ABQAhAAAAQAAIAACBAAgAAQAACEAEADABAAAgAEAAEQ=</HashCode>
+      <HashCode>AAQAhAAAAQAAMAACBAAgAAQAACAAEADBBAAAgAEAAEQ=</HashCode>
       <FileName>Game\Entities\StratagemEntityBase.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -362,6 +348,20 @@
     <TypeIdentifier>
       <HashCode>AAAAAACAKAAIAAAAAAAAAAgAIAAAACIACAgAAAQAAAA=</HashCode>
       <FileName>Game\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.AmmunitionEntity">
+    <Position X="33.25" Y="28.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>MAAAAACAAAAAgAIAIAAAAAABACgAAUAAAAAAAAECAAg=</HashCode>
+      <FileName>Game\Entities\AmmunitionEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="K8055Velleman.Game.Entities.StaticEntity">
+    <Position X="16.75" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\Entities\StaticEntity.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="K8055Velleman.Game.Entities.BulletInfo">

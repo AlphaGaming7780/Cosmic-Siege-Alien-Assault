@@ -1,11 +1,9 @@
 ﻿using K8055Velleman.Game.Systems;
-using System;
 using System.Drawing;
-using System.Threading;
 
 namespace K8055Velleman.Game.Entities
 {
-	internal abstract class EnemyEntity : MovingEntity
+	internal abstract class EnemyEntityBase : MovingEntity
 	{
 
 		private PlayerSystem playerSystem;
@@ -71,7 +69,7 @@ namespace K8055Velleman.Game.Entities
                     EntitySystem.DestroyEntity(this);
 				}
 			}
-			else if(entityBase is PlayerEnity)
+			else if(entityBase is PlayerEntity)
 			{
 				playerSystem.DamagePlayer(Damage);
 				EntitySystem.DestroyEntity(this);

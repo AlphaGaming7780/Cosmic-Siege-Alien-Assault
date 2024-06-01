@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace K8055Velleman.Game.Entities;
 
-internal class PlayerEnity : StaticEntity
+internal class PlayerEntity : StaticEntity
 {
 	internal int Health { get; set; }
 	internal int Money { get; set; }
@@ -14,7 +14,7 @@ internal class PlayerEnity : StaticEntity
 	internal override void OnCreate(EntitySystem entitySystem)
 	{
 		Health = StartHealth;
-		MainPanel = new() //Panel
+		MainPanel = new()
 		{
 			Size = new(50, 50),
 			BackColor = Color.Green,

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace K8055Velleman.Game.Entities.Enemy
 {
-    internal class FastEnemy : EnemyEntity
+    internal class FastEnemy : EnemyEntityBase
     {
         internal override int StartHealth => 10;
 
