@@ -52,7 +52,7 @@
       </Delegate>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>ACQAIgAoCAAEBAJAAEAgACQAAABIAACIAIIAAAEAEEA=</HashCode>
+      <HashCode>ACQAIgAICAAEBAJAAEAgACAAAABIAACIAIIAAAEAEEA=</HashCode>
       <FileName>Lib\K8055.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -269,21 +269,21 @@
   <Class Name="K8055Velleman.Game.Entities.Stratagems.DefaultTurret">
     <Position X="10.75" Y="37" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
+      <HashCode>AAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
       <FileName>Game\Entities\Stratagems\DefaultTurret.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.Entities.Stratagems.GuidedMissileLuncher">
     <Position X="14.25" Y="37" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
+      <HashCode>AAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
       <FileName>Game\Entities\Stratagems\GuidedMissileLuncher.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.Entities.Stratagems.MissileLuncher">
     <Position X="17.75" Y="37" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
+      <HashCode>AAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
       <FileName>Game\Entities\Stratagems\MissileLuncher.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -315,25 +315,18 @@
       <FileName>Lib\Mathf.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="K8055Velleman.Lib.PausableTimer">
-    <Position X="123" Y="7" Width="4.5" />
+  <Class Name="K8055Velleman.Lib.CustomControls.PausableTimer">
+    <Position X="128.25" Y="3.75" Width="4.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAAACAABAAAAAABAAAAAAAABAAgAQAQAAgAAAA=</HashCode>
-      <FileName>Lib\PausableTimer.cs</FileName>
+      <FileName>Lib\CustomControls\PausableTimer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="K8055Velleman.SizeExtention">
-    <Position X="128.75" Y="3.75" Width="2.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Lib\SizeExtention.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="K8055Velleman.Lib.ClassExtension.BButton">
-    <Position X="123" Y="17.25" Width="1.5" />
+  <Class Name="K8055Velleman.Lib.CustomControls.BButton">
+    <Position X="128.25" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAABAEAAAABAAAAAAAA=</HashCode>
-      <FileName>Lib\ClassExtension\ButtonExtension.cs</FileName>
+      <FileName>Lib\CustomControls\BButton.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.Entities.StratagemEntityBase">
@@ -364,6 +357,13 @@
       <FileName>Game\Entities\StaticEntity.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="K8055Velleman.Lib.ClassExtension.SizeExtention">
+    <Position X="134.5" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Lib\ClassExtension\SizeExtention.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Struct Name="K8055Velleman.Game.Entities.BulletInfo">
     <Position X="17.5" Y="32.75" Width="1.5" />
     <TypeIdentifier>
@@ -372,7 +372,7 @@
     </TypeIdentifier>
   </Struct>
   <Struct Name="K8055Velleman.Vector2">
-    <Position X="123" Y="11" Width="3.25" />
+    <Position X="123" Y="6.75" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAFwAEAAAAAAABAAoBAAQFgAAAAAiA=</HashCode>
       <FileName>Lib\Vector2.cs</FileName>
@@ -395,7 +395,7 @@
   <Enum Name="K8055Velleman.Game.GameStatus">
     <Position X="37" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAwAAgAAAAAgAAAACAQAAA=</HashCode>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAwAAgAAAAAAAAAACAQAAA=</HashCode>
       <FileName>Game\GameManager.cs</FileName>
     </TypeIdentifier>
   </Enum>

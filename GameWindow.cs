@@ -24,7 +24,8 @@ namespace K8055Velleman
 
         private void OnClosingForm(object sender, FormClosingEventArgs e)
         {
-            K8055.CloseAllDevices();
+            //K8055.CloseAllDevices();
+            K8055.CloseDevice();
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)

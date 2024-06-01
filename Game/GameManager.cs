@@ -17,7 +17,6 @@ public enum GameStatus
     PreGame,
     Game,
     EndGame,
-    Settings,
 }
 
 internal static class GameManager

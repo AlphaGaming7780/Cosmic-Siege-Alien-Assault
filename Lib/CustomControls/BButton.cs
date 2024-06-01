@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace K8055Velleman.Lib.ClassExtension;
+namespace K8055Velleman.Lib.CustomControls;
 
 public class BButton : Button
 {

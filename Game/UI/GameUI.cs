@@ -1,7 +1,7 @@
 ﻿using K8055Velleman.Game.Entities;
 using K8055Velleman.Game.Systems;
 using K8055Velleman.Game.Interfaces;
-using K8055Velleman.Lib.ClassExtension;
+using K8055Velleman.Lib.CustomControls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

@@ -72,6 +72,8 @@ internal abstract class TurretStratagemBase : StratagemEntityBase
 		ammunitionEntity.TaregtCenterLocation = target.CenterLocation;
 		targetLife -= ammunitionEntity.Damage;
     }
+
+    internal override void OnCollide(EntityBase entityBase) {}
 }
 internal struct BulletInfo()
 {

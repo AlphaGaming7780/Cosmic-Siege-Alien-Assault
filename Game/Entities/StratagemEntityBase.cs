@@ -1,6 +1,6 @@
 ﻿using K8055Velleman.Game.Systems;
 using K8055Velleman.Game.Interfaces;
-using K8055Velleman.Lib;
+using K8055Velleman.Lib.CustomControls;
 using System.Drawing;
 
 namespace K8055Velleman.Game.Entities;
@@ -18,8 +18,6 @@ internal abstract class StratagemEntityBase : StaticEntity
 	internal abstract int StartActionSpeed { get; }
 	internal int ActionSpeed { get { return _actionSpeed; } set { _actionSpeed = value; timer.Interval = value; } }
 
-	//private System.Timers.Timer timer;
-	//private Timer timer;
 	private PausableTimer timer;
 	private bool action = false;
 
@@ -55,7 +53,7 @@ internal abstract class StratagemEntityBase : StaticEntity
 	{
 		if (upgrade == Upgrades.ActionSpeed)
 		{
-			if (ActionSpeed <= 1000) return false;
+			if (ActionSpeed <= 500) return false;
 			ActionSpeed -= UpgradesValue.ActionSpeed;
 		}
 		Level++;

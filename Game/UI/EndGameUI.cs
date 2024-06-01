@@ -1,6 +1,5 @@
 ﻿using K8055Velleman.Game.Systems;
-using K8055Velleman.Lib.ClassExtension;
-using System;
+using K8055Velleman.Lib.CustomControls;
 using System.Drawing;
 using System.Windows.Forms;
 

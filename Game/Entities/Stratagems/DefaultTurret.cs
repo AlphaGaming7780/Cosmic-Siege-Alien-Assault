@@ -24,7 +24,5 @@ namespace K8055Velleman.Game.Entities.Stratagems
         internal override int UnkockPrice => 0;
 
         internal override BulletInfo BulletInfo => new() { Damage = 5, Color = Color.Orange, Size = new(25,25), Speed = 2 };
-
-        internal override void OnCollide(EntityBase entityBase) {}
     }
 }

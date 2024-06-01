@@ -1,8 +1,7 @@
-﻿using K8055Velleman.Lib.ClassExtension;
+﻿using K8055Velleman.Lib.CustomControls;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace K8055Velleman.Game.UI;
 

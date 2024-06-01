@@ -12,14 +12,12 @@ namespace K8055Velleman.Game.Entities.Stratagems
 
         internal override Color Color => Color.DarkGray;
 
-        internal override int UiID => 2;
+        internal override int UiID => 3;
 
         internal override bool Unlockable => true;
 
         internal override int UnkockPrice => 200;
 
         internal override BulletInfo BulletInfo => new() { Damage = 10, Speed = 5f, Size = new(10, 10), Color = Color.DarkGray, Guided = true };
-
-        internal override void OnCollide(EntityBase entityBase) {}
     }
 }

@@ -83,20 +83,41 @@ static public class K8055
 		I2 = 2,
 	}
 
-	public delegate void onConnectionChanged();
+    /// <summary>
+    /// Type for OnConnectionChanged event.
+    /// </summary>
+    public delegate void onConnectionChanged();
+	/// <summary>
+	/// An event triggerd when the connection changed with the current Velleman board.
+	/// </summary>
 	public static event onConnectionChanged OnConnectionChanged;
 
-	public delegate void onDigitalChannelsChange(DigitalChannel digitalChannel);
-	public static event onDigitalChannelsChange OnDigitalChannelsChange;
+    /// <summary>
+    /// The type for the OnDigitalChannelsChange event.
+    /// </summary>
+    /// <param name="digitalChannel">The digital channel that changed.</param>
+    public delegate void onDigitalChannelsChange(DigitalChannel digitalChannel);
+    /// <summary>
+    /// An event triggered when a digital channel changed value.
+    /// </summary>
+    public static event onDigitalChannelsChange OnDigitalChannelsChange;
 
-    public delegate void onAnalogChannelsChange(AnalogChannel analogChannel, int value);
+	/// <summary>
+	/// The type for the OnAnalogChannelsChange event.
+	/// </summary>
+	/// <param name="analogChannel">The analog channel that changed.</param>
+	/// <param name="value">The new value of the channel.</param>
+	public delegate void onAnalogChannelsChange(AnalogChannel analogChannel, int value);
+    /// <summary>
+    /// An event triggered when an analog channel changed value.
+    /// </summary>
     public static event onAnalogChannelsChange OnAnalogChannelsChange;
 
-    public static readonly List<int> ConnectedDevices = [];
+	//public static readonly List<int> ConnectedDevices = [];
+	//public static bool IsConnected { get { return ConnectedDevices.Contains(CurrentDevice); } }
+	public static bool IsConnected { get { return CurrentDevice != -1; } }
 
-	public static bool IsConnected { get { return ConnectedDevices.Contains(CurrentDevice); } }
-	
-	public static int CurrentDevice { get; private set; } = -1;//IsConnected ? CurrentDevice : -1;
+    public static int CurrentDevice { get; private set; } = -1;
 
 	private static readonly List<DigitalChannel> s_digitalChannels = [];
 	private static readonly Dictionary<AnalogChannel, int> s_analogChannels = [];
@@ -104,7 +125,8 @@ static public class K8055
 	public static void Update()
 	{
 		bool oldIsConnected = IsConnected;
-		UpdateConnectedDevice();
+		//UpdateConnectedDevice();
+		CurrentDevice = Interface.SetCurrentDevice(CurrentDevice);
 		if (!IsConnected)
 		{
 			SearchAndOpenDevice();
@@ -123,33 +145,33 @@ static public class K8055
 
 	public static int OpenDevice(int CardAddress)
 	{
-		if(ConnectedDevices.Contains(CardAddress)) return SetCurrentDevice(CardAddress);
+		//if(ConnectedDevices.Contains(CardAddress)) return SetCurrentDevice(CardAddress);
 		CurrentDevice = Interface.OpenDevice(CardAddress);
 
 		if (CurrentDevice >= 0)
 		{
-			ConnectedDevices.Add(CurrentDevice);
+			//ConnectedDevices.Add(CurrentDevice);
 			Reset();
 		}
 		return CurrentDevice;
 	}
 
-	public static bool CloseDevice(int CardAddress) 
-	{
-		int tempCurrentDevice = CurrentDevice;
-		if (CardAddress >= 0 && ConnectedDevices.Contains(CardAddress))
-		{
-			if(Interface.SetCurrentDevice(CardAddress) >= 0)
-			{
-				Reset();
-				CloseDevice();
-				Interface.SetCurrentDevice(tempCurrentDevice);
-				return true;
-			}
-			Interface.SetCurrentDevice(tempCurrentDevice);
-		}
-		return false;
-	}
+	//public static bool CloseDevice(int CardAddress) 
+	//{
+	//	int tempCurrentDevice = CurrentDevice;
+	//	if (CardAddress >= 0 && ConnectedDevices.Contains(CardAddress))
+	//	{
+	//		if(Interface.SetCurrentDevice(CardAddress) >= 0)
+	//		{
+	//			Reset();
+	//			CloseDevice();
+	//			Interface.SetCurrentDevice(tempCurrentDevice);
+	//			return true;
+	//		}
+	//		Interface.SetCurrentDevice(tempCurrentDevice);
+	//	}
+	//	return false;
+	//}
 
 	public static void CloseDevice()
 	{
@@ -157,23 +179,23 @@ static public class K8055
 		{
 			Reset();
 			Interface.CloseDevice();
-			ConnectedDevices.Remove(CurrentDevice);
+			//ConnectedDevices.Remove(CurrentDevice);
 			CurrentDevice = -1;
 		}
 	}
 
-	public static void CloseAllDevices()
-	{
-		List<int> temp = new(ConnectedDevices);
-		foreach(int CardAddress in temp)
-		{
-			if(Interface.SetCurrentDevice(CardAddress) >= 0)
-			{
-				Reset();
-				CloseDevice();
-			}
-		}
-	}
+	//public static void CloseAllDevices()
+	//{
+	//	List<int> temp = new(ConnectedDevices);
+	//	foreach(int CardAddress in temp)
+	//	{
+	//		if(Interface.SetCurrentDevice(CardAddress) >= 0)
+	//		{
+	//			Reset();
+	//			CloseDevice();
+	//		}
+	//	}
+	//}
 
 	public static int SetCurrentDevice(int CardAddress)
 	{
@@ -192,7 +214,10 @@ static public class K8055
 		int x = -1;
 		for(int i = 0; i < 4; i++)
 		{
-			if (Interface.SetCurrentDevice(i) >= 0) continue; 
+			if (SetCurrentDevice(i) >= 0)
+			{
+				return i;
+			};
 			x = OpenDevice(i);
 			if(x >= 0)
 			{
@@ -302,16 +327,16 @@ static public class K8055
 		Interface.OutputAnalogChannel(-(int)channel, data);
 	}
 
-	private static void UpdateConnectedDevice()
-	{
-		if (ConnectedDevices.Count <= 0) return;
-		ConnectedDevices.Clear();
-		for (int i = 0; i < 4; i++)
-		{
-			if (Interface.SetCurrentDevice(i) >= 0) ConnectedDevices.Add(i);
-		}
-		CurrentDevice = Interface.SetCurrentDevice(CurrentDevice);
-	}
+	//private static void UpdateConnectedDevice()
+	//{
+	//	if (ConnectedDevices.Count <= 0) return;
+	//	ConnectedDevices.Clear();
+	//	for (int i = 0; i < 4; i++)
+	//	{
+	//		if (Interface.SetCurrentDevice(i) >= 0) ConnectedDevices.Add(i);
+	//	}
+	//	CurrentDevice = Interface.SetCurrentDevice(CurrentDevice);
+	//}
 
 	private static void UpdateDigitalsChannel()
 	{

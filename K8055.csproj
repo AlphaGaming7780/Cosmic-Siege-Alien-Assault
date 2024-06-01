@@ -75,6 +75,7 @@
     <Compile Include="Game\Entities\MovingEntity.cs" />
     <Compile Include="Game\Entities\PlayerEntity.cs" />
     <Compile Include="Game\Entities\StratagemEntityBase.cs" />
+    <Compile Include="Game\Entities\Stratagems\GatlingTurret.cs" />
     <Compile Include="Game\Entities\Stratagems\GuidedMissileLuncher.cs" />
     <Compile Include="Game\Entities\Stratagems\MissileLuncher.cs" />
     <Compile Include="Game\Entities\Stratagems\DefaultTurret.cs" />
@@ -106,14 +107,14 @@
     <Compile Include="Game\UI\SettingsUI.cs" />
     <Compile Include="Game\UI\UIBase.cs" />
     <Compile Include="Lib\Utility.cs" />
-    <Compile Include="Lib\ClassExtension\ButtonExtension.cs">
+    <Compile Include="Lib\CustomControls\BButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Lib\Mathf.cs" />
-    <Compile Include="Lib\PausableTimer.cs">
+    <Compile Include="Lib\CustomControls\PausableTimer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Lib\SizeExtention.cs" />
+    <Compile Include="Lib\ClassExtension\SizeExtention.cs" />
     <Compile Include="Lib\Vector2.cs" />
     <Compile Include="Lib\K8055.cs" />
     <Compile Include="GameWindow.cs">
@@ -217,5 +218,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

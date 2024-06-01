@@ -1,5 +1,5 @@
 ﻿using K8055Velleman.Game.Saves;
-using K8055Velleman.Lib.ClassExtension;
+using K8055Velleman.Lib.CustomControls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

@@ -1,13 +1,7 @@
-﻿using K8055Velleman.Game.Systems;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Timers;
 
-namespace K8055Velleman.Lib;
+namespace K8055Velleman.Lib.CustomControls;
 
 // SOURCE ; https://stackoverflow.com/questions/26964192/c-sharp-how-to-pause-a-timer
 

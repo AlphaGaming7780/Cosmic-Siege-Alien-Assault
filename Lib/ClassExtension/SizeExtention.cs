@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace K8055Velleman
+namespace K8055Velleman.Lib.ClassExtension
 {
     internal static class SizeExtention
     {
