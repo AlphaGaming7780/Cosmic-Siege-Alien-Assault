@@ -9,24 +9,27 @@ namespace K8055Velleman.Game;
 
 internal static class SaveManager
 {
-    const string kExtension = ".json";
+    const string kExtension = ".txt";
 
     internal static Settings Settings;
-	internal static PlayerData CurrentPlayerData;
-	internal static List<PlayerData> s_playersData = [];
+    internal static PlayerData CurrentPlayerData;
+    internal static List<PlayerData> s_playersData = [];
 
-	private static string _savePath;
+    private static string _savePath;
     private static string _settingsPath;
-	private static string _playersPath;
+    private static string _playersPath;
 
     private static readonly List<string> s_openedFiles = [];
     private static readonly Dictionary<string, object> s_objectsToSave = [];
 
-	internal static void LoadData()
-	{
-		_savePath = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName, "Saves");
+    /// <summary>
+    /// Load the game data (settings & players data) from files.
+    /// </summary>
+    internal static void LoadData()
+    {
+        _savePath = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName, "Saves");
         _settingsPath = Path.Combine(_savePath, $"Settings{kExtension}");
-		_playersPath = Path.Combine(_savePath, "Players");
+        _playersPath = Path.Combine(_savePath, "Players");
 
         try
         {
@@ -39,7 +42,7 @@ internal static class SaveManager
             Settings = new ();
         }
 
-		if (Directory.Exists(_playersPath))
+        if (Directory.Exists(_playersPath))
         {
             foreach (FileInfo playerSave in new DirectoryInfo(_playersPath).GetFiles())
             {
@@ -57,18 +60,27 @@ internal static class SaveManager
                 }
             }
         }
-	}
-
+    }
+    /// <summary>
+    /// Save the settings in the file.
+    /// </summary>
     internal static void SaveSettings()
     {
         Save(_settingsPath, Settings);
     }
 
-	internal static void SaveCurrentPlayerData()
-	{
+    /// <summary>
+    /// Save current selected player data in is file.
+    /// </summary>
+    internal static void SaveCurrentPlayerData()
+    {
         Save(_playersPath, $"{CurrentPlayerData.Name}{kExtension}", CurrentPlayerData);
-	}
+    }
 
+    /// <summary>
+    /// Delete player data from files.
+    /// </summary>
+    /// <param name="playerData">The player data to delete</param>
     internal static void DeletePlayerData(PlayerData playerData)
     {
         string path = Path.Combine(_playersPath, $"{playerData.Name}{kExtension}");
@@ -98,7 +110,7 @@ internal static class SaveManager
     }
 
     private static void Save(string path, string fileName, object objectToSave)
-	{
+    {
         Save(Path.Combine(path, fileName), objectToSave);
     }
 

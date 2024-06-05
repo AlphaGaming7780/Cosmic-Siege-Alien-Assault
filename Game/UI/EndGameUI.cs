@@ -55,7 +55,7 @@ internal class EndGameUI : UIBase
 
         Label TotalEarnedMoney = new()
         {
-            Text = $"Total Earned Money : {_gameSystem.playerSystem.player.TotalMoney} 💲",
+            Text = $"Total earned diamonds : {_gameSystem.playerSystem.player.TotalMoney} 💎",
             Font = new Font(UIManager.CustomFonts.Families[0], 20f, FontStyle.Bold),
             ForeColor = Color.White,
             AutoSize = true,

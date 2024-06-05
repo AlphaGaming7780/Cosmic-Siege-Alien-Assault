@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace K8055Velleman.Game
 {
     public class SystemBase
@@ -34,6 +29,4 @@ namespace K8055Velleman.Game
         /// <param name="status">The new status</param>
         internal virtual void OnGameStatusChange(GameStatus status) { }
     }
-
-
 }

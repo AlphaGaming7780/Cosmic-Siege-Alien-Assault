@@ -1,11 +1,5 @@
 ﻿using K8055Velleman.Game.Entities;
-using K8055Velleman.Game.Entities.Stratagems;
 using K8055Velleman.Game.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace K8055Velleman.Game.Systems
 {

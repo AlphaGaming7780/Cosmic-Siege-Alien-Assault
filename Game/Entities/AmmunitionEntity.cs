@@ -16,10 +16,10 @@ internal class AmmunitionEntity : MovingEntity
 
     private PlayerSystem playerSystem;
 
-	internal EntityBase target;
+    internal EntityBase target;
 
-	internal override void OnCreate(EntitySystem entitySystem)
-	{
+    internal override void OnCreate(EntitySystem entitySystem)
+    {
         MainPanel = new()
         {
             Width = BulletSize.Width,
@@ -28,10 +28,10 @@ internal class AmmunitionEntity : MovingEntity
         };
         base.OnCreate(entitySystem);
         enabled = false;
-	}
+    }
 
-	internal void Create(BulletInfo bulletInfo)
-	{
+    internal void Create(BulletInfo bulletInfo)
+    {
         speed = bulletInfo.Speed;
         Damage = bulletInfo.Damage;
         BulletSize = bulletInfo.Size;
@@ -52,17 +52,17 @@ internal class AmmunitionEntity : MovingEntity
             if (target == null) GetNewTarget();
             else if (EntitySystem.EntityExists(target)) TaregtCenterLocation = target.CenterLocation;
             else target = null;
-		}
-		else if(TaregtCenterLocation == CenterLocation) EntitySystem.DestroyEntity(this);
+        }
+        else if(TaregtCenterLocation == CenterLocation) EntitySystem.DestroyEntity(this);
     }
 
-	internal override void OnCollide(EntityBase entityBase)
-	{
-		if(entityBase is EnemyEntityBase) EntitySystem.DestroyEntity(this);
-	}
+    internal override void OnCollide(EntityBase entityBase)
+    {
+        if(entityBase is EnemyEntityBase) EntitySystem.DestroyEntity(this);
+    }
 
-	private void GetNewTarget()
-	{
+    private void GetNewTarget()
+    {
         List<EnemyEntityBase> enemyEntities = EntitySystem.GetEntitiesByType<EnemyEntityBase>();
         if (enemyEntities.Count <= 0) { return; } //target = null;
 

@@ -82,7 +82,6 @@
     <Compile Include="Game\Entities\TurretStratagemBase.cs" />
     <Compile Include="Game\GameManager.cs" />
     <Compile Include="Game\AudioManager.cs" />
-    <Compile Include="Game\Interfaces\ICollideEntity.cs" />
     <Compile Include="Game\Interfaces\IUpgradableStratagemEntity.cs" />
     <Compile Include="Game\SaveManager.cs" />
     <Compile Include="Game\Saves\PlayerData.cs" />
@@ -134,7 +133,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="CodeMap.dgml" />
     <None Include="Diagram\EntitiesDiagram.cd" />
     <None Include="Diagram\GlobalDiagram.cd" />
     <None Include="Properties\Settings.settings">
@@ -151,7 +149,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="Resources\license.txt" />
+    <Content Include="Resources\license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Audio\Musics\Mr-Blackhole - Category.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -185,7 +185,9 @@
     <Content Include="Resources\PixeloidSansBold.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\license.pdf" />
+    <None Include="Resources\license.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

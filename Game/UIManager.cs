@@ -1,11 +1,7 @@
 ﻿using K8055Velleman.Game.UI;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace K8055Velleman.Game;
 
@@ -50,5 +46,10 @@ internal static class UIManager
         s_UIs[typeof(T)].OnDestroy();
         s_UIs.Remove(typeof(T));
         return true;
+    }
+
+    internal static bool UIExist<T>() where T : UIBase
+    {
+        return s_UIs.ContainsKey(typeof(T));
     }
 }

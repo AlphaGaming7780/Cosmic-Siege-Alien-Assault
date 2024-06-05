@@ -98,6 +98,41 @@ namespace K8055Velleman.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à NOmki - Netrunner 
+        ///	https://www.newgrounds.com/audio/listen/1093684
+        ///
+        ///NOmki - Time
+        ///	https://www.newgrounds.com/audio/listen/1116845
+        ///
+        ///punkerrr - Virtual Cataclysm 
+        ///	https://www.newgrounds.com/audio/listen/1241343
+        ///
+        ///Mr-Blackhole - Category
+        ///	https://www.newgrounds.com/audio/listen/1090910
+        ///
+        ///RyuuAkito &amp; SquashHead - Damaged Artificial Nervous System
+        ///	https://www.newgrounds.com/audio/listen/1197066
+        ///
+        ///Dustyroom Casual Game Sound - One Shot SFX Pack
+        ///	https://dustyroom.com/free-casual-game-sounds/.
+        /// </summary>
+        internal static string license {
+            get {
+                return ResourceManager.GetString("license", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Byte[].
+        /// </summary>
+        internal static byte[] license1 {
+            get {
+                object obj = ResourceManager.GetObject("license1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une ressource localisée de type System.IO.UnmanagedMemoryStream semblable à System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream LoadingMusic {

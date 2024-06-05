@@ -160,4 +160,10 @@
   <data name="Death_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Audio\EnemyDeath\Death 2.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="license" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\license.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="license1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\license.pdf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

@@ -8,69 +8,67 @@ namespace K8055Velleman.Game.Entities;
 
 internal abstract class TurretStratagemBase : StratagemEntityBase
 {
-	//internal abstract Type Ammo { get; }
-
-	internal BulletInfo bulletInfo;
+    internal BulletInfo bulletInfo;
 
     internal abstract BulletInfo BulletInfo { get; }
 
     private EnemyEntityBase target = null, oldTarget = null;
-	private float targetLife = 0;
+    private float targetLife = 0;
 
     internal override void OnCreate(EntitySystem entitySystem)
     {
         base.OnCreate(entitySystem);
-		bulletInfo = BulletInfo;
+        bulletInfo = BulletInfo;
     }
 
     internal override void Action()
-	{
-		Shot();
-	}
+    {
+        Shot();
+    }
 
     internal override bool Upgrade(Upgrades upgrade)
     {
         if (Level >= MaxLevel) return false;
         if (upgrade == Upgrades.BulletDamage)
-		{
-			bulletInfo.Damage += UpgradesValue.BulletDamage;
-		}
+        {
+            bulletInfo.Damage += UpgradesValue.BulletDamage;
+        }
         return base.Upgrade(upgrade);
     }
 
     private void GetTarget()
-	{
-		List<EnemyEntityBase> enemyEntities = EntitySystem.GetEntitiesByType<EnemyEntityBase>();
+    {
+        List<EnemyEntityBase> enemyEntities = EntitySystem.GetEntitiesByType<EnemyEntityBase>();
 
         PlayerEntity playerEnity = EntitySystem.GetEntitiesByType<PlayerEntity>()[0];
-		enemyEntities.Sort(delegate (EnemyEntityBase x, EnemyEntityBase y)
-		{
-			return (x.CenterLocation - playerEnity.CenterLocation).sqrMagnitude.CompareTo((y.CenterLocation - playerEnity.CenterLocation).sqrMagnitude);
-		});
-		if (enemyEntities.Count <= 0) { target = null; return; }
+        enemyEntities.Sort(delegate (EnemyEntityBase x, EnemyEntityBase y)
+        {
+            return (x.CenterLocation - playerEnity.CenterLocation).sqrMagnitude.CompareTo((y.CenterLocation - playerEnity.CenterLocation).sqrMagnitude);
+        });
+        if (enemyEntities.Count <= 0) { target = null; return; }
 
-		foreach(EnemyEntityBase enemy in enemyEntities)
-		{
-			if (enemy.targeted || oldTarget == enemy) continue;
-			target = enemy;
-			break;
-		}
-		target ??= enemyEntities[GameManager.Random.Next(enemyEntities.Count)];
-		targetLife = target.Health;
-		target.targeted = true;
+        foreach(EnemyEntityBase enemy in enemyEntities)
+        {
+            if (enemy.targeted || oldTarget == enemy) continue;
+            target = enemy;
+            break;
+        }
+        target ??= enemyEntities[GameManager.Random.Next(enemyEntities.Count)];
+        targetLife = target.Health;
+        target.targeted = true;
 
         return;
-	}
+    }
 
-	internal void Shot()
+    internal void Shot()
     {
         if (!EntitySystem.EntityExists(target)) target = null;
         if (target == null) GetTarget();
-		AmmunitionEntity ammunitionEntity = EntitySystem.CreateEntity<AmmunitionEntity>();
-		ammunitionEntity.Create(bulletInfo);
-		ammunitionEntity.target = target;
-		ammunitionEntity.TaregtCenterLocation = target.CenterLocation;
-		targetLife -= ammunitionEntity.Damage;
+        AmmunitionEntity ammunitionEntity = EntitySystem.CreateEntity<AmmunitionEntity>();
+        ammunitionEntity.Create(bulletInfo);
+        ammunitionEntity.target = target;
+        ammunitionEntity.TaregtCenterLocation = target.CenterLocation;
+        targetLife -= ammunitionEntity.Damage;
     }
 
     internal override void OnCollide(EntityBase entityBase) {}

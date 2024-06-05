@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
   <Class Name="K8055Velleman.Program">
-    <Position X="56.5" Y="1" Width="1.5" />
+    <Position X="56.5" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
@@ -57,14 +57,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.GameManager">
-    <Position X="33.75" Y="9.25" Width="3" />
+    <Position X="33.75" Y="9.5" Width="3" />
     <TypeIdentifier>
       <HashCode>AAQAgAAAAGAAIAAAAAAACAAAAAAABAAAAAAAEACAAAA=</HashCode>
       <FileName>Game\GameManager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.InputManager">
-    <Position X="44.25" Y="4.5" Width="2.25" />
+    <Position X="38.25" Y="5.25" Width="2.25" />
     <NestedTypes>
       <Delegate Name="K8055Velleman.Game.InputManager.onKeyDown" Collapsed="true">
         <TypeIdentifier>
@@ -85,7 +85,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.UIManager">
-    <Position X="75.25" Y="8.5" Width="3" />
+    <Position X="75" Y="8.5" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAABAACgAAgBAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
       <FileName>Game\UIManager.cs</FileName>
@@ -163,6 +163,14 @@
   </Class>
   <Class Name="K8055Velleman.Game.UI.EndGameUI">
     <Position X="90.75" Y="14.75" Width="4.25" />
+    <InheritanceLine Type="K8055Velleman.Game.UI.UIBase" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="76.625" Y="13.968" />
+        <Point X="76.625" Y="14.375" />
+        <Point X="92.875" Y="14.375" />
+        <Point X="92.875" Y="14.75" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAEBBAAAAAAIgAAAAAAAACAAACAAAAAAAAAAAARAAAA=</HashCode>
       <FileName>Game\UI\EndGameUI.cs</FileName>
@@ -267,21 +275,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.Entities.Stratagems.DefaultTurret">
-    <Position X="10.75" Y="37" Width="2.75" />
+    <Position X="11" Y="37" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
       <FileName>Game\Entities\Stratagems\DefaultTurret.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.Entities.Stratagems.GuidedMissileLuncher">
-    <Position X="14.25" Y="37" Width="2.75" />
+    <Position X="14.5" Y="37" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
       <FileName>Game\Entities\Stratagems\GuidedMissileLuncher.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.Entities.Stratagems.MissileLuncher">
-    <Position X="17.75" Y="37" Width="2.75" />
+    <Position X="18" Y="37" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAEQAAIAACAAAAAAQAAAAAAAAABAAAgAAAAEA=</HashCode>
       <FileName>Game\Entities\Stratagems\MissileLuncher.cs</FileName>
@@ -337,7 +345,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.AudioManager">
-    <Position X="63" Y="3.5" Width="5.25" />
+    <Position X="65.5" Y="3.5" Width="5.25" />
     <TypeIdentifier>
       <HashCode>AAAAAACAKAAIAAAAAAAAAAgAIAAAACIACAgAAAQAAAA=</HashCode>
       <FileName>Game\AudioManager.cs</FileName>
@@ -379,7 +387,7 @@
     </TypeIdentifier>
   </Struct>
   <Struct Name="K8055Velleman.Game.AudioVolume">
-    <Position X="63" Y="7" Width="3.5" />
+    <Position X="65.5" Y="7" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAACEAIgAAAAAAAAA=</HashCode>
       <FileName>Game\AudioManager.cs</FileName>
@@ -393,14 +401,14 @@
     </TypeIdentifier>
   </Struct>
   <Enum Name="K8055Velleman.Game.GameStatus">
-    <Position X="37" Y="9.25" Width="1.5" />
+    <Position X="37" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEAAAAAAAAAAAAAAAAAAwAAgAAAAAAAAAACAQAAA=</HashCode>
       <FileName>Game\GameManager.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="K8055Velleman.Game.AudioFile">
-    <Position X="66.75" Y="7" Width="1.5" />
+    <Position X="69.25" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAgAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Game\AudioManager.cs</FileName>

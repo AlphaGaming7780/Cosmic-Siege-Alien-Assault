@@ -3,5 +3,4 @@
 public class StratagemData
 {
     public bool Unlocked { get; set; } = false;
-    //public int level = 0;
 }

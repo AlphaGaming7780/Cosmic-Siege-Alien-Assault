@@ -1,11 +1,7 @@
-﻿using K8055Velleman.Game.Entities;
-using K8055Velleman.Game.Systems;
-using K8055Velleman.Game.UI;
+﻿using K8055Velleman.Game.Systems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace K8055Velleman.Game;
 
@@ -73,7 +69,7 @@ internal static class GameManager
     /// Get an exesting system.
     /// </summary>
     /// <typeparam name="T">The type of the system to get.</typeparam>
-    /// <returns></returns>
+    /// <returns>The wanted system or null</returns>
     internal static T GetSystem<T>() where T : SystemBase
     {
         if (s_systems.ContainsKey(typeof(T))) return (T)s_systems[typeof(T)];
