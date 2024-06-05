@@ -85,9 +85,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="K8055Velleman.Game.UIManager">
-    <Position X="75" Y="8.5" Width="3" />
+    <Position X="75" Y="8.25" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAABAACgAAgBAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAABAACgAAgBAAAAAAAAAAAAAAAAIAAAAAAAAAIAA=</HashCode>
       <FileName>Game\UIManager.cs</FileName>
     </TypeIdentifier>
   </Class>

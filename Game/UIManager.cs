@@ -48,6 +48,11 @@ internal static class UIManager
         return true;
     }
 
+    /// <summary>
+    /// Check if an UI exist.
+    /// </summary>
+    /// <typeparam name="T">The type of the UI to check.</typeparam>
+    /// <returns>TRUE if the UI exist, otherwise FALSE.</returns>
     internal static bool UIExist<T>() where T : UIBase
     {
         return s_UIs.ContainsKey(typeof(T));
