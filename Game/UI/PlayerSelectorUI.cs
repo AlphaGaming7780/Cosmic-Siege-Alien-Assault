@@ -32,7 +32,7 @@ namespace K8055Velleman.Game.UI
                 BorderStyle = BorderStyle.FixedSingle,
                 ForeColor = Color.White,
             };
-            _playerSelectorPanel.Location = new(GameWindow.Width / 2 - _playerSelectorPanel.Width / 2, GameWindow.Height / 2 - _playerSelectorPanel.Height / 2);
+            _playerSelectorPanel.Location = new(MainControl.Width / 2 - _playerSelectorPanel.Width / 2, MainControl.Height / 2 - _playerSelectorPanel.Height / 2);
 
             _newPlayerButton = new()
             {
@@ -74,8 +74,8 @@ namespace K8055Velleman.Game.UI
             _playerSelectorPanel.Controls.Add(_newPlayerButton);
             _playerSelectorPanel.Controls.Add(_deletePlayerButton);
             _playerSelectorPanel.Controls.Add(_selectePlayerButton);
-            GameWindow.Controls.Add(_playerSelectorPanel);
-            GameWindow.Controls.SetChildIndex(_playerSelectorPanel, 0);
+            MainControl.Controls.Add(_playerSelectorPanel);
+            //MainControl.Controls.SetChildIndex(_playerSelectorPanel, 0);
         }
 
         private void UpdatePlayerList()
@@ -228,7 +228,7 @@ namespace K8055Velleman.Game.UI
                 BorderStyle = BorderStyle.FixedSingle,
                 ForeColor = Color.White,
             };
-            panel.Location = new(GameWindow.Width / 2 - panel.Width / 2, GameWindow.Height / 2 - panel.Height / 2);
+            panel.Location = new(MainControl.Width / 2 - panel.Width / 2, MainControl.Height / 2 - panel.Height / 2);
 
             Label label = new()
             {
@@ -297,10 +297,8 @@ namespace K8055Velleman.Game.UI
             panel.Controls.Add(label);
             panel.Controls.Add(textBox);
 
-            GameWindow.Controls.Add(panel);
-            GameWindow.Controls.SetChildIndex(panel, 0);
-
-
+            MainControl.Controls.Add(panel);
+            //MainControl.Controls.SetChildIndex(panel, 0);
         }
 
         private void onMouseEnterColorChange(Control player)
@@ -324,7 +322,7 @@ namespace K8055Velleman.Game.UI
         internal override void OnDestroy()
         {
             base.OnDestroy();
-            GameWindow.Controls.Remove(_playerSelectorPanel);
+            MainControl.Controls.Remove(_playerSelectorPanel);
             _playerSelectorPanel.Dispose();
             _playerSelectorPanel = null;
         }

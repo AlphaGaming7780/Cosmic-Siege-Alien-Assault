@@ -203,6 +203,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="OpenGL.Net">
+      <Version>0.8.4</Version>
+    </PackageReference>
+    <PackageReference Include="OpenGL.Net.WinForms">
+      <Version>0.8.4</Version>
+    </PackageReference>
     <PackageReference Include="System.Text.Json">
       <Version>8.0.3</Version>
     </PackageReference>

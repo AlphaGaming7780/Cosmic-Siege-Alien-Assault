@@ -26,8 +26,8 @@ namespace K8055Velleman.Game.UI
             _mainMenu = new()
             {
                 Location = new Point(0, 0),
-                Width = GameWindow.Width,
-                Height = GameWindow.Height,
+                Width = MainControl.Width,
+                Height = MainControl.Height,
                 BackColor = Color.Black,
             };
 
@@ -125,8 +125,8 @@ namespace K8055Velleman.Game.UI
             _mainMenu.Controls.Add(_settingsButton);
             _mainMenu.Controls.Add(_quitButton);
             _mainMenu.Controls.Add(_creditMenuButton);
-            GameWindow.Controls.Add(_mainMenu);
-            Console.WriteLine("Main menu destroyed");
+            MainControl.Controls.Add(_mainMenu);
+            Console.WriteLine("Main menu created");
         }
 
         private void ShowCreditMenu()
@@ -140,7 +140,7 @@ namespace K8055Velleman.Game.UI
             base.OnDestroy();
             Console.WriteLine("Main menu destroyed");
             AudioManager.StopSound(AudioFile.MouseOver);
-            GameWindow.Controls.Remove(_mainMenu);
+            MainControl.Controls.Remove(_mainMenu);
             _mainMenu.Dispose();
         }
 

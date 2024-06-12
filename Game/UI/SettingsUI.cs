@@ -26,13 +26,13 @@ internal class SettingsUI : UIBase
 
         _settingsControl = new()
         {
-            Size = GameWindow.Size,
+            Size = MainControl.Size,
             BackColor = Color.Black,
             Enabled = false,
             Visible = false,
         };
-        GameWindow.Controls.Add(_settingsControl);
-        GameWindow.Controls.SetChildIndex(_settingsControl, 0);
+        MainControl.Controls.Add(_settingsControl);
+        MainControl.Controls.SetChildIndex(_settingsControl, 0);
 
         _settingsPanel = new()
         {
@@ -149,7 +149,7 @@ internal class SettingsUI : UIBase
     internal override void OnDestroy()
     {
         base.OnDestroy();
-        GameWindow.Controls.Remove(_settingsControl);
+        MainControl.Controls.Remove(_settingsControl);
         _settingsControl.Dispose();
         _caller.Enabled = true;
     }

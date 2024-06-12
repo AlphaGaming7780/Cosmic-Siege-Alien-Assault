@@ -25,7 +25,7 @@ internal class EndGameUI : UIBase
             BorderStyle = BorderStyle.FixedSingle,
             ForeColor = Color.White,
         };
-        _endGameMenu.Location = new Point(GameWindow.Width / 2 - _endGameMenu.Width / 2, GameWindow.Height / 2 - _endGameMenu.Height / 2);
+        _endGameMenu.Location = new Point(MainControl.Width / 2 - _endGameMenu.Width / 2, MainControl.Height / 2 - _endGameMenu.Height / 2);
 
         Label gameEndedText = new()
         {
@@ -105,15 +105,15 @@ internal class EndGameUI : UIBase
         _endGameMenu.Controls.Add(_tryAgainButton);
         _endGameMenu.Controls.Add(_settingsButton);
         _endGameMenu.Controls.Add(_mainMenuButton);
-        GameWindow.Controls.Add(_endGameMenu);
-        GameWindow.Controls.SetChildIndex(_endGameMenu, 0);
+        MainControl.Controls.Add(_endGameMenu);
+        MainControl.Controls.SetChildIndex(_endGameMenu, 0);
     }
 
     internal override void OnDestroy()
     {
         base.OnDestroy();
         _gameSystem = null;
-        GameWindow.Controls.Remove(_endGameMenu);
+        MainControl.Controls.Remove(_endGameMenu);
         _endGameMenu.Dispose();
         _endGameMenu = null;
     }

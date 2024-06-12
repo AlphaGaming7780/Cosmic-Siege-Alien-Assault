@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.Clock = new System.Windows.Forms.Timer(this.components);
+            this.glControl = new OpenGL.GlControl();
             this.SuspendLayout();
             // 
             // Clock
@@ -37,20 +38,35 @@
             this.Clock.Interval = 1;
             this.Clock.Tick += new System.EventHandler(this.OnUpdate);
             // 
+            // glControl
+            // 
+            this.glControl.Animation = true;
+            this.glControl.BackColor = System.Drawing.Color.Transparent;
+            this.glControl.ColorBits = ((uint)(24u));
+            this.glControl.DepthBits = ((uint)(0u));
+            this.glControl.ForeColor = System.Drawing.Color.White;
+            this.glControl.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.glControl.Location = new System.Drawing.Point(158, 50);
+            this.glControl.MultisampleBits = ((uint)(0u));
+            this.glControl.Name = "glControl";
+            this.glControl.Size = new System.Drawing.Size(1031, 429);
+            this.glControl.StencilBits = ((uint)(0u));
+            this.glControl.TabIndex = 0;
+            // 
             // GameWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(1278, 718);
+            this.ClientSize = new System.Drawing.Size(1919, 1079);
             this.ControlBox = false;
+            this.Controls.Add(this.glControl);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(1280, 720);
             this.Name = "GameWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cosmic Siege: Alien Assault";
@@ -66,6 +82,7 @@
         #endregion
 
         internal System.Windows.Forms.Timer Clock;
+        internal OpenGL.GlControl glControl;
     }
 }
 

@@ -1,13 +1,17 @@
 ﻿using K8055Velleman.Game.UI;
+using K8055Velleman.Lib.ClassExtension;
+using OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Text;
+using System.Windows.Forms;
 
 namespace K8055Velleman.Game;
 
 internal static class UIManager
 {
     internal static GameWindow GameWindow;
+    internal static Control MainContol;
     internal static PrivateFontCollection CustomFonts = new();
     private static readonly Dictionary<Type, UIBase> s_UIs = [];
 
@@ -15,10 +19,19 @@ internal static class UIManager
     /// Setup the UIManager.
     /// </summary>
     /// <param name="gameWindow">The main game windows.</param>
-    internal static void Setup(GameWindow gameWindow)
+    internal static void Setup(GameWindow mainWindow)
     {
         CustomFonts.AddFontFile("Resources\\PixeloidSans.ttf");
-        GameWindow = gameWindow; 
+        GameWindow = mainWindow;
+        MainContol = GameWindow;
+    }
+
+    internal static void Setup(GameWindow mainWindow, Control mainControl)
+    {
+        Setup(mainWindow);
+        MainContol = mainControl;
+        MainContol.Location = new(0, 0);
+        MainContol.Size = GameWindow.Size;
     }
 
     /// <summary>

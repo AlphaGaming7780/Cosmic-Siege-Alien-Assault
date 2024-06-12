@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace K8055Velleman.Game.UI
 {
     internal abstract class UIBase
@@ -7,6 +9,7 @@ namespace K8055Velleman.Game.UI
         /// The application main control.
         /// </summary>
         internal GameWindow GameWindow { get { return UIManager.GameWindow; } }
+        internal Control MainControl { get { return UIManager.MainContol; } }
         //internal Float2 UIRatio { get { return UIManager.uiRatio; } }
 
         internal const int RightOffeset = 8; //16

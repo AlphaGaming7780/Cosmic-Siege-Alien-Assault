@@ -48,8 +48,8 @@ internal class PreGameUI : UIBase
 
         _preGameUI = new()
         {
-            Width = GameWindow.Width,
-            Height = GameWindow.Height,
+            Width = MainControl.Width,
+            Height = MainControl.Height,
             BackColor = Color.Black,
         };
 
@@ -143,7 +143,7 @@ internal class PreGameUI : UIBase
         {
             Width = 522,
             Height = 132,
-            Location = new Point(GameWindow.Width/2 - 522/2, 850),
+            Location = new Point(MainControl.Width/2 - 522/2, 850),
             BorderStyle = BorderStyle.FixedSingle,
             ForeColor = Color.White,
         };
@@ -255,7 +255,7 @@ internal class PreGameUI : UIBase
         _preGameUI.Controls.Add(_selectedStratPanel);
         _preGameUI.Controls.Add(_stratagemList);
         _preGameUI.Controls.Add(_playerMoney);
-        GameWindow.Controls.Add(_preGameUI);
+        MainControl.Controls.Add(_preGameUI);
 
     }
 
@@ -534,7 +534,7 @@ internal class PreGameUI : UIBase
     internal override void OnDestroy()
     {
         base.OnDestroy();
-        GameWindow.Controls.Remove(_preGameUI);
+        MainControl.Controls.Remove(_preGameUI);
         _preGameUI.Dispose();
         K8055.ClearAnalogChannel(K8055.AnalogChannel.O1);
     }

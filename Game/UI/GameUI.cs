@@ -36,7 +36,7 @@ namespace K8055Velleman.Game.UI
             SetupAnalogChannelEvent();
             GamePanel = new()
             {
-                Size = GameWindow.Size,
+                Size = MainControl.Size,
                 Location = new(0, 0),
                 BackColor = Color.Black,
             };
@@ -45,7 +45,7 @@ namespace K8055Velleman.Game.UI
             {
                 Width = 522,
                 Height = 132,
-                Location = new Point(GameWindow.Width / 2 - 522 / 2, 900),
+                Location = new Point(MainControl.Width / 2 - 522 / 2, 900),
                 BorderStyle = BorderStyle.FixedSingle,
                 ForeColor = Color.White,
             };
@@ -88,14 +88,14 @@ namespace K8055Velleman.Game.UI
                 Location = new Point(5, Score.Height + Score.Location.Y),
             };
             GameInfo.Controls.Add(_gameDiffictyIncreaseLabel);
-            GameWindow.Controls.Add(GamePanel);
+            MainControl.Controls.Add(GamePanel);
             K8055.OutputAnalogChannel(K8055.AnalogChannel.O1, (int)(_gameSystem.WaveMoneyPay / 10f * 255));
         }
 
         internal override void OnDestroy()
         {
             base.OnDestroy();
-            GameWindow.Controls.Remove(GamePanel);
+            MainControl.Controls.Remove(GamePanel);
             GamePanel.Dispose();
             GamePanel = null;
             K8055.ClearAllDigital();

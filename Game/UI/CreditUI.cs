@@ -21,11 +21,11 @@ internal class CreditUI : UIBase
         base.OnCreate();
         _mainControl = new()
         {
-            Size = GameWindow.Size,
+            Size = MainControl.Size,
             BackColor = Color.Black,
         };
-        GameWindow.Controls.Add(_mainControl);
-        GameWindow.Controls.SetChildIndex(_mainControl, 0);
+        MainControl.Controls.Add(_mainControl);
+        MainControl.Controls.SetChildIndex(_mainControl, 0);
 
         _backButton = new()
         {
@@ -101,7 +101,7 @@ internal class CreditUI : UIBase
     internal override void OnDestroy()
     {
         base.OnDestroy();
-        GameWindow.Controls.Remove(_mainControl);
+        MainControl.Controls.Remove(_mainControl);
         _mainControl.Dispose();
         _mainControl = null;
         Console.WriteLine("CreditUI Destroyed");

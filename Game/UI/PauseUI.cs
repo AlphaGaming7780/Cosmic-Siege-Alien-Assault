@@ -21,7 +21,7 @@ internal class PauseUI : UIBase
             ForeColor = Color.White,
             BorderStyle = BorderStyle.FixedSingle,
         };
-        _pauseMenu.Location = new(GameWindow.Width / 2 - _pauseMenu.Width / 2, GameWindow.Height / 2 - _pauseMenu.Height / 2);
+        _pauseMenu.Location = new(MainControl.Width / 2 - _pauseMenu.Width / 2, MainControl.Height / 2 - _pauseMenu.Height / 2);
 
         Label gamePausedText = new()
         {
@@ -73,14 +73,14 @@ internal class PauseUI : UIBase
         _pauseMenu.Controls.Add(_resumeButton);
         _pauseMenu.Controls.Add(_settingsButton);
         _pauseMenu.Controls.Add(_mainMenuButton);
-        GameWindow.Controls.Add(_pauseMenu);
-        GameWindow.Controls.SetChildIndex(_pauseMenu, 0);
+        MainControl.Controls.Add(_pauseMenu);
+        MainControl.Controls.SetChildIndex(_pauseMenu, 0);
     }
 
     internal override void OnDestroy()
     {
         base.OnDestroy();
-        GameWindow.Controls.Remove(_pauseMenu);
+        MainControl.Controls.Remove(_pauseMenu);
         _pauseMenu.Dispose();
         _pauseMenu = null;
     }
